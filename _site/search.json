@@ -4,13 +4,55 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "About this site\nISSS608 - Visual Analytic & Application"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html",
+    "href": "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html",
+    "title": "Hands-on Exercise 01",
+    "section": "",
+    "text": "Work in Progress….."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex00/Hands-on_Ex00.html",
+    "href": "Hands-on_Ex/Hands-on_Ex00/Hands-on_Ex00.html",
+    "title": "Hands-on Exercise 00: working with tidyverse",
+    "section": "",
+    "text": "Load tidyverse onto r environment by using the code chunck below.\n\npacman::p_load(tidyverse)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex00/Hands-on_Ex00.html#getting-started",
+    "href": "Hands-on_Ex/Hands-on_Ex00/Hands-on_Ex00.html#getting-started",
+    "title": "Hands-on Exercise 00: working with tidyverse",
+    "section": "",
+    "text": "Load tidyverse onto r environment by using the code chunck below.\n\npacman::p_load(tidyverse)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex00/Hands-on_Ex00.html#importing-data",
+    "href": "Hands-on_Ex/Hands-on_Ex00/Hands-on_Ex00.html#importing-data",
+    "title": "Hands-on Exercise 00: working with tidyverse",
+    "section": "Importing data",
+    "text": "Importing data\nCode chunk below uses read_csv() or readr to import REALIS2019.csv into environment as a tibble data.frame\n\nrealis_csv &lt;- read.csv(\"data/REALIS2019.csv\")\n\n\nrealis2019 &lt;- read_csv(\"data/REALIS2019.csv\")\n\n\npopdata_fat &lt;- read_csv(\"data/PopData2019_fat.csv\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex00/Hands-on_Ex00.html#pivoting-data",
+    "href": "Hands-on_Ex/Hands-on_Ex00/Hands-on_Ex00.html#pivoting-data",
+    "title": "Hands-on Exercise 00: working with tidyverse",
+    "section": "Pivoting Data",
+    "text": "Pivoting Data\n\npopdata_long &lt;- popdata_fat %&gt;%\n  pivot_longer(c(3:21),\n        names_to = \"Age Group\",\n        values_to = \"Population\")\n\n\nwrite_rds(popdata_long,\"data/rds/popdata_long.rds\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex00/Hands-on_Ex00.html#working-with-dplyr",
+    "href": "Hands-on_Ex/Hands-on_Ex00/Hands-on_Ex00.html#working-with-dplyr",
+    "title": "Hands-on Exercise 00: working with tidyverse",
+    "section": "Working with dplyr",
+    "text": "Working with dplyr\n\nrealis2019_selected &lt;- realis2019 %&gt;% \n  select('Project Name',\n  'Transacted Price ($)',\n  'Type of Sale',\n  'Unit Price ($ psm)',\n  'Property Type')\nrealis2019_selected\n\n# A tibble: 19,515 × 5\n   `Project Name`     `Transacted Price ($)` `Type of Sale` `Unit Price ($ psm)`\n   &lt;chr&gt;                               &lt;dbl&gt; &lt;chr&gt;                         &lt;dbl&gt;\n 1 PEIRCE VIEW                        840000 Resale                         7434\n 2 FLORIDA PARK                      3040000 Resale                         9737\n 3 BULLION PARK                       860000 Resale                        11467\n 4 CASTLE GREEN                      1000000 Resale                         9346\n 5 HAPPY ESTATE                      7000000 Resale                        10183\n 6 TEACHER'S HOUSING…                2880000 Resale                        12659\n 7 THE PANORAMA                      1510000 Resale                        16064\n 8 THE PANORAMA                       710000 Resale                        16905\n 9 CHIP THYE GARDEN                  2800000 Resale                        13500\n10 TEACHER'S HOUSING…                2300000 Resale                         9935\n# ℹ 19,505 more rows\n# ℹ 1 more variable: `Property Type` &lt;chr&gt;\n\n\n\nWorking with filter() of dplyr\n\nrealis2019_filtered &lt;- realis2019_selected %&gt;%\n  filter('Property Type' == \"Condominium\" |\n           'Property Type' == \"Apartment\") %&gt;%\n  filter('Type of Sale' == \"New Sale\") %&gt;%\n  filter('Unit Price ($ psm)' &lt;= 13000)\n\n\n\nPutting it all together\n\nrealis2019_end &lt;- realis2019 %&gt;% \n  select('Project Name',\n  'Transacted Price ($)',\n  'Type of Sale',\n  'Unit Price ($ psm)',\n  'Property Type') %&gt;%\n  filter('Property Type' == \"Condominium\" |\n           'Property Type' == \"Apartment\") %&gt;%\n  filter('Type of Sale' == \"New Sale\") %&gt;%\n  filter('Unit Price ($ psm)' &lt;= 13000)"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "ISSS608",
     "section": "",
-    "text": "Welcome to ISSS608 Visual Analytic and Applications. In this website, you will find my coursework prepared for the course."
+    "text": "Welcome to ISSS608 Visual Analytic and Applications. In this website, you will find my coursework prepared for the course.\nPlease refer to the Hands-on Exercise 0 completed for the preparation of the course."
   }
 ]
