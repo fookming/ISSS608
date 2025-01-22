@@ -22,18 +22,29 @@ pacman::p_load(tidyverse)
 ## Importing the Data
 
 ```{r}
+#| message: false
+#| results: "hide"
 
 exam_data <- read_csv('data/Exam_data.csv')
 
 ```
 
-
 ## Introduction to ggplot
 
-ggplot is an R package for declaratively creating data-driven graphics based on The Grammar of Graphics. It is also part of the tidyverse family specially designed for visual exploration and communication.
 
-For more detail, visit ggplot2 [link](https://ggplot2.tidyverse.org/).
+<img src="../../images/ggplot2_icon.jpg" alt="ggplot2 logo" style="height:60px; vertical-align:middle;"/> is an R package for declaratively creating data-driven graphics based on The Grammar of Graphics. 
 
+***Grammar of Graphics***
+
+![](../../images/ggplot2_1.png){.framed-image}
+
+It is also part of the tidyverse family specially designed for visual exploration and communication.
+
+
+![](../../images/ggplot2_2.png){.framed-image}
+
+
+- For more detail, visit ggplot2 [link](https://ggplot2.tidyverse.org/).
 
 ### R Graphics VS ggplot
 
@@ -41,6 +52,7 @@ First, let us compare how R Graphics, the core graphical functions of Base R and
 
 ::: panel-tabset
 #### Base R Histogram
+
 ```{r}
 # Base R histogram
 hist(exam_data$MATHS,
@@ -51,6 +63,7 @@ hist(exam_data$MATHS,
 ```
 
 #### ggplot
+
 ```{r}
 # ggplot2 histogram
 ggplot(exam_data, aes(x = MATHS)) +
@@ -60,13 +73,11 @@ ggplot(exam_data, aes(x = MATHS)) +
 ```
 :::
 
-
 As you can see that the code chunk is relatively simple if R Graphics is used. Then, the question is why ggplot2 is recommended?
 
 As pointed out by [Hadley Wickham](http://varianceexplained.org/r/teach_ggplot2_to_beginners/#comment-1745406157)
 
-
-::: {.callout-important}
+::: callout-important
 The transferable skills from ggplot2 are not the idiosyncrasies of plotting syntax, but a powerful way of thinking about visualisation, as a way of mapping between variables and the visual properties of geometric objects that you can perceive.
 :::
 
@@ -83,9 +94,11 @@ This approach helps to understand complex graphics, uncover unexpected connectio
 
 ggplot2 is an implementation of Leland Wilkinson's Grammar of Graphics, as detailed by Hadley Wickham (2010). It comprises seven key building blocks:
 
+```{=html}
 <!--
 ![Reference: Hadley Wickham (2010) “A layered grammar of graphics.” Journal of Computational and Graphical Statistics, vol. 19, no. 1, pp. 3–28.](/images/Layer-grammar-graphic.jpg){width="470"}
 -->
+```
 
 ![Reference: Hadley Wickham (2010) “A layered grammar of graphics.” Journal of Computational and Graphical Statistics, vol. 19, no. 1, pp. 3–28.](/images/Layer-grammar-graphic.jpg){width="470" style="border: 2px solid black; padding: 5px; border-radius: 5px;"}
 
@@ -118,7 +131,7 @@ Geometric objects are the actual marks we put on a plot. Examples include:
 -   geom_polygon for drawing arbitrary shapes
 -   geom_map for drawing polygons in the shape of a map! (You can access the data to use for these maps by using the map_data() function).
 
-![Collection of Geometry Shapes](/images/geom_shapes.png){class="framed-image"}
+![Collection of Geometry Shapes](../../images/geom_shapes.png){.framed-image}
 
 -   A plot must have at least one geom; there is no upper limit. You can add a geom to a plot using the **+** operator.
 -   For complete list, please refer to [here](https://ggplot2.tidyverse.org/reference/#section-layer-geoms).
@@ -139,7 +152,6 @@ ggplot(data=exam_data,
 
 In a dot plot, each dot represents one observation, and the dot's width corresponds to the bin width or maximum width (based on the binning algorithm). The [geom_dotplot()](https://ggplot2.tidyverse.org/reference/geom_dotplot.html) function in ggplot2 is used to create dot plots.
 
-
 ```{r}
 
 ggplot(data=exam_data, 
@@ -148,16 +160,15 @@ ggplot(data=exam_data,
 
 ```
 
-
-::: {.callout-note}
+::: callout-note
 The y scale is not very useful, in fact it is very misleading.
 :::
 
-::: {.callout-warning}
+::: callout-warning
 The code chunk below performs the following two steps:
 
-  - scale_y_continuous() is used to turn off the y-axis, and
-  - binwidth argument is used to change the binwidth to 2.5.
+-   scale_y_continuous() is used to turn off the y-axis, and
+-   binwidth argument is used to change the binwidth to 2.5.
 :::
 
 ```{r}
@@ -171,7 +182,6 @@ ggplot(data=exam_data,
 
 ```
 
-
 ### Geometric Objects: geom_histogram()
 
 In the code chunk below, [geom_histogram()](https://ggplot2.tidyverse.org/reference/geom_histogram.html) is used to create a simple histogram by using values in MATHS field of exam_data.
@@ -184,14 +194,13 @@ ggplot(data=exam_data,
 
 ```
 
-
 ### Modifying a geometric object by changing geom()
 
 In the code chunk below,
 
-  - bins argument is used to change the number of bins to 20,
-  - fill argument is used to shade the histogram with light blue color, and
-  - color argument is used to change the outline colour of the bars in black
+-   bins argument is used to change the number of bins to 20,
+-   fill argument is used to shade the histogram with light blue color, and
+-   color argument is used to change the outline colour of the bars in black
 
 ```{r}
 
@@ -202,7 +211,6 @@ ggplot(data=exam_data,
                  fill="light blue")  
 
 ```
-
 
 ### Modifying a geometric object by changing aes()
 
@@ -218,10 +226,9 @@ ggplot(data=exam_data,
 
 ```
 
-::: {.callout-note}
+::: callout-note
 This approach can be used to colour, fill and alpha of the geometric.
 :::
-
 
 ### Geometric Objects: geom-density()
 
@@ -230,7 +237,6 @@ This approach can be used to colour, fill and alpha of the geometric.
 It is a useful alternative to the histogram for continuous data that comes from an underlying smooth distribution.
 
 The code below plots the distribution of Maths scores in a kernel density estimate plot.
-
 
 ```{r}
 
@@ -251,7 +257,6 @@ ggplot(data=exam_data,
 
 
 ```
-
 
 ### Geometric Objects: geom_boxplot
 
@@ -281,13 +286,11 @@ ggplot(data=exam_data,
 
 ```
 
-
 ### Geometric Objects: geom_violin
 
 [geom_violin](https://ggplot2.tidyverse.org/reference/geom_violin.html) is designed for creating violin plot. Violin plots are a way of comparing multiple data distributions. With ordinary density curves, it is difficult to compare more than just a few distributions because the lines visually interfere with each other. With a violin plot, it’s easier to compare several distributions since they’re placed side by side.
 
 The code below plot the distribution of Maths score by gender in violin plot.
-
 
 ```{r}
 
@@ -297,7 +300,6 @@ ggplot(data=exam_data,
   geom_violin()
 
 ```
-
 
 ### Geometric Objects: geom_point()
 
@@ -311,8 +313,6 @@ ggplot(data=exam_data,
            y=ENGLISH)) +
   geom_point()            
 ```
-
-
 
 ### geom objects can be combined
 
@@ -329,25 +329,22 @@ ggplot(data=exam_data,
 
 ```
 
-
 ## Essential Grammatical Elements in ggplot2: stat
 
 The [Statistics functions](https://ggplot2.tidyverse.org/reference/#stats) statistically transform data, usually as some form of summary. For example:
 
-- frequency of values of a variable (bar graph)
-    - a mean
-    - a confidence limit
-- There are two ways to use these functions:
-    - add a stat_() function and override the default geom, or
-    - add a geom_() function and override the default stat.
+-   frequency of values of a variable (bar graph)
+    -   a mean
+    -   a confidence limit
+-   There are two ways to use these functions:
+    -   add a stat\_() function and override the default geom, or
+    -   add a geom\_() function and override the default stat.
 
 ```{r}
 ggplot(data=exam_data, 
        aes(y = MATHS, x= GENDER)) +
   geom_boxplot()
 ```
-
-
 
 ### Working with stat - the stat_summary() method
 
@@ -365,11 +362,9 @@ ggplot(data=exam_data,
 
 ```
 
-
 ### Working with stat - the geom() method
 
-The code chunk below adding mean values by using geom_() function and overriding the default stat.
-
+The code chunk below adding mean values by using geom\_() function and overriding the default stat.
 
 ```{r}
 
@@ -382,7 +377,6 @@ ggplot(data=exam_data,
              size=4)          
 
 ```
-
 
 ### Adding a best fit curve on a scatterplot?
 
@@ -398,9 +392,7 @@ ggplot(data=exam_data,
 
 ```
 
-
 In the code chunk below, [geom_smooth()](https://ggplot2.tidyverse.org/reference/geom_smooth.html) is used to plot a best fit curve on the scatterplot.
-
 
 ```{r}
 
@@ -411,12 +403,9 @@ ggplot(data=exam_data,
 
 ```
 
-
-
-::: {.callout-note}
-- The default method used is loess.
+::: callout-note
+-   The default method used is loess.
 :::
-
 
 The default smoothing method can be overridden as shown below.
 
@@ -431,11 +420,9 @@ ggplot(data=exam_data,
 
 ```
 
-
 ## Essential Grammatical Elements in ggplot2: Facets
 
 Facetting generates small multiples (sometimes also called trellis plot), each displaying a different subset of the data. They are an alternative to aesthetics for displaying additional discrete variables. ggplot2 supports two types of factes, namely: [facet_grid](https://ggplot2.tidyverse.org/reference/facet_grid.html) and [facet_wrap](https://ggplot2.tidyverse.org/reference/facet_wrap.html).
-
 
 ### 1.9.1 Working with facet_wrap()
 
@@ -452,13 +439,11 @@ ggplot(data=exam_data,
 
 ```
 
-
 ### facet_grid() function
 
 [facet_grid()]() forms a matrix of panels defined by row and column facetting variables. It is most useful when you have two discrete variables, and all combinations of the variables exist in the data.
 
 The code chunk below plots a trellis plot using facet_grid().
-
 
 ```{r}
 
@@ -469,8 +454,6 @@ ggplot(data=exam_data,
 
 ```
 
-
-
 ## Essential Grammatical Elements in ggplot2: Coordinates
 
 The Coordinates functions map the position of objects onto the plane of the plot. There are a number of different possible coordinate systems to use, they are:
@@ -479,8 +462,6 @@ The Coordinates functions map the position of objects onto the plane of the plot
 -   [`coord_flip()`](https://ggplot2.tidyverse.org/reference/coord_flip.html): a cartesian system with the x and y flipped.
 -   [`coord_fixed()`](https://ggplot2.tidyverse.org/reference/coord_fixed.html): a cartesian system with a "fixed" aspect ratio (e.g. 1.78 for a "widescreen" plot).
 -   [`coord_quickmap()`](https://ggplot2.tidyverse.org/reference/coord_map.html): a coordinate system that approximates a good aspect ratio for maps.
-
-
 
 ### Working with Coordinate
 
@@ -494,9 +475,7 @@ ggplot(data=exam_data,
 
 ```
 
-
 The code chunk below flips the horizontal bar chart into vertical bar chart by using coord_flip().
-
 
 ```{r}
 
@@ -507,11 +486,9 @@ ggplot(data=exam_data,
 
 ```
 
-
 ### Changing the y- and x-axis range
 
 The scatterplot on the right is slightly misleading because the y-aixs and x-axis range are not equal.
-
 
 ```{r}
 
@@ -536,21 +513,18 @@ ggplot(data=exam_data,
 
 ```
 
-
 ## Essential Grammatical Elements in ggplot2: themes
-
 
 Themes control elements of the graph not related to the data. For example:
 
-- background colour
-- size of fonts
-- gridlines
-- colour of labels
+-   background colour
+-   size of fonts
+-   gridlines
+-   colour of labels
 
 Built-in themes include: - theme_gray() (default) - theme_bw() - theme_classic()
 
 A list of theme can be found at this [link](https://ggplot2.tidyverse.org/reference/ggtheme.html). Each theme element can be conceived of as either a line (e.g. x-axis), a rectangle (e.g. graph background), or text (e.g. axis title).
-
 
 ### Working with theme
 
@@ -566,7 +540,6 @@ ggplot(data=exam_data,
 
 ```
 
-
 A horizontal bar chart plotted using theme_classic().
 
 ```{r}
@@ -578,7 +551,6 @@ ggplot(data=exam_data,
   theme_classic()
 
 ```
-
 
 A horizontal bar chart plotted using theme_minimal().
 
@@ -592,14 +564,11 @@ ggplot(data=exam_data,
 
 ```
 
-
 ## Reference
 
-
-- Hadley Wickham (2023) ggplot2: [Elegant Graphics for Data Analysis](https://ggplot2-book.org/). Online 3rd edition.
-- Winston Chang (2013) [R Graphics Cookbook 2nd edition](https://r-graphics.org/). Online version.
-- Healy, Kieran (2019) [Data Visualization: A practical introduction](https://socviz.co/). Online version
-- [Learning ggplot2 on Paper – Components](https://henrywang.nl/learning-ggplot2-on-paper-components/)
-- [Learning ggplot2 on Paper – Layer](https://henrywang.nl/learning-ggplot2-on-paper-layer/)
-- [Learning ggplot2 on Paper – Scale](https://henrywang.nl/tag/learning-ggplot2-on-paper/)
-
+-   Hadley Wickham (2023) ggplot2: [Elegant Graphics for Data Analysis](https://ggplot2-book.org/). Online 3rd edition.
+-   Winston Chang (2013) [R Graphics Cookbook 2nd edition](https://r-graphics.org/). Online version.
+-   Healy, Kieran (2019) [Data Visualization: A practical introduction](https://socviz.co/). Online version
+-   [Learning ggplot2 on Paper – Components](https://henrywang.nl/learning-ggplot2-on-paper-components/)
+-   [Learning ggplot2 on Paper – Layer](https://henrywang.nl/learning-ggplot2-on-paper-layer/)
+-   [Learning ggplot2 on Paper – Scale](https://henrywang.nl/tag/learning-ggplot2-on-paper/)

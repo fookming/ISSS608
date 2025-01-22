@@ -10,6 +10,12 @@
   height: auto;           /* Maintain aspect ratio */
 }
 
+.purple-text {
+    color: purple;
+}
+
+
+
 
 
 /*
@@ -23,4 +29,5 @@
 } 
 
 */
+
 
