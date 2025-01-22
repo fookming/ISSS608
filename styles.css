@@ -1,1 +1,26 @@
 /* css styles */
+
+.framed-image {
+  border: 2px solid black; /* Black border */
+  padding: 5px;           /* Space between image and border */
+  border-radius: 5px;     /* Rounded corners */
+  display: block;         /* Ensures proper layout */
+  margin: 10px auto;      /* Centers the image */
+  max-width: 100%;        /* Ensures responsiveness */
+  height: auto;           /* Maintain aspect ratio */
+}
+
+
+
+/*
+.framed-image {
+  border: 2px solid black; /* Black border */
+  padding: 5px;           /* Space between image and border */
+  border-radius: 5px;     /* Rounded corners */
+  width: 470px;           /* Fixed width */
+  display: block;         /* Ensures proper layout */
+  margin: 10px auto;      /* Centers the image */
+} 
+
+*/
+

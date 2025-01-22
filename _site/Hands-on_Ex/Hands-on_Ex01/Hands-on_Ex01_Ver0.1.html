@@ -8,7 +8,7 @@
 
 <meta name="author" content="Ee Fook Ming">
 
-<title>Hands-on Exercise 00: working with tidyverse – ISSS608</title>
+<title>Hands-on Exercise 01 – ISSS608</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -164,13 +164,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#getting-started" id="toc-getting-started" class="nav-link active" data-scroll-target="#getting-started"><span class="header-section-number">1</span> Getting started</a></li>
-  <li><a href="#importing-data" id="toc-importing-data" class="nav-link" data-scroll-target="#importing-data"><span class="header-section-number">2</span> Importing data</a></li>
-  <li><a href="#pivoting-data" id="toc-pivoting-data" class="nav-link" data-scroll-target="#pivoting-data"><span class="header-section-number">3</span> Pivoting Data</a></li>
-  <li><a href="#working-with-dplyr" id="toc-working-with-dplyr" class="nav-link" data-scroll-target="#working-with-dplyr"><span class="header-section-number">4</span> Working with dplyr</a>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link active" data-scroll-target="#getting-started"><span class="header-section-number">1</span> Getting Started</a>
   <ul class="collapse">
-  <li><a href="#working-with-filter-of-dplyr" id="toc-working-with-filter-of-dplyr" class="nav-link" data-scroll-target="#working-with-filter-of-dplyr"><span class="header-section-number">4.1</span> Working with filter() of dplyr</a></li>
-  <li><a href="#putting-it-all-together" id="toc-putting-it-all-together" class="nav-link" data-scroll-target="#putting-it-all-together"><span class="header-section-number">4.2</span> Putting it all together</a></li>
+  <li><a href="#install-and-launching-r-packages." id="toc-install-and-launching-r-packages." class="nav-link" data-scroll-target="#install-and-launching-r-packages."><span class="header-section-number">1.1</span> Install and launching R Packages.</a></li>
+  <li><a href="#importing-the-data" id="toc-importing-the-data" class="nav-link" data-scroll-target="#importing-the-data"><span class="header-section-number">1.2</span> Importing the Data</a></li>
+  <li><a href="#plotting-a-simple-bar-chart" id="toc-plotting-a-simple-bar-chart" class="nav-link" data-scroll-target="#plotting-a-simple-bar-chart"><span class="header-section-number">1.3</span> Plotting a simple bar chart</a>
+  <ul class="collapse">
+  <li><a href="#a-showing-code-chunk-without-plot" id="toc-a-showing-code-chunk-without-plot" class="nav-link" data-scroll-target="#a-showing-code-chunk-without-plot"><span class="header-section-number">1.3.1</span> (a) Showing code chunk without plot</a></li>
+  <li><a href="#b-showing-plot-without-code-chunk" id="toc-b-showing-plot-without-code-chunk" class="nav-link" data-scroll-target="#b-showing-plot-without-code-chunk"><span class="header-section-number">1.3.2</span> (b) Showing plot without code chunk</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -180,7 +182,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Hands-on Exercise 00: working with tidyverse</h1>
+<h1 class="title">Hands-on Exercise 01</h1>
 </div>
 
 
@@ -195,12 +197,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
     
   
-    <div>
-    <div class="quarto-title-meta-heading">Modified</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date-modified">January 18, 2025</p>
-    </div>
-  </div>
     
   </div>
   
@@ -209,92 +205,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="getting-started" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="getting-started"><span class="header-section-number">1</span> Getting started</h2>
-<p>Load tidyverse onto r environment by using the code chunck below.</p>
+<section id="getting-started" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Getting Started</h1>
+<section id="install-and-launching-r-packages." class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="install-and-launching-r-packages."><span class="header-section-number">1.1</span> Install and launching R Packages.</h2>
+<p>The code chunk below uses pacman package to check if tidyverse is installed. If it is installed, it will be launched. Otherwise pacman will install the it automatically.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="importing-data" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="importing-data"><span class="header-section-number">2</span> Importing data</h2>
-<p>Code chunk below uses read_csv() or readr to import REALIS2019.csv into environment as a tibble data.frame</p>
+<section id="importing-the-data" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="importing-the-data"><span class="header-section-number">1.2</span> Importing the Data</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>realis_csv <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/REALIS2019.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>exam_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'data/Exam_data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 322 Columns: 7
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (4): ID, CLASS, GENDER, RACE
+dbl (3): ENGLISH, MATHS, SCIENCE
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>realis2019 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/REALIS2019.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>popdata_fat <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/PopData2019_fat.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="pivoting-data" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="pivoting-data"><span class="header-section-number">3</span> Pivoting Data</h2>
+<section id="plotting-a-simple-bar-chart" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="plotting-a-simple-bar-chart"><span class="header-section-number">1.3</span> Plotting a simple bar chart</h2>
+<section id="a-showing-code-chunk-without-plot" class="level3" data-number="1.3.1">
+<h3 data-number="1.3.1" class="anchored" data-anchor-id="a-showing-code-chunk-without-plot"><span class="header-section-number">1.3.1</span> (a) Showing code chunk without plot</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>popdata_long <span class="ot">&lt;-</span> popdata_fat <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">c</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">21</span>),</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">names_to =</span> <span class="st">"Age Group"</span>,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">values_to =</span> <span class="st">"Population"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(popdata_long,<span class="st">"data/rds/popdata_long.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> exam_data, <span class="fu">aes</span>(<span class="at">x =</span> RACE)) <span class="sc">+</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="working-with-dplyr" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="working-with-dplyr"><span class="header-section-number">4</span> Working with dplyr</h2>
+<section id="b-showing-plot-without-code-chunk" class="level3" data-number="1.3.2">
+<h3 data-number="1.3.2" class="anchored" data-anchor-id="b-showing-plot-without-code-chunk"><span class="header-section-number">1.3.2</span> (b) Showing plot without code chunk</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>realis2019_selected <span class="ot">&lt;-</span> realis2019 <span class="sc">%&gt;%</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">'Project Name'</span>,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Transacted Price ($)'</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Type of Sale'</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Unit Price ($ psm)'</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Property Type'</span>)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>realis2019_selected</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 19,515 × 5
-   `Project Name`     `Transacted Price ($)` `Type of Sale` `Unit Price ($ psm)`
-   &lt;chr&gt;                               &lt;dbl&gt; &lt;chr&gt;                         &lt;dbl&gt;
- 1 PEIRCE VIEW                        840000 Resale                         7434
- 2 FLORIDA PARK                      3040000 Resale                         9737
- 3 BULLION PARK                       860000 Resale                        11467
- 4 CASTLE GREEN                      1000000 Resale                         9346
- 5 HAPPY ESTATE                      7000000 Resale                        10183
- 6 TEACHER'S HOUSING…                2880000 Resale                        12659
- 7 THE PANORAMA                      1510000 Resale                        16064
- 8 THE PANORAMA                       710000 Resale                        16905
- 9 CHIP THYE GARDEN                  2800000 Resale                        13500
-10 TEACHER'S HOUSING…                2300000 Resale                         9935
-# ℹ 19,505 more rows
-# ℹ 1 more variable: `Property Type` &lt;chr&gt;</code></pre>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hands-on_Ex01_Ver0.1_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<section id="working-with-filter-of-dplyr" class="level3" data-number="4.1">
-<h3 data-number="4.1" class="anchored" data-anchor-id="working-with-filter-of-dplyr"><span class="header-section-number">4.1</span> Working with filter() of dplyr</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>realis2019_filtered <span class="ot">&lt;-</span> realis2019_selected <span class="sc">%&gt;%</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">'Property Type'</span> <span class="sc">==</span> <span class="st">"Condominium"</span> <span class="sc">|</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>           <span class="st">'Property Type'</span> <span class="sc">==</span> <span class="st">"Apartment"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">'Type of Sale'</span> <span class="sc">==</span> <span class="st">"New Sale"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">'Unit Price ($ psm)'</span> <span class="sc">&lt;=</span> <span class="dv">13000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="putting-it-all-together" class="level3" data-number="4.2">
-<h3 data-number="4.2" class="anchored" data-anchor-id="putting-it-all-together"><span class="header-section-number">4.2</span> Putting it all together</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>realis2019_end <span class="ot">&lt;-</span> realis2019 <span class="sc">%&gt;%</span> </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">'Project Name'</span>,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Transacted Price ($)'</span>,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Type of Sale'</span>,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Unit Price ($ psm)'</span>,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Property Type'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">'Property Type'</span> <span class="sc">==</span> <span class="st">"Condominium"</span> <span class="sc">|</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>           <span class="st">'Property Type'</span> <span class="sc">==</span> <span class="st">"Apartment"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">'Type of Sale'</span> <span class="sc">==</span> <span class="st">"New Sale"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">'Unit Price ($ psm)'</span> <span class="sc">&lt;=</span> <span class="dv">13000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
+</section>
 </section>
 </section>
 
