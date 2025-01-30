@@ -31,8 +31,7 @@ exam_data <- read_csv('data/Exam_data.csv')
 
 ## Introduction to ggplot
 
-
-<img src="../../images/ggplot2_icon.jpg" alt="ggplot2 logo" style="height:60px; vertical-align:middle;"/> is an R package for declaratively creating data-driven graphics based on The Grammar of Graphics. 
+<img src="../../images/ggplot2_icon.jpg" alt="ggplot2 logo" style="height:60px; vertical-align:middle;"/> is an R package for declaratively creating data-driven graphics based on The Grammar of Graphics.
 
 ***Grammar of Graphics***
 
@@ -40,11 +39,9 @@ exam_data <- read_csv('data/Exam_data.csv')
 
 It is also part of the tidyverse family specially designed for visual exploration and communication.
 
-
 ![](../../images/ggplot2_2.png){.framed-image}
 
-
-- For more detail, visit ggplot2 [link](https://ggplot2.tidyverse.org/).
+-   For more detail, visit ggplot2 [link](https://ggplot2.tidyverse.org/).
 
 ### R Graphics VS ggplot
 

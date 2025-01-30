@@ -1,0 +1,20 @@
+---
+title: "Hands-on Exercise 3"
+author: "Ee Fook Ming"
+format:
+  html:
+    number-sections: false
+---
+
+# Exercise 3 Overview
+
+Lesson 3 is about -Interactivity in Visual Analytics: Principles and Methods. It delves into:
+-   Different types of interaction techniquee
+-   The role of Interaction in visual analytics
+-   The concept of linked multiple views
+-   Interactive analytics best practice.
+
+There are two parts to the Exercise 3:
+
+-   [Part 1: Programming Interactive Data Visualisations with R](Part_01/Hands-on_Ex03-1.qmd)
+-   [Part 2: Animated Statistical Graphics with R](Part_02/Hands-on_Ex03-2.qmd)

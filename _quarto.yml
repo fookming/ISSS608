@@ -1,6 +1,11 @@
 project:
   type: website
 
+execute:
+  warning: false
+  exclude:
+    - Hands-on_Ex/Hands-on_Ex03/Part_02/Hands-on_Ex03-2.qmd
+
 website:
   title: "ISSS608"
   navbar:
@@ -13,11 +18,51 @@ website:
           href: "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html"
         - text: "Hands-on Exercise 2"
           href: "Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex02.html"
+        - text: "Hands-on Exercise 3"
+          href: "Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html"
+#        - text: "Hands-on Exercise 4"
+#          href: "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html"
+    - text: "In-class Exercise"
+      menu:
+        - text: "In-class Exercise 1"
+          href: "https://public.tableau.com/app/profile/fook.ming.ee/viz/In-classEx01_17377902282300/Dashboard1"
+        - text: "In-class Exercise 2"
+          href: "https://public.tableau.com/app/profile/fook.ming.ee/viz/In-classEx02_17377901895230/Dashboard2"
+
+    - text: "Take-home Exercise"
+      menu:
+        - text: "Take-home Exercise 1"
+
+
+#          menu:
+#            - text: "Part 1: Programming Interactive Data Visualisation with R"
+#              href: "Hands-on_Ex/Hands-on_Ex03/Part_1/Part1.html"
+#            - text: "Part 2: Programming Animated Statistical Graphics with R"
+#              href: "Hands-on_Ex/Hands-on_Ex03/Part_2/Part2.html"
+
     right:
       - href: index.qmd
         text: Home
       - about.qmd
+      
 
+# Define the sidebar:
+#  sidebar:
+#    style: "floating"    # "floating" or "classic"
+#    search: true         # Adds a search box in the sidebar
+#    contents:
+#      - "index.qmd"
+#      - "about.qmd"
+#      - section: "Guides"
+#        contents:
+#          - "guide1.qmd"
+#          - "guide2.qmd"
+#      - section: "References"
+#        contents:
+#          - "reference1.qmd"
+#          - "reference2.qmd"
+# End of sidebar
+      
 format:
   html:
     theme: 

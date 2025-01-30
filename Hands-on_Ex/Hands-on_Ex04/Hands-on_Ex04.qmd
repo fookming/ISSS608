@@ -1,0 +1,31 @@
+---
+title: "Hands-on Exercise 4"
+author: "Ee Fook Ming"
+format:
+  html:
+    number-sections: false
+---
+
+# Exercise 4 Overview
+
+Lesson 4 is about - Fundamentals of Visual Analytics. It covers:
+- Visual Analytics for Knowledge Discovery 
+- Visual Analytics Approach for Statistical Testing 
+- Visual Analytics for Building Better Models 
+- Visualising Uncertainty 
+  - Why Visualising Uncertainty? 
+  - Basic Statistical Concepts Related to Uncertainty 
+  - Univariate Graphical Methods for Visualising Uncertainty 
+    - Error bars 
+    - Confidence strips 
+    - Ridge plot 
+  - Bivariate Graphical Methods for Visualising Uncertainty 
+    - Funnel plot 
+- Variation and Its Discontents
+
+There are four parts to the Exercise 4:
+
+-   [Part 1: Visualising Distribution](Part_01/Hands-on_Ex04-1.qmd)
+-   [Part 2: Visual Statistical Analysis](Part_02/Hands-on_Ex04-2.qmd)
+-   [Part 3: Visualising Uncertainty](Part_03/Hands-on_Ex04-3.qmd)
+-   [Part 4: Building Funnel Plot with R](Part_04/Hands-on_Ex04-4.qmd)
