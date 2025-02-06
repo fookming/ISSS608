@@ -15,7 +15,13 @@ output:
 
 ## Learning Outcome
 
-In this hands-on exercise, you will gain hands-on experience on using: - ggstatsplot package to create visual graphics with rich statistical information, - performance package to visualise model diagnostics, and - parameters package to visualise model parameters
+In this hands-on exercise, you will gain hands-on experience on using:
+
+-   ggstatsplot package to create visual graphics with rich statistical information,
+
+-   performance package to visualise model diagnostics, and
+
+-   parameters package to visualise model parameters
 
 ## Visual Statistical Analysis with ggstatsplot
 
@@ -225,83 +231,11 @@ check_collinearity(model)
 
 ```
 
-```{r}
-
-pacman::p_load(datawizard)
-
-```
-
-```{r}
-
-if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
-pacman::p_load(datawizard)
-
-```
 
 ```{r}
 
 check_c <- check_collinearity(model)
-#colnames(check_c)
-#print(check_c)
-
-#str(check_c)
-#class(check_c)
-
-
-#print("------------------")
-
-# Rename column "Term" to "Component" for compatibility
-# check_c$Component <- check_c$Term
-# str(check_c)
-
-
-# Convert `check_c` to a data frame (extracting it if necessary)
-#check_c_df <- as.data.frame(check_c)
-
-# Rename "Term" to "Component"
-#check_c_df <- check_c_df %>% rename(Component = Term)
-
-#check_c$data <- check_c_df
-
-#colnames(check_c)
-
-
-print(check_c)
-# plot(check_c)
-
-```
-
-```{r}
-
-#| warning: false
-#| message: false
-
-library(ggplot2)
-
-check_df <- as.data.frame(check_c)
-
-ggplot(check_df, aes(x = reorder(Term, VIF), y = VIF)) +
-  geom_col(aes(fill = ifelse(VIF >= 10, "High", ifelse(VIF >= 5, "Moderate", "Low"))), 
-           width = 0.7) +
-  geom_hline(yintercept = c(5, 10), color = "red", linetype = "dashed", linewidth = 0.7) +
-  scale_y_log10() +  # Log-scale for VIF
-  scale_fill_manual(
-    name = "Collinearity",
-    values = c("High" = "#e41a1c", "Moderate" = "#ff7f00", "Low" = "#377eb8"),
-    labels = c("High (≥10)", "Moderate (≥5)", "Low (<5)")
-  ) +
-  labs(
-    title = "Collinearity",
-    subtitle = "High collinearity (VIF) may inflate parameter uncertainty",
-    x = "Term",
-    y = "Variance Inflation Factor (VIF, log-scaled)"
-  ) +
-  theme_minimal(base_size = 12) +
-  theme(
-    legend.position = "top",
-    axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels
-  )
-
+plot(check_c)
 
 ```
 
@@ -339,37 +273,27 @@ plot(check_h)
 We can also perform the complete by using [*check_model()*](https://easystats.github.io/performance/reference/check_model.html).
 
 ```{r}
+#| fig-width: 12 #experiment with different value if necessary
+#| fig-height: 8 #experiment with different value if necessary
 
-check_model(model1,
-  panel = TRUE,
-  ncol = 2,
-  spacing = 100,
-  size_dot = 0.8,
-  size_line = 0.8,
-  size_title = 8,
-  base_size = 8,
-  size_axis_title = 4,
-  alpha = 1,
-  alpha_dot = 1,
-  verbose = TRUE)
+check_model(model1)
 
+```
 
-#p <- check_model(model1) +
-#  theme(plot.title = element_text(hjust = 0.5))  # Center title
+### Visualising Regression Parameters: see methods
 
+In the code below, plot() of see package and parameters() of parameters package is used to visualise the parameters of a regression model.
 
-# Generate the check_model plot and apply custom theme
-# p <- check_model(model1)
+```{r}
+plot(parameters(model1))
 
-# Adjust text size for axis labels
-# p + theme(
-#  axis.text.x = element_text(size = 2),  # Reduce x-axis label size
-#  axis.text.y = element_text(size = 2),  # Reduce y-axis label size
-#  axis.title.x = element_text(size = 8), # Reduce x-axis title size
-#  axis.title.y = element_text(size = 8)  # Reduce y-axis title size
-#)
+```
 
+### Visualising Regression Parameters: ggcoefstats() methods
 
+In the code below, [*ggcoefstats()*](https://indrajeetpatil.github.io/ggstatsplot/reference/ggcoefstats.html) of ggstatsplot package to visualise the parameters of a regression model.
 
-
+```{r}
+ggcoefstats(model1, 
+            output = "plot")
 ```

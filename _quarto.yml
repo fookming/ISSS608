@@ -20,14 +20,17 @@ website:
           href: "Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex02.html"
         - text: "Hands-on Exercise 3"
           href: "Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html"
-#        - text: "Hands-on Exercise 4"
-#          href: "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html"
+        - text: "Hands-on Exercise 4"
+          href: "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html"
     - text: "In-class Exercise"
       menu:
         - text: "In-class Exercise 1"
           href: "https://public.tableau.com/app/profile/fook.ming.ee/viz/In-classEx01_17377902282300/Dashboard1"
         - text: "In-class Exercise 2"
           href: "https://public.tableau.com/app/profile/fook.ming.ee/viz/In-classEx02_17377901895230/Dashboard2"
+        - text: "In-class Exercise 3"
+          href: https://public.tableau.com/app/profile/fook.ming.ee/viz/In-classEx03-MyFirstStory/Story1
+          
 
     - text: "Take-home Exercise"
       menu:
