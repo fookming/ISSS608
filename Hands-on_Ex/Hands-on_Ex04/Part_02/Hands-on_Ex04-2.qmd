@@ -1,6 +1,8 @@
 ---
 title: "Hands-on Exercise 4 - Part 2"
 author: "Ee Fook Ming"
+date: "February 2, 2025"
+date-modified: last-modified
 format: 
   html:
     number-sections: true

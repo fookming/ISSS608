@@ -2,7 +2,7 @@
 title: "Hands-on Exercise Part 4"
 author: "Ee Fook Ming"
 date: "February 2, 2025"
-date-modified: "last-modified"
+date-modified: last-modified
 execute:
   echo: true
   eval: true
