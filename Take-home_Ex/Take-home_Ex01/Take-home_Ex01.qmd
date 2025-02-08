@@ -1,0 +1,21 @@
+---
+title: "Take Home Exercise 01"
+author: "Ee Fook Ming"
+date: "February 8, 2025"
+date-modified: last-modified
+execute:
+  echo: true
+  eval: true
+  warning: false
+  freeze: true
+format: 
+  html:
+    number-sections: true
+#    number-offset: [12, 0]  # Offset heading levels by starting at 13
+output: 
+  html_document: 
+    toc: true
+    tabset: true
+---
+
+Work in progress..

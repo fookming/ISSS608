@@ -140,10 +140,7 @@ Things to learn from the code chunk above.
 
 ## Funnel Plot for Fair Visual Comparison: ggplot2 methods
 
-In this section, you will gain hands-on experience on building funnel
-plots step-by-step by using ggplot2. It aims to enhance you working
-experience of ggplot2 to customise speciallised data visualisation like
-funnel plot.
+In this section, you will gain hands-on experience on building funnel plots step-by-step by using ggplot2. It aims to enhance you working experience of ggplot2 to customise speciallised data visualisation like funnel plot.
 
 ### Computing the basic derived fields
 
