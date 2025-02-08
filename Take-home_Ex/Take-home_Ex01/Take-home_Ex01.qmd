@@ -11,6 +11,7 @@ execute:
 format: 
   html:
     number-sections: true
+    number-depth: 3
 #    number-offset: [12, 0]  # Offset heading levels by starting at 13
 output: 
   html_document: 
@@ -18,4 +19,59 @@ output:
     tabset: true
 ---
 
-Work in progress..
+
+<span style="font-size: 44px; font-weight: bold;">Overview and Background: Ship Performance in the Gulf of Guinea</span>
+
+
+# Introduction
+
+The maritime industry is a cornerstone of global trade, ensuring the smooth transportation of goods across continents. The efficient performance of ships is crucial to optimizing fuel consumption, minimizing operational costs, and maximizing revenue. This assignment explores ship performance trends using the Ship Performance Clustering Dataset, focusing on ships operating in the Gulf of Guinea—a vital maritime region known for its economic and strategic importance.
+
+By analyzing ship performance metrics such as speed, efficiency, operational cost, and revenue, we aim to uncover insights that can enhance operational decision-making. This study employs data visualization techniques to identify key patterns, trends, and potential optimizations in ship performance.
+
+# Background and Content
+
+## Maritime Significance of the Gulf of Guinea
+
+The Gulf of Guinea serves as a major maritime trade route, connecting West Africa to global markets. The region hosts various types of commercial ships, including tankers, container ships, and bulk carriers, each operating under different economic and environmental conditions. Given the challenges posed by fuel costs, maintenance, and weather conditions, shipowners and operators constantly seek ways to improve efficiency while reducing operational expenses.
+
+## Data Overview
+
+The dataset used in this study is a synthetic but realistic representation of maritime operations. The key attributes include:
+
+- Speed Over Ground (knots)
+- Distance Traveled (nautical miles)
+- Engine Power (kW)
+- Operational Cost (USD)
+- Revenue per Voyage (USD)
+- Efficiency (nautical miles per kilowatt-hour)
+- Ship Type, Route Type, Engine Type, and Maintenance Status
+
+This dataset provides a rich foundation for exploratory data analysis (EDA), clustering analysis, and performance optimization.
+
+### Understanding the Dataset
+
+This dataset consists of 2736 rows and 24 columns, categorized into numerical and categorical features. Key attributes include:
+Numerical Features:
+
+- Speed_Over_Ground_knots – Ship speed over water (knots)
+- Engine_Power_kW – Engine power output (kilowatts)
+- Distance_Traveled_nm – Distance traveled per voyage (nautical miles)
+- Operational_Cost_USD – Cost per voyage (USD)
+- Revenue_per_Voyage_USD – Revenue per voyage (USD)
+- Efficiency_nm_per_kWh – Energy efficiency (nautical miles per kilowatt-hour)
+
+Categorical Features:
+
+- Ship_Type (e.g., Tanker, Container Ship, Bulk Carrier)
+- Route_Type (e.g., Short-haul, Long-haul, Transoceanic)
+- Engine_Type (e.g., Diesel, Heavy Fuel Oil)
+- Maintenance_Status (e.g., Fair, Critical, Good)
+- Weather_Condition (e.g., Calm, Moderate, Rough)
+
+
+
+
+
+
+

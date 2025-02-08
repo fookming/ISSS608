@@ -176,8 +176,22 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#background-and-content" id="toc-background-and-content" class="nav-link" data-scroll-target="#background-and-content"><span class="header-section-number">2</span> Background and Content</a>
+  <ul class="collapse">
+  <li><a href="#maritime-significance-of-the-gulf-of-guinea" id="toc-maritime-significance-of-the-gulf-of-guinea" class="nav-link" data-scroll-target="#maritime-significance-of-the-gulf-of-guinea"><span class="header-section-number">2.1</span> Maritime Significance of the Gulf of Guinea</a></li>
+  <li><a href="#data-overview" id="toc-data-overview" class="nav-link" data-scroll-target="#data-overview"><span class="header-section-number">2.2</span> Data Overview</a>
+  <ul class="collapse">
+  <li><a href="#understanding-the-dataset" id="toc-understanding-the-dataset" class="nav-link" data-scroll-target="#understanding-the-dataset"><span class="header-section-number">2.2.1</span> Understanding the Dataset</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -208,7 +222,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">February 8, 2025</p>
+      <p class="date-modified">February 9, 2025</p>
     </div>
   </div>
     
@@ -219,9 +233,55 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Work in progress..</p>
+<p><span style="font-size: 44px; font-weight: bold;">Overview and Background: Ship Performance in the Gulf of Guinea</span></p>
+<section id="introduction" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
+<p>The maritime industry is a cornerstone of global trade, ensuring the smooth transportation of goods across continents. The efficient performance of ships is crucial to optimizing fuel consumption, minimizing operational costs, and maximizing revenue. This assignment explores ship performance trends using the Ship Performance Clustering Dataset, focusing on ships operating in the Gulf of Guinea—a vital maritime region known for its economic and strategic importance.</p>
+<p>By analyzing ship performance metrics such as speed, efficiency, operational cost, and revenue, we aim to uncover insights that can enhance operational decision-making. This study employs data visualization techniques to identify key patterns, trends, and potential optimizations in ship performance.</p>
+</section>
+<section id="background-and-content" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Background and Content</h1>
+<section id="maritime-significance-of-the-gulf-of-guinea" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="maritime-significance-of-the-gulf-of-guinea"><span class="header-section-number">2.1</span> Maritime Significance of the Gulf of Guinea</h2>
+<p>The Gulf of Guinea serves as a major maritime trade route, connecting West Africa to global markets. The region hosts various types of commercial ships, including tankers, container ships, and bulk carriers, each operating under different economic and environmental conditions. Given the challenges posed by fuel costs, maintenance, and weather conditions, shipowners and operators constantly seek ways to improve efficiency while reducing operational expenses.</p>
+</section>
+<section id="data-overview" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="data-overview"><span class="header-section-number">2.2</span> Data Overview</h2>
+<p>The dataset used in this study is a synthetic but realistic representation of maritime operations. The key attributes include:</p>
+<ul>
+<li>Speed Over Ground (knots)</li>
+<li>Distance Traveled (nautical miles)</li>
+<li>Engine Power (kW)</li>
+<li>Operational Cost (USD)</li>
+<li>Revenue per Voyage (USD)</li>
+<li>Efficiency (nautical miles per kilowatt-hour)</li>
+<li>Ship Type, Route Type, Engine Type, and Maintenance Status</li>
+</ul>
+<p>This dataset provides a rich foundation for exploratory data analysis (EDA), clustering analysis, and performance optimization.</p>
+<section id="understanding-the-dataset" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="understanding-the-dataset"><span class="header-section-number">2.2.1</span> Understanding the Dataset</h3>
+<p>This dataset consists of 2736 rows and 24 columns, categorized into numerical and categorical features. Key attributes include: Numerical Features:</p>
+<ul>
+<li>Speed_Over_Ground_knots – Ship speed over water (knots)</li>
+<li>Engine_Power_kW – Engine power output (kilowatts)</li>
+<li>Distance_Traveled_nm – Distance traveled per voyage (nautical miles)</li>
+<li>Operational_Cost_USD – Cost per voyage (USD)</li>
+<li>Revenue_per_Voyage_USD – Revenue per voyage (USD)</li>
+<li>Efficiency_nm_per_kWh – Energy efficiency (nautical miles per kilowatt-hour)</li>
+</ul>
+<p>Categorical Features:</p>
+<ul>
+<li>Ship_Type (e.g., Tanker, Container Ship, Bulk Carrier)</li>
+<li>Route_Type (e.g., Short-haul, Long-haul, Transoceanic)</li>
+<li>Engine_Type (e.g., Diesel, Heavy Fuel Oil)</li>
+<li>Maintenance_Status (e.g., Fair, Critical, Good)</li>
+<li>Weather_Condition (e.g., Calm, Moderate, Rough)</li>
+</ul>
 
 
+</section>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
