@@ -1,5 +1,5 @@
 ---
-title: "Take Home Exercise 01"
+title: "Take Home Exercise 01 (Work in Progress...)"
 author: "Ee Fook Ming"
 date: "February 8, 2025"
 date-modified: last-modified
@@ -19,15 +19,15 @@ output:
     tabset: true
 ---
 
-
-<span style="font-size: 44px; font-weight: bold;">Overview and Background: Ship Performance in the Gulf of Guinea</span>
-
+[Overview and Background: Ship Performance in the Gulf of Guinea (Work in Progress...)]{style="font-size: 44px; font-weight: bold;"}
 
 # Introduction
 
 The maritime industry is a cornerstone of global trade, ensuring the smooth transportation of goods across continents. The efficient performance of ships is crucial to optimizing fuel consumption, minimizing operational costs, and maximizing revenue. This assignment explores ship performance trends using the Ship Performance Clustering Dataset, focusing on ships operating in the Gulf of Guinea—a vital maritime region known for its economic and strategic importance.
 
 By analyzing ship performance metrics such as speed, efficiency, operational cost, and revenue, we aim to uncover insights that can enhance operational decision-making. This study employs data visualization techniques to identify key patterns, trends, and potential optimizations in ship performance.
+
+![](images/clipboard-4268411684.png)
 
 # Background and Content
 
@@ -39,39 +39,402 @@ The Gulf of Guinea serves as a major maritime trade route, connecting West Afric
 
 The dataset used in this study is a synthetic but realistic representation of maritime operations. The key attributes include:
 
-- Speed Over Ground (knots)
-- Distance Traveled (nautical miles)
-- Engine Power (kW)
-- Operational Cost (USD)
-- Revenue per Voyage (USD)
-- Efficiency (nautical miles per kilowatt-hour)
-- Ship Type, Route Type, Engine Type, and Maintenance Status
+-   Speed Over Ground (knots)
+-   Distance Traveled (nautical miles)
+-   Engine Power (kW)
+-   Operational Cost (USD)
+-   Revenue per Voyage (USD)
+-   Efficiency (nautical miles per kilowatt-hour)
+-   Ship Type, Route Type, Engine Type, and Maintenance Status
 
 This dataset provides a rich foundation for exploratory data analysis (EDA), clustering analysis, and performance optimization.
 
 ### Understanding the Dataset
 
-This dataset consists of 2736 rows and 24 columns, categorized into numerical and categorical features. Key attributes include:
-Numerical Features:
+This dataset consists of 2736 rows and 24 columns, categorized into numerical and categorical features. Key attributes include: Numerical Features:
 
-- Speed_Over_Ground_knots – Ship speed over water (knots)
-- Engine_Power_kW – Engine power output (kilowatts)
-- Distance_Traveled_nm – Distance traveled per voyage (nautical miles)
-- Operational_Cost_USD – Cost per voyage (USD)
-- Revenue_per_Voyage_USD – Revenue per voyage (USD)
-- Efficiency_nm_per_kWh – Energy efficiency (nautical miles per kilowatt-hour)
+-   Speed_Over_Ground_knots – Ship speed over water (knots)
+-   Engine_Power_kW – Engine power output (kilowatts)
+-   Distance_Traveled_nm – Distance traveled per voyage (nautical miles)
+-   Operational_Cost_USD – Cost per voyage (USD)
+-   Revenue_per_Voyage_USD – Revenue per voyage (USD)
+-   Efficiency_nm_per_kWh – Energy efficiency (nautical miles per kilowatt-hour)
 
 Categorical Features:
 
-- Ship_Type (e.g., Tanker, Container Ship, Bulk Carrier)
-- Route_Type (e.g., Short-haul, Long-haul, Transoceanic)
-- Engine_Type (e.g., Diesel, Heavy Fuel Oil)
-- Maintenance_Status (e.g., Fair, Critical, Good)
-- Weather_Condition (e.g., Calm, Moderate, Rough)
+-   Ship_Type (e.g., Tanker, Container Ship, Bulk Carrier)
+-   Route_Type (e.g., Short-haul, Long-haul, Transoceanic)
+-   Engine_Type (e.g., Diesel, Heavy Fuel Oil)
+-   Maintenance_Status (e.g., Fair, Critical, Good)
+-   Weather_Condition (e.g., Calm, Moderate, Rough)
+
+# Load & Explore the Dataset
+
+-   Loading the required libraries
+-   Loading the dataset into R.
+-   Checking the structure (columns, data types).
+-   Identifying missing values and duplicates.
+
+## Loading Libraries
+
+## Essential R Packages for Data Science and Visualization
+
+This document provides an overview of essential R packages commonly used for data science, data visualization, and dynamic reporting.
+
+### Core Data Science Libraries
+
+-   [**tidyverse**](https://www.tidyverse.org/): A collection of integrated packages designed for modern data science workflows, including data import, tidying, transformation, visualization, and modeling.
+-   [**haven**](https://haven.tidyverse.org/): Enables R to read and write data stored in SAS, SPSS, and Stata formats, ensuring seamless interoperability with statistical software.
+-   [**knitr**](https://yihui.org/knitr/): Facilitates dynamic report generation, allowing users to embed R code in markdown and generate high-quality documents.
+
+### Visualization Enhancements for ggplot2
+
+-   [**patchwork**](https://patchwork.data-imaginist.com/): Simplifies the arrangement of multiple ggplot2-based visualizations into composite figures for improved storytelling.
+-   [**ggthemes**](https://jrnold.github.io/ggthemes/): Provides additional themes, scales, and geoms to enhance the appearance of ggplot2 visualizations.
+-   [**scales**](https://scales.r-lib.org/): Supports improved data labeling, annotation, and scale transformations for ggplot2.
+-   [**ggridges**](https://wilkelab.org/ggridges/): Enables the creation of ridgeline plots, useful for visualizing distribution changes over time or across categories.
+-   [**ggpubr**](https://rpkgs.datanovia.com/ggpubr/): Provides functions for creating publication-ready plots with minimal effort.
+-   [**gganimate**](https://gganimate.com/): Extends ggplot2 to include animation, making it possible to visualize dynamic data over time.
+-   [**ggdist**](https://mjskay.github.io/ggdist/): Offers enhanced tools for visualizing statistical distributions and uncertainties in data.
+-   [**ggtext**](https://wilkelab.org/ggtext/): Enhances text rendering and formatting in ggplot2 visualizations.
+-   [**ggalt**](https://github.com/hrbrmstr/ggalt): A collection of additional geoms, coordinates, and statistics that extend ggplot2 capabilities.
+-   [**ggextra**](https://cran.r-project.org/package=ggExtra): Adds marginal plots and supplementary visual elements to ggplot2 graphics.
+-   [**cowplot**](https://wilkelab.org/cowplot/): Provides tools for creating publication-quality figures, including alignment functions and themes for consistent presentation.
+-   [**ggnewscale**](https://github.com/eliocamp/ggnewscale): Allows the definition of multiple independent scales within a single ggplot2 visualization, useful for complex multivariate plots.
+
+Loading the libraries using pacman package.
+
+```{r}
+
+# Load necessary libraries
+pacman::p_load(tidyverse, 
+               ggplot2, 
+               skimr,  # For data summary 
+               janitor, # For cleaning column names
+               knitr)
+```
+
+## Load & Inspect Data
+
+```{r}
+
+ship_data <- read.csv("data/Ship_Performance_Dataset.csv")
+
+
+```
+
+```{r}
+# Load dataset
+ship_data <- read.csv("data/Ship_Performance_Dataset.csv")
+
+# Clean column names
+ship_data <- clean_names(ship_data)
+
+# Check structure
+glimpse(ship_data)
+
+# Summary statistics
+skim(ship_data)
+
+# Check for missing values
+colSums(is.na(ship_data))
+
+# Check for duplicates
+sum(duplicated(ship_data))
+
+```
 
 
 
 
+### Examine Unique Values in Categorical Variables
+
+- Automatically selects categorical variables (columns that are either character or factor types).
+- Prints out the column name in a formatted header.
+- Lists all unique values within each categorical column.
+
+
+```{r}
+# Function to print unique values of categorical variables
+
+print_categorical_values <- function(data) {
+  cat("### Categorical Variables and Their Unique Values\n\n")
+  
+  
+  # Identify columns with date-like values (YYYY-MM-DD format) and date class
+  date_columns <- names(data)[sapply(data, function(col) {
+    is_date <- inherits(col, "Date") || inherits(col, "POSIXt")  # Check if it's a date class
+    is_formatted_date <- all(grepl("^\\d{4}-\\d{2}-\\d{2}$", na.omit(as.character(col))))  # Check string format
+    return(is_date | is_formatted_date)
+  })]
+
+  
+  # Select categorical columns, excluding detected date columns
+  categorical_vars <- data %>%
+    select(where(~ is.character(.) | is.factor(.))) %>%
+    select(-any_of(date_columns))  # Remove detected date columns
+  
+  if (ncol(categorical_vars) == 0) {
+    cat("No categorical variables found in the dataset.\n")
+    return()
+  }
+  
+  for (col in colnames(categorical_vars)) {
+    unique_values <- unique(categorical_vars[[col]])
+    
+    # Remove "None" if it appears as a category
+    unique_values <- unique_values[unique_values != "None"]
+    
+    cat("####", col, "\n")
+    cat("Unique values:", paste(unique_values, collapse = ", "), "\n\n")
+  }
+}
+
+# Run the function
+print_categorical_values(ship_data)
+
+```
+
+### Count Rows with None
+
+The code chunk counts the number of rows in your dataset based on how many "None" values they contain. It categorizes rows into:
+
+- 1x "None"
+- 2x "None"
+- 3x "None"
+- More than 3x "None"
+
+
+```{r}
+
+
+# Function to count and display rows based on the number of "None" occurrences
+count_none_rows <- function(data) {
+  # Count the number of "None" values in each row
+  none_counts <- rowSums(data == "None", na.rm = TRUE)
+  
+  # Count how many rows fall into each category
+  none_summary <- data.frame(
+    "Category" = c("1x None", "2x None", "3x None", ">3x None"),
+    "Count" = c(
+      sum(none_counts == 1),
+      sum(none_counts == 2),
+      sum(none_counts == 3),
+      sum(none_counts > 3)
+    )
+  )
+  
+  # Display summary
+  print(none_summary)
+  
+  # Display sample rows for each category
+  for (i in 1:4) {
+    cat("\n### Sample Rows for", none_summary$Category[i], "\n")
+    sample_rows <- data[none_counts == i, ]
+    if (nrow(sample_rows) > 0) {
+      print(head(sample_rows, 5))  # Show only first 5 rows for clarity
+    } else {
+      cat("No rows found in this category.\n")
+    }
+  }
+  
+}
+
+# Run the function
+count_none_rows(ship_data)
+
+```
+
+
+### Count Categorical Columns with None
+
+- Function to count "None" values in specified categorical columns
+  - ship_type
+  - route_type
+  - engine_type
+  - maintenance_status
+  - weather_condition
+
+```{r}
+
+count_none_per_column <- function(data, columns) {
+  # Filter dataset to only selected columns
+  data_selected <- data %>% select(all_of(columns))
+  
+  # Count occurrences of "None" in each column
+  none_counts <- colSums(data_selected == "None", na.rm = TRUE)
+  
+  # Convert to data frame for display
+  df_summary <- data.frame(Column = names(none_counts), Count_None = none_counts)
+  
+  # Display results
+  print(df_summary)
+}
+
+
+# Define the categorical columns to analyze
+categorical_columns <- c("ship_type", "route_type", "engine_type", "maintenance_status", "weather_condition")
+
+# Run the function
+count_none_per_column(ship_data, categorical_columns)
+```
 
 
 
+
+## Data Cleaning & Wrangling
+
+- Data Cleaning: Identifying and handling missing, duplicate, or inconsistent data.
+- Data Transformation: Converting data types (categorical columns into factors), normalizing values, and reformatting structures to improve usability.
+- Data Reduction: Filtering, aggregating, or summarizing data to focus on relevant information.
+- Data Validation: Ensuring data quality, accuracy, and consistency.
+- Data Integration: Combining data from multiple sources for a comprehensive dataset; where necessary and if required.
+- Feature Engineering: Create additional fields if needed.
+
+
+
+```{r}
+# Convert categorical variables to factors
+categorical_vars <- c("ship_type", "route_type", "engine_type", "maintenance_status", "weather_condition")
+ship_data[categorical_vars] <- lapply(ship_data[categorical_vars], as.factor)
+
+
+# Identify Missing Values
+missing_summary <- ship_data %>%
+  summarise(across(everything(), ~sum(is.na(.)), .names = "missing_{.col}"))
+
+# Display Missing Value Summary
+print("Missing Values Summary:")
+print(missing_summary)
+
+# Handling missing values
+ship_data <- ship_data %>%
+  mutate(across(where(is.numeric), ~replace_na(., median(., na.rm = TRUE)))) %>%
+  mutate(across(where(is.factor), ~replace_na(., as.factor("Missing"))))  # Fix for categorical missing values
+
+# Verify changes
+glimpse(ship_data)
+
+
+
+```
+
+## Exploratory Data Analysis (EDA)
+
+Visualizing Key Metrics
+
+### Ship Speed Distribution
+
+```{r}
+ggplot(ship_data, aes(x = speed_over_ground_knots)) +
+  geom_histogram(fill = "blue", bins = 30, alpha = 0.7) +
+  geom_density(alpha = 0.5, fill = "lightblue") +
+  theme_minimal() +
+  labs(title = "Distribution of Ship Speed",
+       x = "Speed Over Ground (Knots)",
+       y = "Frequency")
+
+```
+
+### Correlation: Fuel Efficiency vs. Speed
+
+```{r}
+colnames(ship_data)
+
+```
+
+```{r}
+ggplot(ship_data, aes(x = speed_over_ground_knots, y = efficiency_nm_per_k_wh, color = ship_type)) +
+  geom_point(alpha = 0.7) +
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  theme_minimal() +
+  labs(title = "Fuel Efficiency vs. Ship Speed",
+       x = "Speed (Knots)",
+       y = "Efficiency (nm per kWh)")
+
+```
+
+### Operational Cost vs. Revenue per Voyage by Ship Type
+
+```{r}
+
+ggplot(ship_data, aes(x = operational_cost_usd, y = revenue_per_voyage_usd, color = ship_type)) +
+  geom_point(alpha = 0.7) +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme_minimal() +
+  labs(title = "Operational Cost vs. Revenue per Voyage",
+       x = "Operational Cost (USD)",
+       y = "Revenue per Voyage (USD)")
+
+```
+
+### Use geom_boxplot() for Distribution Insight
+
+```{r}
+ggplot(ship_data, aes(x = ship_type, y = revenue_per_voyage_usd, fill = ship_type)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title = "Revenue Distribution by Ship Type",
+       x = "Ship Type",
+       y = "Revenue per Voyage (USD)")
+
+```
+
+```{r}
+ggplot(ship_data, aes(x = ship_type, y = revenue_per_voyage_usd, fill = ship_type)) +
+  geom_boxplot() +
+  facet_wrap(~ route_type, scales = "free") +  # Split by route type
+  theme_minimal() +
+  labs(title = "Revenue Distribution by Ship Type and Route Type",
+       x = "Ship Type",
+       y = "Revenue per Voyage (USD)") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for readability
+
+```
+
+```{r}
+#| fig-height: 8
+#| fig-width: 16
+
+
+ggplot(ship_data, aes(x = ship_type, y = revenue_per_voyage_usd / 1e6, fill = ship_type)) +
+  geom_boxplot() +
+  facet_grid(route_type ~ engine_type, scales = "free") +  # Split by Route & Engine Type
+  theme_minimal() +
+  labs(title = "Revenue Distribution by Ship Type, Route Type, and Engine Type",
+       x = "Ship Type",
+       y = "Revenue per Voyage (Million USD)") +  # Updated y-axis label
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for readability
+
+
+```
+
+```{r}
+#| fig-height: 16
+#| fig-width: 24
+
+
+ggplot(ship_data, aes(x = ship_type, y = revenue_per_voyage_usd / 1e6, fill = weather_condition)) +
+  geom_boxplot() +
+  facet_grid(route_type ~ engine_type, scales = "free") +  # Facet by Route Type (rows) & Engine Type (columns)
+  theme_minimal() +
+  labs(title = "Revenue Distribution by Ship Type, Route Type, Engine Type, and Weather Condition",
+       x = "Ship Type",
+       y = "Revenue per Voyage (Million USD)",
+       fill = "Weather Condition") +  # Updated legend title
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for readability
+
+
+```
+
+### Use geom_smooth() with Aggregation (LOESS or GAM Smoothing)
+
+```{r}
+ggplot(ship_data, aes(x = operational_cost_usd, y = revenue_per_voyage_usd, color = ship_type)) +
+  geom_smooth(method = "loess", se = FALSE, size = 1.2) +  # LOESS smooth to capture trends
+  theme_minimal() +
+  labs(title = "Smoothed Revenue Trends by Operational Cost",
+       x = "Operational Cost (USD)",
+       y = "Revenue per Voyage (USD)")
+
+```

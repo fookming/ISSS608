@@ -153,6 +153,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../../../Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html">
  <span class="dropdown-text">Hands-on Exercise 5</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../../Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex06.html">
+ <span class="dropdown-text">Hands-on Exercise 6</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex07.html">
+ <span class="dropdown-text">Hands-on Exercise 7</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -281,7 +289,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">February 8, 2025</p>
+      <p class="date-modified">February 14, 2025</p>
     </div>
   </div>
     
@@ -621,7 +629,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="6.7.5" class="anchored" data-anchor-id="combining-corrgram-with-the-significant-test"><span class="header-section-number">6.7.5</span> Combining corrgram with the significant test</h3>
 <p>In statistical analysis, we are also interested to know which pair of variables their correlation coefficients are statistically significant.</p>
 <p>Figure below shows a corrgram combined with the significant test. The corrgram reveals that not all correlation pairs are statistically significant. For example the correlation between total sulfur dioxide and free surfur dioxide is statistically significant at significant level of 0.1 but not the pair between total sulfur dioxide and citric acid.</p>
-<p><a href="https://r4va.netlify.app/chap06_files/figure-html/unnamed-chunk-19-1.png" class="uri">https://r4va.netlify.app/chap06_files/figure-html/unnamed-chunk-19-1.png</a></p>
+<p><img src="images/clipboard-3515917024.png" class="img-fluid"></p>
 <p>With corrplot package, we can use the <em>cor.mtest()</em> to compute the p-values and confidence interval for each pair of variables.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>wine.sig <span class="ot">=</span> <span class="fu">cor.mtest</span>(wine.cor, <span class="at">conf.level=</span> .<span class="dv">95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

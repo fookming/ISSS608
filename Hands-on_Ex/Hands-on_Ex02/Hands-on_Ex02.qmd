@@ -51,11 +51,12 @@ The code chunk below imports exam_data.csv into R environment by using [read_csv
 
 ```{r}
 #| message: false
-#| results: "hide"
+#| results: hide
 
 exam_data <- read_csv("data/Exam_data.csv")
 
 ```
+
 
 There are a total of seven attributes in the exam_data tibble data frame. Four of them are categorical data type and the other three are in continuous data type.
 
