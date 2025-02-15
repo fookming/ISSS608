@@ -39,6 +39,8 @@ website:
           href: https://public.tableau.com/app/profile/fook.ming.ee/viz/In-classEx03-MyFirstStory/Story1
         - text: "In-class Exercise 4"
           href: "In-class_Ex/In-class_Ex04/In-class_Ex04.html"
+        - text: "In-class Exercise 5"
+          href: "In-class_Ex/In-class_Ex05/In-class_Ex05.html"
           
 
     - text: "Take-home Exercise"

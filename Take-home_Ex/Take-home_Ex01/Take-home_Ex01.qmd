@@ -8,6 +8,8 @@ execute:
   eval: true
   warning: false
   freeze: true
+  code-fold: true
+  code-summary: "Click to Show Code"
 format: 
   html:
     number-sections: true
@@ -124,11 +126,9 @@ ship_data <- read.csv("data/Ship_Performance_Dataset.csv")
 ```
 
 ```{r}
-# Load dataset
-ship_data <- read.csv("data/Ship_Performance_Dataset.csv")
 
 # Clean column names
-ship_data <- clean_names(ship_data)
+# ship_data <- clean_names(ship_data)
 
 # Check structure
 glimpse(ship_data)
@@ -271,12 +271,12 @@ count_none_per_column <- function(data, columns) {
   print(df_summary)
 }
 
-
 # Define the categorical columns to analyze
-categorical_columns <- c("ship_type", "route_type", "engine_type", "maintenance_status", "weather_condition")
+categorical_columns <- c("Ship_Type", "Route_Type", "Engine_Type", "Maintenance_Status", "Weather_Condition")
 
 # Run the function
 count_none_per_column(ship_data, categorical_columns)
+
 ```
 
 
@@ -291,33 +291,86 @@ count_none_per_column(ship_data, categorical_columns)
 - Data Integration: Combining data from multiple sources for a comprehensive dataset; where necessary and if required.
 - Feature Engineering: Create additional fields if needed.
 
+```{r}
+colnames(ship_data)
+```
 
 
 ```{r}
-# Convert categorical variables to factors
-categorical_vars <- c("ship_type", "route_type", "engine_type", "maintenance_status", "weather_condition")
-ship_data[categorical_vars] <- lapply(ship_data[categorical_vars], as.factor)
 
+categorical_vars <- c("Ship_Type", "Route_Type", "Engine_Type", "Maintenance_Status", "Weather_Condition")
 
-# Identify Missing Values
-missing_summary <- ship_data %>%
-  summarise(across(everything(), ~sum(is.na(.)), .names = "missing_{.col}"))
+# ship_data[categorical_vars] <- lapply(ship_data[categorical_vars], as.factor)
+# Convert categorical variables to character before filtering
+ship_data[categorical_vars] <- lapply(ship_data[categorical_vars], as.character)
 
-# Display Missing Value Summary
-print("Missing Values Summary:")
-print(missing_summary)
+# Count rows before any operation
+initial_rows <- nrow(ship_data)
 
-# Handling missing values
+# Remove duplicates
+ship_data <- ship_data %>% distinct()
+
+# Convert all numeric columns to correct format and round them
 ship_data <- ship_data %>%
-  mutate(across(where(is.numeric), ~replace_na(., median(., na.rm = TRUE)))) %>%
-  mutate(across(where(is.factor), ~replace_na(., as.factor("Missing"))))  # Fix for categorical missing values
+  mutate(across(where(is.numeric), \(x) round(x, 0)))  # Fixed across() syntax
 
-# Verify changes
-glimpse(ship_data)
+# Remove any row with one or more 'None' values in their columns
+ship_data <- ship_data %>%
+  filter(if_all(where(is.character), ~ . != "None"))
 
+# Remove rows with critical missing values (Revenue, Cost, etc.)
+ship_data <- ship_data %>%
+  filter(!is.na(Revenue_per_Voyage_USD) & !is.na(Operational_Cost_USD))
+
+# Count rows after operations
+final_rows <- nrow(ship_data)
+
+# Print the number of rows removed
+cat("\nRows before operations:", initial_rows, 
+    "\nRows after operations:", final_rows, 
+    "\nTotal rows removed:", initial_rows - final_rows, "\n")
+
+# Display cleaned dataset sample
+head(ship_data, 20)
 
 
 ```
+
+
+```{r}
+#| label: check_missing_values
+#| echo: true
+
+# Check for remaining "None" values in each column
+none_counts <- sapply(ship_data, function(x) sum(x == "None", na.rm = TRUE))
+
+# Check for any NA values in each column
+na_counts <- colSums(is.na(ship_data))
+
+# Count total missing values in the dataset
+total_missing <- sum(is.na(ship_data))
+
+# Show rows that still contain missing values
+missing_rows <- ship_data[!complete.cases(ship_data), ]
+
+# Print results
+cat("\nMissing Value Summary:\n")
+print(data.frame(Column = names(na_counts), NA_Count = na_counts, None_Count = none_counts))
+
+cat("\nTotal missing values across dataset:", total_missing, "\n")
+
+# If any missing rows exist, display them
+if (nrow(missing_rows) > 0) {
+  cat("\nRows with missing values:\n")
+  print(missing_rows)
+} else {
+  cat("\n✅ No missing values found. Dataset is clean!\n")
+}
+
+```
+
+
+
 
 ## Exploratory Data Analysis (EDA)
 
@@ -326,7 +379,7 @@ Visualizing Key Metrics
 ### Ship Speed Distribution
 
 ```{r}
-ggplot(ship_data, aes(x = speed_over_ground_knots)) +
+ggplot(ship_data, aes(x = Speed_Over_Ground_knots)) + 
   geom_histogram(fill = "blue", bins = 30, alpha = 0.7) +
   geom_density(alpha = 0.5, fill = "lightblue") +
   theme_minimal() +
@@ -344,7 +397,7 @@ colnames(ship_data)
 ```
 
 ```{r}
-ggplot(ship_data, aes(x = speed_over_ground_knots, y = efficiency_nm_per_k_wh, color = ship_type)) +
+ggplot(ship_data, aes(x = Speed_Over_Ground_knots, y = Efficiency_nm_per_kWh, color = Ship_Type)) +
   geom_point(alpha = 0.7) +
   geom_smooth(method = "lm", se = FALSE, color = "black") +
   theme_minimal() +
@@ -358,7 +411,7 @@ ggplot(ship_data, aes(x = speed_over_ground_knots, y = efficiency_nm_per_k_wh, c
 
 ```{r}
 
-ggplot(ship_data, aes(x = operational_cost_usd, y = revenue_per_voyage_usd, color = ship_type)) +
+ggplot(ship_data, aes(x = Operational_Cost_USD, y = Revenue_per_Voyage_USD, color = Ship_Type)) +
   geom_point(alpha = 0.7) +
   geom_smooth(method = "lm", se = FALSE) +
   theme_minimal() +
@@ -371,7 +424,7 @@ ggplot(ship_data, aes(x = operational_cost_usd, y = revenue_per_voyage_usd, colo
 ### Use geom_boxplot() for Distribution Insight
 
 ```{r}
-ggplot(ship_data, aes(x = ship_type, y = revenue_per_voyage_usd, fill = ship_type)) +
+ggplot(ship_data, aes(x = Ship_Type, y = Revenue_per_Voyage_USD, fill = Ship_Type)) +
   geom_boxplot() +
   theme_minimal() +
   labs(title = "Revenue Distribution by Ship Type",
@@ -380,10 +433,18 @@ ggplot(ship_data, aes(x = ship_type, y = revenue_per_voyage_usd, fill = ship_typ
 
 ```
 
+
 ```{r}
-ggplot(ship_data, aes(x = ship_type, y = revenue_per_voyage_usd, fill = ship_type)) +
+colnames(ship_data)
+
+```
+
+
+
+```{r}
+ggplot(ship_data, aes(x = Ship_Type, y = Revenue_per_Voyage_USD, fill = Ship_Type)) +
   geom_boxplot() +
-  facet_wrap(~ route_type, scales = "free") +  # Split by route type
+  facet_wrap(~ Route_Type, scales = "free") +  # Split by route type
   theme_minimal() +
   labs(title = "Revenue Distribution by Ship Type and Route Type",
        x = "Ship Type",
@@ -397,9 +458,9 @@ ggplot(ship_data, aes(x = ship_type, y = revenue_per_voyage_usd, fill = ship_typ
 #| fig-width: 16
 
 
-ggplot(ship_data, aes(x = ship_type, y = revenue_per_voyage_usd / 1e6, fill = ship_type)) +
+ggplot(ship_data, aes(x = Ship_Type, y = Revenue_per_Voyage_USD / 1e6, fill = Ship_Type)) +
   geom_boxplot() +
-  facet_grid(route_type ~ engine_type, scales = "free") +  # Split by Route & Engine Type
+  facet_grid(Route_Type ~ Engine_Type, scales = "free") +  # Split by Route & Engine Type
   theme_minimal() +
   labs(title = "Revenue Distribution by Ship Type, Route Type, and Engine Type",
        x = "Ship Type",
@@ -414,9 +475,9 @@ ggplot(ship_data, aes(x = ship_type, y = revenue_per_voyage_usd / 1e6, fill = sh
 #| fig-width: 24
 
 
-ggplot(ship_data, aes(x = ship_type, y = revenue_per_voyage_usd / 1e6, fill = weather_condition)) +
+ggplot(ship_data, aes(x = Ship_Type, y = Revenue_per_Voyage_USD / 1e6, fill = Weather_Condition)) +
   geom_boxplot() +
-  facet_grid(route_type ~ engine_type, scales = "free") +  # Facet by Route Type (rows) & Engine Type (columns)
+  facet_grid(Route_Type ~ Engine_Type, scales = "free") +  # Facet by Route Type (rows) & Engine Type (columns)
   theme_minimal() +
   labs(title = "Revenue Distribution by Ship Type, Route Type, Engine Type, and Weather Condition",
        x = "Ship Type",
@@ -430,8 +491,8 @@ ggplot(ship_data, aes(x = ship_type, y = revenue_per_voyage_usd / 1e6, fill = we
 ### Use geom_smooth() with Aggregation (LOESS or GAM Smoothing)
 
 ```{r}
-ggplot(ship_data, aes(x = operational_cost_usd, y = revenue_per_voyage_usd, color = ship_type)) +
-  geom_smooth(method = "loess", se = FALSE, size = 1.2) +  # LOESS smooth to capture trends
+ggplot(ship_data, aes(x = Operational_Cost_USD, y = Revenue_per_Voyage_USD, color = Ship_Type)) +
+  geom_smooth(method = "loess", se = FALSE, linewidth = 1.2) +  # LOESS smooth to capture trends
   theme_minimal() +
   labs(title = "Smoothed Revenue Trends by Operational Cost",
        x = "Operational Cost (USD)",
