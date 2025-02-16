@@ -1,27 +1,22 @@
 ---
-title: "Take Home Exercise 01 (Work in Progress...)"
+title: "Take Home Exercise 01"
 author: "Ee Fook Ming"
 date: "February 8, 2025"
 date-modified: last-modified
 execute:
   echo: true
+  code-fold: true
+  code-summary: "Show Code"
   eval: true
   warning: false
   freeze: true
-  code-fold: true
-  code-summary: "Click to Show Code"
-format: 
+format:
   html:
-    number-sections: true
-    number-depth: 3
-#    number-offset: [12, 0]  # Offset heading levels by starting at 13
-output: 
-  html_document: 
     toc: true
-    tabset: true
+    number-sections: true
 ---
 
-[Overview and Background: Ship Performance in the Gulf of Guinea (Work in Progress...)]{style="font-size: 44px; font-weight: bold;"}
+[Overview and Background: Ship Performance in the Gulf of Guinea]{style="font-size: 44px; font-weight: bold;"}
 
 # Introduction
 
@@ -30,6 +25,38 @@ The maritime industry is a cornerstone of global trade, ensuring the smooth tran
 By analyzing ship performance metrics such as speed, efficiency, operational cost, and revenue, we aim to uncover insights that can enhance operational decision-making. This study employs data visualization techniques to identify key patterns, trends, and potential optimizations in ship performance.
 
 ![](images/clipboard-4268411684.png)
+
+## Key Observations from the Map
+
+**Countries Surrounding the Gulf of Guinea**
+
+-   The Gulf of Guinea is bordered by West and Central African nations, including: Nigeria, Ghana, Ivory Coast, Liberia, Senegal, Benin, Togo, Cameroon, Gabon, Angola, Equatorial Guinea, and the Democratic Republic of the Congo.
+-   These countries rely heavily on ports, fishing, and offshore oil production.
+
+**Strategic Maritime Significance**
+
+-   The Niger Delta, highlighted in yellow, is a key oil-producing region in Nigeria, contributing to the global energy supply.
+-   The ports along the Gulf of Guinea serve as major hubs for international trade, handling large volumes of cargo and oil shipments.
+
+**Security Concerns:**
+
+-   The Gulf of Guinea is a hotspot for maritime piracy, especially near Nigeria, Cameroon, and Ghana.
+-   Ships navigating these waters often face security risks, requiring escort vessels, naval patrols, and advanced tracking systems.
+
+**Shipping and Economic Importance**
+
+-   The Atlantic Ocean shipping lanes passing through the Gulf of Guinea connect Africa to Europe, Asia, and the Americas.
+-   Major exports include crude oil, liquefied natural gas (LNG), timber, cocoa, and fish.
+
+## Relevance to This Assignment
+
+For an analysis of ship performance **in terms of profitability** in the Gulf of Guinea, it would involve integrating the following tasks:
+
+1.  Route efficiency for profit optimization: Compare vessel performance and profit margins across short-haul, long-haul, and transoceanic routes. Identify which routes yield the highest returns relative to operational costs.
+
+2.  Weather impact on profitability: Examine how adverse conditions (e.g., storms, rough seas) influence speed, fuel consumption, and ultimately, voyage revenue and profitability.
+
+3.  Operational cost variations: Investigate differences in costs tied to fuel prices, maintenance, and shipping lanes to pinpoint opportunities for cost savings and revenue maximization.
 
 # Background and Content
 
@@ -44,7 +71,7 @@ The dataset used in this study is a synthetic but realistic representation of ma
 -   Speed Over Ground (knots)
 -   Distance Traveled (nautical miles)
 -   Engine Power (kW)
--   Operational Cost (USD)
+-   Operational Cost per Voyage (USD)
 -   Revenue per Voyage (USD)
 -   Efficiency (nautical miles per kilowatt-hour)
 -   Ship Type, Route Type, Engine Type, and Maintenance Status
@@ -53,22 +80,40 @@ This dataset provides a rich foundation for exploratory data analysis (EDA), clu
 
 ### Understanding the Dataset
 
-This dataset consists of 2736 rows and 24 columns, categorized into numerical and categorical features. Key attributes include: Numerical Features:
+This dataset consists of 2736 rows and 18 columns, categorized into numerical and categorical features. Key attributes include:
 
--   Speed_Over_Ground_knots – Ship speed over water (knots)
--   Engine_Power_kW – Engine power output (kilowatts)
--   Distance_Traveled_nm – Distance traveled per voyage (nautical miles)
--   Operational_Cost_USD – Cost per voyage (USD)
--   Revenue_per_Voyage_USD – Revenue per voyage (USD)
--   Efficiency_nm_per_kWh – Energy efficiency (nautical miles per kilowatt-hour)
+#### Numerical Features (12 Columns)
 
-Categorical Features:
+1.  Speed_Over_Ground_knots – Ship speed over water (knots)
+2.  Engine_Power_kW – Engine power output (kilowatts)
+3.  Distance_Traveled_nm – Distance traveled per voyage (nautical miles)
+4.  Draft_meters – The vertical distance from the waterline to the bottom of the hull (meters)
+5.  Cargo_Weight_tons – Weight of the cargo transported (metric tons)
+6.  Operational_Cost_USD – Cost per voyage (USD)
+7.  Revenue_per_Voyage_USD – Revenue per voyage (USD)
+8.  Turnaround_Time_hours – Time spent in port between arrival and departure (hours)
+9.  Efficiency_nm_per_kWh – Energy efficiency in nautical miles per kilowatt-hour
+10. Seasonal_Impact_Score – Factor capturing how seasonal conditions affect operations (e.g., ice, monsoons)
+11. Weekly_Voyage_Count – Number of voyages carried out on a weekly basis
+12. Average_Load_Percentage – Percentage of the ship’s cargo capacity utilized per voyage
 
--   Ship_Type (e.g., Tanker, Container Ship, Bulk Carrier)
--   Route_Type (e.g., Short-haul, Long-haul, Transoceanic)
--   Engine_Type (e.g., Diesel, Heavy Fuel Oil)
--   Maintenance_Status (e.g., Fair, Critical, Good)
--   Weather_Condition (e.g., Calm, Moderate, Rough)
+#### Categorical Features (5 Columns)
+
+1.  Ship_Type – Type of the ship (e.g., Container Ship, Fish Carrier, Bulk Carrier)
+2.  Route_Type – Type of route (e.g., Short-haul, Long-haul, Transoceanic)
+3.  Engine_Type – Type of engine/fuel (e.g., Diesel, Heavy Fuel Oil, Steam Turbine)
+4.  Maintenance_Status – Overall maintenance condition (e.g., Good, Fair, Critical)
+5.  Weather_Condition – Weather or sea state during the voyage (e.g., Calm, Moderate, Rough)
+
+### Summary
+
+-   Total Columns: 18
+-   Breakdown by Data Type:
+    -   Date/Time: 1 column (Date)
+    -   Numeric: 12 columns (e.g., Speed_Over_Ground_knots, Cargo_Weight_tons)
+    -   Categorical: 5 columns (e.g., Ship_Type, Engine_Type)
+
+These columns collectively capture operational, financial, and environmental factors that can be used to measure profitability and optimize operational efficiency. By examining the interplay between operational costs, revenue, speed, and fuel consumption—and factoring in variables like maintenance status, seasonal impact, and route characteristics—shipping companies gain actionable insights into how best to manage costs, improve turnaround times, and increase revenue. This, in turn, supports data-driven decisions aimed at maximizing margins, minimizing environmental impact, and ensuring sustainable, efficient voyages.
 
 # Load & Explore the Dataset
 
@@ -104,16 +149,25 @@ This document provides an overview of essential R packages commonly used for dat
 -   [**cowplot**](https://wilkelab.org/cowplot/): Provides tools for creating publication-quality figures, including alignment functions and themes for consistent presentation.
 -   [**ggnewscale**](https://github.com/eliocamp/ggnewscale): Allows the definition of multiple independent scales within a single ggplot2 visualization, useful for complex multivariate plots.
 
-Loading the libraries using pacman package.
+## Loading the libraries using Pacman
 
 ```{r}
 
-# Load necessary libraries
 pacman::p_load(tidyverse, 
                ggplot2, 
                skimr,  # For data summary 
                janitor, # For cleaning column names
-               knitr)
+               SmartEDA,
+               easystats,
+               gtsummary,
+               ggstatsplot,
+               knitr,
+               kableExtra,
+               patchwork,
+               GGally,
+               ggridges,
+               lubridate,
+               scales)
 ```
 
 ## Load & Inspect Data
@@ -125,10 +179,21 @@ ship_data <- read.csv("data/Ship_Performance_Dataset.csv")
 
 ```
 
-```{r}
+### Data Overview
 
-# Clean column names
-# ship_data <- clean_names(ship_data)
+```{r}
+ship_data %>%
+  ExpData(type = 1)
+```
+
+```{r}
+ship_data %>%
+  ExpData(type = 2)
+```
+
+### Glimpse the Data
+
+```{r}
 
 # Check structure
 glimpse(ship_data)
@@ -144,314 +209,960 @@ sum(duplicated(ship_data))
 
 ```
 
-
-
-
-### Examine Unique Values in Categorical Variables
-
-- Automatically selects categorical variables (columns that are either character or factor types).
-- Prints out the column name in a formatted header.
-- Lists all unique values within each categorical column.
-
+### Inspect Unique Values of Categorical Data
 
 ```{r}
-# Function to print unique values of categorical variables
 
-print_categorical_values <- function(data) {
-  cat("### Categorical Variables and Their Unique Values\n\n")
-  
-  
-  # Identify columns with date-like values (YYYY-MM-DD format) and date class
-  date_columns <- names(data)[sapply(data, function(col) {
-    is_date <- inherits(col, "Date") || inherits(col, "POSIXt")  # Check if it's a date class
-    is_formatted_date <- all(grepl("^\\d{4}-\\d{2}-\\d{2}$", na.omit(as.character(col))))  # Check string format
-    return(is_date | is_formatted_date)
-  })]
+# Identify columns that are character or factor
+cat_cols <- sapply(ship_data, function(x) is.character(x) || is.factor(x))
 
+# Create a vector of categorical column names, excluding "Date"
+cat_cols_no_date <- setdiff(names(ship_data)[cat_cols], "Date")
+
+# Loop over those categorical columns (excluding "Date")
+for (col_name in cat_cols_no_date) {
+  cat("\n----------------------------------------\n")
+  cat("COLUMN:", col_name, "\n")
+  cat("----------------------------------------\n")
   
-  # Select categorical columns, excluding detected date columns
-  categorical_vars <- data %>%
-    select(where(~ is.character(.) | is.factor(.))) %>%
-    select(-any_of(date_columns))  # Remove detected date columns
-  
-  if (ncol(categorical_vars) == 0) {
-    cat("No categorical variables found in the dataset.\n")
-    return()
-  }
-  
-  for (col in colnames(categorical_vars)) {
-    unique_values <- unique(categorical_vars[[col]])
-    
-    # Remove "None" if it appears as a category
-    unique_values <- unique_values[unique_values != "None"]
-    
-    cat("####", col, "\n")
-    cat("Unique values:", paste(unique_values, collapse = ", "), "\n\n")
-  }
+  # Show the unique values
+  print(unique(ship_data[[col_name]]))
 }
 
-# Run the function
-print_categorical_values(ship_data)
+
+  
+```
+
+### Checking for value="None" in Categorical Data
+
+```{r}
+##| code-fold: true
+##| echo: false
+##| eval: false
+
+# Identify categorical columns (character or factor)
+cat_cols <- sapply(ship_data, function(x) is.character(x) || is.factor(x))
+
+# Count the number of "None" in each row for those columns
+none_counts <- apply(ship_data[, cat_cols], 1, function(x) sum(x == "None", na.rm = TRUE))
+
+# Create a summary data frame of counts
+summary_counts <- data.frame(
+  Category = c("one None", "two None", "three None", "more than three None"),
+  Count = c(
+    sum(none_counts == 1),
+    sum(none_counts == 2),
+    sum(none_counts == 3),
+    sum(none_counts > 3)
+  )
+)
+
+# Print the summary table with a heading
+print("## Summary of 'None' Counts")
+summary_counts %>%
+  kable("html", caption = "Summary of rows by number of 'None'") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
+# Subset rows based on the number of "None"
+df_one_none   <- ship_data[none_counts == 1, ]
+df_two_none   <- ship_data[none_counts == 2, ]
+df_three_none <- ship_data[none_counts == 3, ]
+df_four_plus  <- ship_data[none_counts >= 4, ]
+
+# Top 10 rows with exactly one "None"
+cat("\n## Top 10 Rows with exactly one 'None'\n")
+df_one_none %>%
+  head(10) %>%
+  kable("html", caption = "Top 10 rows with exactly one 'None'") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
+
+# Top 10 rows with exactly two "None"
+cat("\n## Top 10 Rows with exactly two 'None'\n")
+df_two_none %>%
+  head(10) %>%
+  kable("html", caption = "Top 10 rows with exactly two 'None'") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
+# Top 10 rows with exactly three "None"
+cat("\n## Top 10 Rows with exactly three 'None'\n")
+df_three_none %>%
+  head(10) %>%
+  kable("html", caption = "Top 10 rows with exactly three 'None'") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
+# All rows with four or more "None"
+cat("\n## Rows with four or more 'None'\n")
+df_four_plus %>%
+  kable("html", caption = "Rows with four or more 'None'") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
 
 ```
 
-### Count Rows with None
-
-The code chunk counts the number of rows in your dataset based on how many "None" values they contain. It categorizes rows into:
-
-- 1x "None"
-- 2x "None"
-- 3x "None"
-- More than 3x "None"
-
+### Removing Rows with None in the Categorical Columns
 
 ```{r}
 
+# Identify categorical columns (character or factor)
+cat_cols <- sapply(ship_data, function(x) is.character(x) || is.factor(x))
 
-# Function to count and display rows based on the number of "None" occurrences
-count_none_rows <- function(data) {
-  # Count the number of "None" values in each row
-  none_counts <- rowSums(data == "None", na.rm = TRUE)
-  
-  # Count how many rows fall into each category
-  none_summary <- data.frame(
-    "Category" = c("1x None", "2x None", "3x None", ">3x None"),
-    "Count" = c(
-      sum(none_counts == 1),
-      sum(none_counts == 2),
-      sum(none_counts == 3),
-      sum(none_counts > 3)
+# Store the number of rows before filtering
+num_rows_before <- nrow(ship_data)
+
+# Remove rows where ANY categorical column contains "None"
+ship_data_clean <- ship_data %>%
+  filter(!rowSums(across(which(cat_cols), ~ . == "None")) > 0)
+
+# Store the number of rows after filtering
+num_rows_after <- nrow(ship_data_clean)
+
+# Calculate how many rows were deleted
+rows_deleted <- num_rows_before - num_rows_after
+
+# Print summary
+cat("\n## Summary of Rows Deleted\n\n")
+cat("Total rows removed:", rows_deleted, "\n\n")
+
+# Glimpse the cleaned data
+ship_data <- ship_data_clean
+# glimpse(ship_data)
+
+ship_data %>%
+  head(10) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+
+```
+
+## New Variables Created for Analysis
+
+By adding these new variables—such as net profit per voyage, weekly totals for profit, revenue, and cost, as well as profit per nautical mile (NM) and per ton—we gain a clearer, more granular perspective on each voyage’s financial performance and operational efficiency. Net profit and weekly totals help reveal whether repeating a given voyage multiple times amplifies gains or losses, while profit margin captures the relative profitability regardless of absolute cost or revenue scale. Metrics like cost per NM, revenue per NM, and profit per NM clarify how well resources are being utilized across varying distances, and analyzing cost, revenue, and profit per ton provides insight into cargo handling efficiency. Altogether, these derived columns facilitate a richer, data‐driven understanding of route profitability, capacity utilization, and operational strategy—essential for making informed decisions in shipping performance analysis.
+
+```{r}
+
+ship_data <- ship_data %>%
+  mutate(
+    # Net profit per voyage
+    Net_Profit = Revenue_per_Voyage_USD - Operational_Cost_USD,
+    
+    # Weekly total profit = net profit * weekly voyage count
+    Weekly_Total_Profit = Net_Profit * Weekly_Voyage_Count,
+    
+    # Profit margin (per voyage)
+    Profit_Margin = Net_Profit / Revenue_per_Voyage_USD,
+    
+    # Weekly totals for revenue and cost
+    Weekly_Total_Revenue = Revenue_per_Voyage_USD * Weekly_Voyage_Count,
+    Weekly_Total_Operational_Cost = Operational_Cost_USD * Weekly_Voyage_Count,
+    
+    # Cost per NM, Revenue per NM
+    Cost_per_NM = Operational_Cost_USD / Distance_Traveled_nm,
+    Revenue_per_NM = Revenue_per_Voyage_USD / Distance_Traveled_nm,
+    
+    # Additional variables requested
+    Profit_per_NM     = (Revenue_per_Voyage_USD - Operational_Cost_USD) / Distance_Traveled_nm,
+    Cost_per_Ton      = Operational_Cost_USD / Cargo_Weight_tons,
+    Revenue_per_Ton   = Revenue_per_Voyage_USD / Cargo_Weight_tons,
+    Profit_per_Ton    = (Revenue_per_Voyage_USD - Operational_Cost_USD) / Cargo_Weight_tons
+  )
+
+# Quick check of the new columns
+# glimpse(ship_data)
+ship_data %>%
+  head(10) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+
+```
+
+### Revenue Leakage Estimates from Average_Load_Percentage
+
+Revenue Leakage quantifies how much revenue is foregone by not operating at full capacity. By comparing the actual revenue per voyage against a hypothetical 100% load scenario, the new Revenue_Leakage field highlights how much potential income is lost when ships sail below maximum utilization. This metric provides a tangible financial estimate of the cost of underused capacity, guiding decisions about pricing, scheduling, and cargo allocation to maximize profitability.
+
+-   Average_Load_Percentage / 100 converts the percentage to a decimal (e.g., 80 → 0.80).
+-   Revenue_per_Voyage_USD / (Average_Load_Percentage / 100) estimates the hypothetical revenue if the ship had been at 100% load.
+-   Subtracting Revenue_per_Voyage_USD gives the Revenue_Leakage (the amount “lost” by operating below full capacity).
+-   case_when ensures that if the load is already at or above 100%, leakage is 0, and handles other edge cases.
+
+```{r}
+
+ship_data <- ship_data %>%
+  mutate(
+    Revenue_Leakage = case_when(
+      # If load is at or above 100%, there's no "lost" revenue
+      Average_Load_Percentage >= 100 ~ 0,
+      
+      # Otherwise, compute the difference between 
+      # "full-load" revenue and actual revenue.
+      Average_Load_Percentage > 0 ~
+        (Revenue_per_Voyage_USD / (Average_Load_Percentage / 100)) - Revenue_per_Voyage_USD,
+      
+      # If load is zero or missing, set leakage to 0 or NA, as appropriate
+      TRUE ~ 0
     )
   )
-  
-  # Display summary
-  print(none_summary)
-  
-  # Display sample rows for each category
-  for (i in 1:4) {
-    cat("\n### Sample Rows for", none_summary$Category[i], "\n")
-    sample_rows <- data[none_counts == i, ]
-    if (nrow(sample_rows) > 0) {
-      print(head(sample_rows, 5))  # Show only first 5 rows for clarity
-    } else {
-      cat("No rows found in this category.\n")
-    }
-  }
-  
-}
 
-# Run the function
-count_none_rows(ship_data)
 
 ```
 
-
-### Count Categorical Columns with None
-
-- Function to count "None" values in specified categorical columns
-  - ship_type
-  - route_type
-  - engine_type
-  - maintenance_status
-  - weather_condition
+This formula (Weekly_Revenue_Leakage = Revenue_Leakage × Weekly_Voyage_Count) converts the per-voyage leakage into a total weekly leakage, reflecting how repeated voyages in the same week amplify revenue loss.
 
 ```{r}
-
-count_none_per_column <- function(data, columns) {
-  # Filter dataset to only selected columns
-  data_selected <- data %>% select(all_of(columns))
-  
-  # Count occurrences of "None" in each column
-  none_counts <- colSums(data_selected == "None", na.rm = TRUE)
-  
-  # Convert to data frame for display
-  df_summary <- data.frame(Column = names(none_counts), Count_None = none_counts)
-  
-  # Display results
-  print(df_summary)
-}
-
-# Define the categorical columns to analyze
-categorical_columns <- c("Ship_Type", "Route_Type", "Engine_Type", "Maintenance_Status", "Weather_Condition")
-
-# Run the function
-count_none_per_column(ship_data, categorical_columns)
-
-```
-
-
-
-
-## Data Cleaning & Wrangling
-
-- Data Cleaning: Identifying and handling missing, duplicate, or inconsistent data.
-- Data Transformation: Converting data types (categorical columns into factors), normalizing values, and reformatting structures to improve usability.
-- Data Reduction: Filtering, aggregating, or summarizing data to focus on relevant information.
-- Data Validation: Ensuring data quality, accuracy, and consistency.
-- Data Integration: Combining data from multiple sources for a comprehensive dataset; where necessary and if required.
-- Feature Engineering: Create additional fields if needed.
-
-```{r}
-colnames(ship_data)
-```
-
-
-```{r}
-
-categorical_vars <- c("Ship_Type", "Route_Type", "Engine_Type", "Maintenance_Status", "Weather_Condition")
-
-# ship_data[categorical_vars] <- lapply(ship_data[categorical_vars], as.factor)
-# Convert categorical variables to character before filtering
-ship_data[categorical_vars] <- lapply(ship_data[categorical_vars], as.character)
-
-# Count rows before any operation
-initial_rows <- nrow(ship_data)
-
-# Remove duplicates
-ship_data <- ship_data %>% distinct()
-
-# Convert all numeric columns to correct format and round them
 ship_data <- ship_data %>%
-  mutate(across(where(is.numeric), \(x) round(x, 0)))  # Fixed across() syntax
+  mutate(
+    # Weekly revenue leakage is per-voyage leakage multiplied by how many voyages occur that week
+    Weekly_Revenue_Leakage = Revenue_Leakage * Weekly_Voyage_Count
+  )
 
-# Remove any row with one or more 'None' values in their columns
-ship_data <- ship_data %>%
-  filter(if_all(where(is.character), ~ . != "None"))
-
-# Remove rows with critical missing values (Revenue, Cost, etc.)
-ship_data <- ship_data %>%
-  filter(!is.na(Revenue_per_Voyage_USD) & !is.na(Operational_Cost_USD))
-
-# Count rows after operations
-final_rows <- nrow(ship_data)
-
-# Print the number of rows removed
-cat("\nRows before operations:", initial_rows, 
-    "\nRows after operations:", final_rows, 
-    "\nTotal rows removed:", initial_rows - final_rows, "\n")
-
-# Display cleaned dataset sample
-head(ship_data, 20)
-
-
-```
-
-
-```{r}
-#| label: check_missing_values
-#| echo: true
-
-# Check for remaining "None" values in each column
-none_counts <- sapply(ship_data, function(x) sum(x == "None", na.rm = TRUE))
-
-# Check for any NA values in each column
-na_counts <- colSums(is.na(ship_data))
-
-# Count total missing values in the dataset
-total_missing <- sum(is.na(ship_data))
-
-# Show rows that still contain missing values
-missing_rows <- ship_data[!complete.cases(ship_data), ]
-
-# Print results
-cat("\nMissing Value Summary:\n")
-print(data.frame(Column = names(na_counts), NA_Count = na_counts, None_Count = none_counts))
-
-cat("\nTotal missing values across dataset:", total_missing, "\n")
-
-# If any missing rows exist, display them
-if (nrow(missing_rows) > 0) {
-  cat("\nRows with missing values:\n")
-  print(missing_rows)
-} else {
-  cat("\n✅ No missing values found. Dataset is clean!\n")
-}
-
-```
-
-
-
-
-## Exploratory Data Analysis (EDA)
-
-Visualizing Key Metrics
-
-### Ship Speed Distribution
-
-```{r}
-ggplot(ship_data, aes(x = Speed_Over_Ground_knots)) + 
-  geom_histogram(fill = "blue", bins = 30, alpha = 0.7) +
-  geom_density(alpha = 0.5, fill = "lightblue") +
-  theme_minimal() +
-  labs(title = "Distribution of Ship Speed",
-       x = "Speed Over Ground (Knots)",
-       y = "Frequency")
-
-```
-
-### Correlation: Fuel Efficiency vs. Speed
-
-```{r}
 colnames(ship_data)
 
-```
-
-```{r}
-ggplot(ship_data, aes(x = Speed_Over_Ground_knots, y = Efficiency_nm_per_kWh, color = Ship_Type)) +
-  geom_point(alpha = 0.7) +
-  geom_smooth(method = "lm", se = FALSE, color = "black") +
-  theme_minimal() +
-  labs(title = "Fuel Efficiency vs. Ship Speed",
-       x = "Speed (Knots)",
-       y = "Efficiency (nm per kWh)")
+ship_data %>%
+  head(10) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
-### Operational Cost vs. Revenue per Voyage by Ship Type
+### Voyage Utilization Score
+
+| Score Range | Label  |
+|-------------|--------|
+| ≥ 0.30      | High   |
+| 0.10 – 0.29 | Medium |
+| \< 0.10     | Low    |
+| \< 0        | Loss.  |
+
+This hybrid metric blends how fully a vessel is loaded and how profit‐efficient it is per dollar of cost. A higher score (≥ 0.30) signals strong utilization and profitability, while a lower score (\< 0.10) implies underperformance. Any negative score highlights operations where costs outweigh revenue, even at high load factors. Defining these clear thresholds helps managers quickly identify which voyages are most profitable, which need optimization, and which are outright unviable.
+
+-   Voyage Utilization Score = (Average_Load_Percentage ÷ 100) × (Net_Profit ÷ Operational_Cost_USD)
 
 ```{r}
 
-ggplot(ship_data, aes(x = Operational_Cost_USD, y = Revenue_per_Voyage_USD, color = Ship_Type)) +
-  geom_point(alpha = 0.7) +
-  geom_smooth(method = "lm", se = FALSE) +
-  theme_minimal() +
-  labs(title = "Operational Cost vs. Revenue per Voyage",
-       x = "Operational Cost (USD)",
-       y = "Revenue per Voyage (USD)")
+ship_data <- ship_data %>%
+  mutate(
+    # Calculate the Voyage Utilization Score 
+    # (substitute the appropriate cost column if it's named differently in your dataset)
+    Voyage_Utilization_Score = (Average_Load_Percentage / 100) * (Net_Profit / Operational_Cost_USD),
+    
+    # Create a categorical label based on the defined thresholds
+    Voyage_Performance_Label = case_when(
+      Voyage_Utilization_Score >= 0.30  ~ "High",
+      Voyage_Utilization_Score >= 0.10  ~ "Medium",
+      Voyage_Utilization_Score >= 0.00  ~ "Low",
+      TRUE                              ~ "Loss"
+    )
+  )
 
-```
-
-### Use geom_boxplot() for Distribution Insight
-
-```{r}
-ggplot(ship_data, aes(x = Ship_Type, y = Revenue_per_Voyage_USD, fill = Ship_Type)) +
-  geom_boxplot() +
-  theme_minimal() +
-  labs(title = "Revenue Distribution by Ship Type",
-       x = "Ship Type",
-       y = "Revenue per Voyage (USD)")
-
-```
-
-
-```{r}
 colnames(ship_data)
 
+# Quick preview
+ship_data %>%
+  select(Average_Load_Percentage, Net_Profit, Operational_Cost_USD, 
+         Voyage_Utilization_Score, Voyage_Performance_Label) %>%
+  head(10) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+
 ```
 
+### Weekly Voyage Frequency by Ship Type and Route Type
 
+This pivot table displays how many voyages in the dataset fall under each Ship_Type and Route_Type, broken down by the Weekly_Voyage_Count columns labeled 1 through 9. For instance, in the row for “Bulk Carrier / Short‐haul,” 21 total voyages had a weekly frequency of 1, 34 voyages had a weekly frequency of 2, and so on. The final Subtotal column is the sum of those counts across all frequency buckets, indicating the total number of voyages for that combination of Ship_Type and Route_Type. This format makes it easy to spot which shipping segments operate most frequently at certain counts (e.g., once a week vs. nine times a week) and compare overall totals across different routes and vessel categories.
 
 ```{r}
-ggplot(ship_data, aes(x = Ship_Type, y = Revenue_per_Voyage_USD, fill = Ship_Type)) +
-  geom_boxplot() +
-  facet_wrap(~ Route_Type, scales = "free") +  # Split by route type
-  theme_minimal() +
-  labs(title = "Revenue Distribution by Ship Type and Route Type",
-       x = "Ship Type",
-       y = "Revenue per Voyage (USD)") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for readability
+ship_data %>%
+  group_by(Weekly_Voyage_Count) %>%
+  summarise(Record_Count = n()) %>%
+  arrange(Weekly_Voyage_Count)
 
 ```
+
+```{r}
+ship_data %>%
+  group_by(Weekly_Voyage_Count, Ship_Type) %>%
+  summarise(Record_Count = n()) %>%
+  arrange(Weekly_Voyage_Count, Ship_Type)
+
+```
+
+```{r}
+
+wide_table <- ship_data %>%
+  group_by(Ship_Type, Route_Type, Weekly_Voyage_Count) %>%
+  summarise(
+    Sum_of_Weekly_Voyages = sum(Weekly_Voyage_Count),
+    .groups = "drop"
+  ) %>%
+  pivot_wider(
+    names_from  = Weekly_Voyage_Count,
+    values_from = Sum_of_Weekly_Voyages,
+    values_fill = 0
+  ) %>%
+  mutate(Subtotal = rowSums(across(`1`:`9`))) %>%
+  arrange(Ship_Type, Route_Type)
+
+wide_table %>%
+  kable() %>%
+  kable_styling(full_width = FALSE) 
+```
+
+### Weekly Frequency Utilization Score
+
+This metric compares each voyage’s weekly frequency to the average frequency (for the same ship type and route) and then factors in the vessel’s load percentage. It tells you whether a particular voyage is sailed more or less often than typical for that category and how effectively its capacity is being used. A high score indicates above‐average sailing frequency and high load factor, while a low score suggests below‐average frequency or underutilized capacity.
+
+Below is a hypothetical range for the Weekly Frequency Utilization Score, aligning closely with industry best practices and reflecting the distribution observed in the processed ship_data. These thresholds may be refined further based on further benchmarks or changing market conditions.
+
+| Score Range | Category | Interpretation |
+|------------------------|------------------------|------------------------|
+| ≥ 0.35 | High | Frequent sailings at solid load levels (75th percentile or above) |
+| 0.20 – 0.34 | Medium | Sufficient frequency and moderate capacity usage |
+| 0.05 – 0.19 | Low | Infrequent sailings or partially filled voyages |
+| \< 0.05 | Minimal | Significantly underutilized capacity or very few weekly departures |
+
+**Rationale** - **High (≥ 0.35)**: Represents top‐tier performance where voyages are running often and at strong load factors. - **Medium (0.20 – 0.34)**: Indicates moderate efficiency—voyages are either reasonably frequent or well‐loaded, but not at peak levels. - **Low (0.05 – 0.19)**: Captures sporadic or suboptimal voyages—there is likely room to improve scheduling or load management. - **Minimal (\< 0.05)**: Signifies major underutilization; either very low frequency or extremely poor load factor.
+
+These thresholds help identify segments or weeks where capacity usage and voyage repetition fall short of internal or industry standards, prompting targeted improvements in scheduling, pricing, or fleet allocation.
+
+The combine relative frequency and capacity utilization. The idea is:
+
+-   Compare the actual weekly voyage count to the average weekly voyage count for the same ship–route segment. This ratio indicates whether a particular record’s frequency is above or below average.
+-   Multiply by the load factor (Average_Load_Percentage ÷ 100), reflecting how fully the vessel is utilized.
+
+Formally:
+
+Weekly_Frequency_Utilization_Score = (Weekly_Voyage_Count / Avg_Weekly_Voyage_Freq_Ship_Route) × (Average_Load_Percentage / 100)
+
+-   If Weekly_Voyage_Count is greater than the average for that ship–route combination, the ratio exceeds 1, boosting the score.
+-   If the vessel also has a high load factor, it further increases the score—meaning it’s sailing more frequently and more fully loaded than its peers.
+-   Conversely, a below‐average voyage count or low load factor reduces the score.
+
+This approach highlights both how often a particular route is sailed relative to the typical frequency in that segment and how effectively its capacity is used.
+
+```{r}
+#| eval: false
+#| echo: false
+
+ship_data <- ship_data %>%
+  group_by(Ship_Type, Route_Type) %>%
+  mutate(
+    Avg_Weekly_Freq_Ship_Route = mean(Weekly_Voyage_Count, na.rm = TRUE)
+  ) %>%
+  ungroup() %>%
+  mutate(
+    Weekly_Frequency_Utilization_Score = (Weekly_Voyage_Count / Avg_Weekly_Freq_Ship_Route) * (Average_Load_Percentage / 100),
+    Weekly_Frequency_Utilization_Label = case_when(
+      Weekly_Frequency_Utilization_Score >= 0.30 ~ "High",
+      Weekly_Frequency_Utilization_Score >= 0.10 ~ "Medium",
+      TRUE                                       ~ "Low"
+    )
+  )
+
+
+```
+
+```{r}
+ship_data <- ship_data %>%
+  group_by(Ship_Type, Route_Type) %>%
+  mutate(
+    Avg_Weekly_Freq_Ship_Route = mean(Weekly_Voyage_Count, na.rm = TRUE)
+  ) %>%
+  ungroup() %>%
+  mutate(
+    Weekly_Frequency_Utilization_Score = (Weekly_Voyage_Count / Avg_Weekly_Freq_Ship_Route) * (Average_Load_Percentage / 100),
+    Weekly_Frequency_Utilization_Label = case_when(
+      Weekly_Frequency_Utilization_Score >= 0.35 ~ "High",
+      Weekly_Frequency_Utilization_Score >= 0.20 ~ "Medium",
+      Weekly_Frequency_Utilization_Score >= 0.05 ~ "Low",
+      TRUE                                       ~ "Minimal"
+    )
+  )
+
+```
+
+```{r}
+(
+  summary_table <- ship_data %>%
+    select(
+      Ship_Type,
+      Route_Type,
+      Date,
+      Weekly_Voyage_Count,
+      Avg_Weekly_Freq_Ship_Route,
+      Weekly_Frequency_Utilization_Score,
+      Weekly_Frequency_Utilization_Label
+    ) %>%
+    head(10)
+) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+```{r}
+ship_data %>%
+  head(10) %>%
+  kable() %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width = FALSE
+  )
+```
+
+```{r}
+write_csv(ship_data, "data/Updated_Ship_Data.csv")
+```
+
+# Exploratory Data Analysis
+
+## Univariate Analysis - Histograms of Key Profitability Metrics
+
+These histograms reveal key profitability patterns, highlighting profit distribution, cost variability, and revenue inefficiencies. Net Profit and Weekly Total Profit show whether voyages are mostly profitable or loss-making, while Operational Costs indicate potential inefficiencies. Revenue Leakage suggests lost income due to underutilization, and the skewness in Weekly Revenue and Costs underscores the need for better pricing and resource allocation. These insights directly support optimizing fleet management, cost reduction, and profit maximization in our shipping performance analysis.
+
+```{r}
+#| fig-width: 10
+#| fig-height: 16
+
+library(tidyverse)
+
+# Choose 8 columns that are more profitability-related
+my_columns <- c(
+  "Weekly_Total_Profit",
+  "Weekly_Total_Revenue",
+  "Weekly_Revenue_Leakage",
+  "Weekly_Total_Operational_Cost",
+  "Net_Profit",
+  "Revenue_per_Voyage_USD",
+  "Operational_Cost_USD",
+  "Revenue_Leakage"
+)
+
+# Subset these columns and reshape to long format
+ship_data_long <- ship_data %>%
+  select(all_of(my_columns)) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "Metric",
+    values_to = "Value"
+  ) %>%
+  drop_na()
+
+# Draw histograms for each metric in a facet-wrap layout
+ggplot(ship_data_long, aes(x = Value)) +
+  geom_histogram(bins = 30, fill = "steelblue", color = "white") +
+  facet_wrap(~ Metric, scales = "free_x", ncol = 2) +
+  labs(
+    title = "Histograms of Key Profitability Metrics",
+    x = NULL,
+    y = "Count"
+  ) +
+  theme_minimal()
+
+```
+
+## Data Distribution Insight
+
+Below is a condensed overview of the Ship Type–only ridgelines alongside the more detailed Ship + Route breakdown:
+
+1.  Ship Type–Only Distributions
+
+-   Offers a high‐level look at how each vessel class trends in terms of net profit, operational costs, and revenue. For example, Tankers may peak at higher costs, whereas Bulk Carriers might sit somewhere in the moderate range. This macro view quickly shows which ship types are consistently profitable (distribution shifted to the right) or face more variance.
+
+2.  Ship & Route Combined Distributions
+
+-   Drills further into route type (short‐haul, long‐haul, etc.) within each ship class. You see not only how the vessel itself behaves financially, but also how those finances change according to route demands. Some short‐haul routes might yield fewer outliers or tighter profit margins, while long‐haul or transoceanic trips could show peaks at higher revenue but potentially higher costs.
+
+Key Insights
+
+-   Profitability Gaps: Net profit and profit margin curves highlight where certain ships/routes excel or struggle.
+
+-   Cost vs. Revenue: Operational cost curves often correlate with higher revenues—but not always enough to guarantee top‐tier profit.
+
+-   Revenue Leakage: Sharp right‐skew in weekly or per‐voyage leakage indicates a small subset of voyages experiencing disproportionately high lost revenue.
+
+Overall, ship‐only plots are great for broad, fleet‐wide comparisons, while the ship‐route ridgelines pinpoint exactly which combinations drive or drain profitability. This dual perspective helps direct strategic decisions: from general fleet allocation (which ship types to expand or optimize) down to route‐level optimization (improving high‐cost or under‐utilized segments).
+
+### By Ship
+
+```{r}
+#| fig-width: 12
+#| fig-height: 10
+
+# Choose 8 key profitability-related columns
+my_columns <- c(
+  "Weekly_Total_Profit",
+  "Weekly_Total_Revenue",
+  "Weekly_Total_Operational_Cost",
+  "Weekly_Revenue_Leakage",
+  "Net_Profit",
+  "Profit_Margin",
+  "Revenue_per_Voyage_USD",
+  "Operational_Cost_USD"
+
+)
+
+# Transform data into long format for plotting
+ship_data_long <- ship_data %>%
+  select(Ship_Type, all_of(my_columns)) %>%
+  pivot_longer(
+    cols = -Ship_Type,  # Keep Ship_Type as a category
+    names_to = "Metric",
+    values_to = "Value"
+  ) %>%
+  drop_na()
+
+# Plot ridgeline density distributions
+ggplot(ship_data_long, aes(x = Value, y = Ship_Type, fill = Ship_Type)) +
+  geom_density_ridges(alpha = 0.7, scale = 1) +
+  facet_wrap(~ Metric, scales = "free_x", ncol = 2) +  # Display 2 columns for better spacing
+  theme_minimal() +
+  labs(
+    title = "Ridgeline Density of Key Profitability Metrics by Ship Type",
+    x = "Value",
+    y = "Ship Type"
+  ) +
+  scale_x_continuous(labels = scales::dollar_format()) +
+  theme(legend.position = "none")
+
+```
+
+### By Ship_Type and Route_Type
+
+```{r}
+#| fig-width: 14
+#| fig-height: 14
+
+library(tidyverse)
+library(ggridges)
+
+# 1. Choose 8 key profitability-related columns
+my_columns <- c(
+  "Weekly_Total_Profit",
+  "Weekly_Total_Revenue",
+  "Weekly_Total_Operational_Cost",
+  "Weekly_Revenue_Leakage",
+  "Net_Profit",
+  "Profit_Margin",
+  "Revenue_per_Voyage_USD",
+  "Operational_Cost_USD"
+)
+
+# 2. Combine Ship_Type and Route_Type into one column, then select + pivot
+ship_data_long <- ship_data %>%
+  mutate(ShipRoute = paste(Ship_Type, Route_Type, sep = " - ")) %>%
+  select(ShipRoute, all_of(my_columns)) %>%
+  pivot_longer(
+    cols = -ShipRoute,
+    names_to = "Metric",
+    values_to = "Value"
+  ) %>%
+  drop_na()
+
+# 3. Plot ridgeline density distributions, faceted by each metric
+ggplot(ship_data_long, aes(x = Value, y = ShipRoute, fill = ShipRoute)) +
+  geom_density_ridges(alpha = 0.7, scale = 1) +
+  facet_wrap(~ Metric, scales = "free_x", ncol = 2) +  
+  theme_minimal() +
+  labs(
+    title = "Ridgeline Density of Key Profitability Metrics by Ship & Route",
+    x = "Value",
+    y = "Ship - Route"
+  ) +
+  scale_x_continuous(labels = scales::dollar_format()) +
+  theme(legend.position = "none")
+
+```
+
+## Pairwise Correlation of Key Profit & Cost Features
+
+rom the scatterplot matrix and correlation coefficients, we see a strong positive relationship between weekly revenue and weekly profit, indicating that higher revenue strongly elevates profitability. Operational cost also correlates positively with weekly revenue—implying more expensive voyages tend to generate higher revenue, but not necessarily an equivalent rise in net profit. Profit margin shows a clear positive link with net profit as well, though it seems less influenced by distance or cargo weight. Seasonal impact and distance traveled have only mild correlations with these profit/cost variables, suggesting that while factors like seasonal conditions or route length do matter, they’re not the primary drivers of overall profitability. These insights highlight revenue and cost management—and maintaining a high profit margin—as pivotal to boosting total profits in the data.
+
+```{r}
+#| fig-width: 10
+#| fig-height: 8
+
+
+# Update your numeric features with those most relevant to profit and cost:
+ship_data_num <- ship_data %>%
+  select(
+    Weekly_Total_Profit,
+    Weekly_Total_Operational_Cost,
+    Weekly_Total_Revenue,
+    Net_Profit,        # or Profit_per_Voyage_USD if you prefer per-voyage metrics
+    Profit_Margin,
+    Cargo_Weight_tons,
+    Seasonal_Impact_Score,
+    Distance_Traveled_nm
+  ) %>%
+  na.omit()
+
+# Generate the pairwise scatterplot matrix with correlation coefficients
+ggpairs(ship_data_num)
+
+```
+
+## K-Mean Clustering
+
+Below is a high‐level approach to perform K‐means clustering on Ship_Type and Route_Type but based on numeric profitability metrics (like revenue, cost, and profit). Because K‐means requires numeric features,first is to aggregate the dataset by (Ship_Type, Route_Type) and compute relevant revenue and cost statistics. Then clustering these route‐type/ship‐type combinations to discover natural groupings (e.g., high‐profit vs. low‐profit segments).
+
+```{r}
+
+ship_agg <- ship_data %>%
+  group_by(Ship_Type, Route_Type) %>%
+  summarise(
+    Avg_Revenue    = mean(Revenue_per_Voyage_USD, na.rm = TRUE),
+    Avg_Cost       = mean(Operational_Cost_USD, na.rm = TRUE),
+    Avg_Profit     = mean(Net_Profit, na.rm = TRUE),
+    Avg_Weekly_Rev = mean(Weekly_Total_Revenue, na.rm = TRUE),
+    Avg_Weekly_Cost= mean(Weekly_Total_Operational_Cost, na.rm = TRUE),
+    Avg_Weekly_Prof= mean(Weekly_Total_Profit, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+```
+
+```{r}
+ship_agg_numeric <- ship_agg %>%
+  select(-Ship_Type, -Route_Type)  # just keep numeric columns
+
+# Scale using base R (or use tidymodels recipe)
+ship_agg_scaled <- scale(ship_agg_numeric) %>%
+  as.data.frame()  # convert matrix back to data frame
+
+```
+
+```{r}
+set.seed(123)  # reproducibility
+k <- 3
+kmeans_model <- kmeans(ship_agg_scaled, centers = k, nstart = 10)
+
+# Store cluster assignments
+ship_agg$Cluster <- factor(kmeans_model$cluster)
+
+```
+
+```{r}
+ship_agg %>%
+  arrange(Cluster) %>%
+  select(Ship_Type, Route_Type, Cluster, Avg_Revenue, Avg_Cost, Avg_Profit)
+
+```
+
+```{r}
+ship_agg %>%
+  group_by(Cluster) %>%
+  summarise(
+    Avg_of_Avg_Revenue = mean(Avg_Revenue),
+    Avg_of_Avg_Cost    = mean(Avg_Cost),
+    Avg_of_Avg_Profit  = mean(Avg_Profit),
+    .groups = "drop"
+  )
+
+```
+
+```{r}
+library(factoextra)
+
+fviz_cluster(
+  object    = kmeans_model,
+  data      = ship_agg_scaled,
+  geom      = "point",
+  ellipse.type = "norm",
+  main      = paste("K-Means Clustering (k =", k, ")")
+)
+
+```
+
+### Clustering Conclusion
+
+By clustering Ship_Type + Route_Type combinations on their average revenue, cost, and profit, three distinct groups emerged: - Cluster 1 exhibits moderate revenue (around 510k) and cost (about 252k), resulting in a middle‐of‐the‐pack average profit. - Cluster 2 stands out for relatively higher average revenue (\~551k) and the lowest cost (\~247k), yielding the highest profit among the three clusters. - Cluster 3 shows slightly lower revenue (\~521k) than Cluster 2 but higher cost (\~269k), which lowers average profit compared to Cluster 2. Overall, Cluster 2 represents the most profitable “sweet spot,” suggesting that those ship–route combinations manage cost and generate revenue more effectively. Cluster 1 also operates decently, but may have room to optimize revenue or reduce costs further. Cluster 3, with elevated costs, may need special attention—either via cost‐reduction measures or route adjustments—to improve profit margins.
+
+## Numeric Variable Distributions
+
+These univariate density plots serve primarily as context for understanding how the numeric data is shaped—whether it’s skewed, multimodal, or contains extreme outliers. While they don’t directly solve profitability or operational questions, they do inform how best to prepare and interpret variables. For instance, highly skewed distributions (like Cost_per_NM) might require log transformations or outlier handling before further modeling. Beyond that, these plots act as a reference—helping confirm which metrics have mostly normal or uniform ranges, and which demand extra caution or pre‐processing steps in advanced analyses.
+
+```{r}
+ship_data %>%
+  ExpNumViz(target=NULL,
+            nlim=10,
+            Page=c(2,2))
+```
+
+## Pairwise Visualization with Net Profit
+
+These scatter plots compare Net_Profit to each numeric variable, giving a quick look at how profit relates (or doesn’t) to operational metrics such as distance traveled, cost, or revenue. Most features show no strong linear pattern with Net Profit, though some variables—like Operational_Cost_USD and Revenue_per_Voyage_USD—naturally form clearer positive or negative relationships (for example, higher revenue tends to coincide with higher net profit, while high operational costs often correlate with lower or negative net profit). By scanning across all charts, you can identify any notable clusters, outliers, or trends, guiding further analysis into which operational factors drive or hinder profitability.
+
+```{r}
+
+ship_data %>%
+  ExpNumViz(target="Net_Profit",
+            nlim=10,
+            Page=c(2,2)) #, theme="default")
+```
+
+## Categorical Feature Summary
+
+Most categorical features appear fairly balanced, with Ship_Type, Engine_Type, and Route_Type all splitting near evenly among their categories. Weather_Condition also has no single category overwhelmingly dominant, though “Calm” and “Moderate” lead slightly. Notably, Weekly_Frequency_Utilization_Label is highly skewed, with nearly 80% of voyages classified as “High,” while Voyage_Performance_Label is similarly dominated by “High” at around 69%. Weekly_Voyage_Count spreads evenly from 1 to 9 (about 10–12% each), indicating no single frequency bucket stands out significantly.
+
+```{r}
+#| fig-width: 12
+#| fig-height: 8
+
+ship_data %>%
+  ExpCatViz(target=NULL,
+            col = "sky blue",
+            clim=10,
+            margin=2,
+            Page=c(2,2),
+            sample=8)
+```
+
+## Boxplots of Key Financial Metrics
+
+These boxplots provide a concise overview of the distribution and potential outliers in net profit, revenue, operational cost, and profit margin. Visually, you can see where most voyages cluster (the boxes) along with any extreme values (the outliers). For instance, if the net profit boxplot shows a long upper whisker or multiple outliers, it suggests a small number of highly profitable voyages skewing the distribution. Conversely, a collection of outliers below the box indicates that certain voyages are particularly unprofitable or costly. Such deviations from the bulk of the data prompt further investigation into route choices, operational constraints, or pricing strategies that may be causing significant performance differences.
+
+```{r boxplots-grid, fig.width=10, fig.height=8}
+#| echo: false
+#| eval: false
+
+# Plot 1: Net Profit (scaled to thousands)
+p1 <- ggplot(ship_data, aes(y = Net_Profit)) +
+  geom_boxplot(fill = "steelblue", alpha = 0.7, outlier.shape = 19) +
+  scale_y_continuous(
+    labels = comma_format(scale = 1/1000, suffix = "K"),
+    name   = "Net Profit (in thousands USD)"
+  ) +
+  theme_minimal() +
+  labs(title = "Net Profit")
+
+# Plot 2: Revenue per Voyage (scaled to thousands)
+p2 <- ggplot(ship_data, aes(y = Revenue_per_Voyage_USD)) +
+  geom_boxplot(fill = "salmon", alpha = 0.7, outlier.shape = 19) +
+  scale_y_continuous(
+    labels = comma_format(scale = 1/1000, suffix = "K"),
+    name   = "Revenue (in thousands USD)"
+  ) +
+  theme_minimal() +
+  labs(title = "Revenue per Voyage")
+
+# Plot 3: Operational Cost per Voyage (scaled to thousands)
+p3 <- ggplot(ship_data, aes(y = Operational_Cost_USD)) +
+  geom_boxplot(fill = "darkgreen", alpha = 0.7, outlier.shape = 19) +
+  scale_y_continuous(
+    labels = comma_format(scale = 1/1000, suffix = "K"),
+    name   = "Cost (in thousands USD)"
+  ) +
+  theme_minimal() +
+  labs(title = "Operational Cost per Voyage")
+
+# Plot 4: Profit Margin (no scaling, remains on original scale)
+p4 <- ggplot(ship_data, aes(y = Profit_Margin)) +
+  geom_boxplot(fill = "orchid", alpha = 0.7, outlier.shape = 19) +
+  theme_minimal() +
+  labs(
+    title = "Profit Margin",
+    y = "Ratio (e.g., 0.2 = 20%)"
+  )
+
+# Arrange the 4 plots in a 2×2 grid using patchwork
+# (p1 + p2) /
+#  (p3 + p4)
+
+(p1 + p2 + p3) 
+
+(p4)
+
+```
+
+```{r shared-scales, fig.width=12, fig.height=8}
+library(tidyverse)
+library(patchwork)
+library(scales)
+
+# 1. Determine a common scale range for Net Profit, Revenue, and Cost
+common_min <- 0
+common_max <- max(
+  ship_data$Net_Profit,
+  ship_data$Revenue_per_Voyage_USD,
+  ship_data$Operational_Cost_USD,
+  na.rm = TRUE
+)
+
+# 2. Build the boxplots for p1, p2, p3 with the same y-axis limits
+p1 <- ggplot(ship_data, aes(y = Net_Profit)) +
+  geom_boxplot(fill = "steelblue", alpha = 0.7, outlier.shape = 19) +
+  scale_y_continuous(
+    limits = c(common_min, common_max),
+    labels = comma_format(scale = 1/1000, suffix = "K"),
+    name   = "Net Profit (in thousands USD)"
+  ) +
+  theme_minimal() +
+  labs(title = "Net Profit")
+
+p2 <- ggplot(ship_data, aes(y = Revenue_per_Voyage_USD)) +
+  geom_boxplot(fill = "salmon", alpha = 0.7, outlier.shape = 19) +
+  scale_y_continuous(
+    limits = c(common_min, common_max),
+    labels = comma_format(scale = 1/1000, suffix = "K"),
+    name   = "Revenue (in thousands USD)"
+  ) +
+  theme_minimal() +
+  labs(title = "Revenue per Voyage")
+
+p3 <- ggplot(ship_data, aes(y = Operational_Cost_USD)) +
+  geom_boxplot(fill = "darkgreen", alpha = 0.7, outlier.shape = 19) +
+  scale_y_continuous(
+    limits = c(common_min, common_max),
+    labels = comma_format(scale = 1/1000, suffix = "K"),
+    name   = "Cost (in thousands USD)"
+  ) +
+  theme_minimal() +
+  labs(title = "Operational Cost per Voyage")
+
+# 3. Profit Margin uses its original scale
+p4 <- ggplot(ship_data, aes(y = Profit_Margin)) +
+  geom_boxplot(fill = "orchid", alpha = 0.7, outlier.shape = 19) +
+  labs(
+    title = "Profit Margin",
+    y = "Ratio (e.g., 0.2 = 20%)"
+  ) +
+  theme_minimal()
+
+# 4. Arrange p1, p2, p3 in one row, and p4 in another
+(p1 + p2 + p3) /
+  p4
+```
+
+## Weekly Totals & Revenue Leakage Boxplots
+
+These four boxplots give a clear snapshot of how each voyage’s weekly revenue, costs, profit, and potential revenue loss compare across the dataset. The Weekly Total Revenue and Weekly Total Operational Cost plots help identify whether certain weeks stand out for unusually high or low financial throughput, while the Weekly Total Profit plot highlights weeks where cost efficiency translates into strong bottom lines—or where repeated unprofitable voyages magnify losses. The Revenue Leakage boxplot pinpoints how much potential revenue is lost if load factors are suboptimal, shining a light on opportunities to better utilize capacity.
+
+```{r boxplots-weekly-totals, fig.width=10, fig.height=8}
+#| echo: false
+#| eval: false
+
+p1 <- ggplot(ship_data, aes(y = Weekly_Total_Revenue)) +
+  geom_boxplot(fill = "steelblue", alpha = 0.7, outlier.shape = 19) +
+  scale_y_continuous(labels = comma_format(scale = 1/1000, suffix = "K")) +
+  labs(
+    title = "Weekly Total Revenue",
+    y = "Revenue (in thousands USD)"
+  ) +
+  theme_minimal()
+
+p2 <- ggplot(ship_data, aes(y = Weekly_Total_Operational_Cost)) +
+  geom_boxplot(fill = "salmon", alpha = 0.7, outlier.shape = 19) +
+  scale_y_continuous(labels = comma_format(scale = 1/1000, suffix = "K")) +
+  labs(
+    title = "Weekly Total Operational Cost",
+    y = "Cost (in thousands USD)"
+  ) +
+  theme_minimal()
+
+p3 <- ggplot(ship_data, aes(y = Weekly_Total_Profit)) +
+  geom_boxplot(fill = "darkgreen", alpha = 0.7, outlier.shape = 19) +
+  scale_y_continuous(labels = comma_format(scale = 1/1000, suffix = "K")) +
+  labs(
+    title = "Weekly Total Profit",
+    y = "Profit (in thousands USD)"
+  ) +
+  theme_minimal()
+
+p4 <- ggplot(ship_data, aes(y = Weekly_Revenue_Leakage)) +
+  geom_boxplot(fill = "orchid", alpha = 0.7, outlier.shape = 19) +
+  scale_y_continuous(labels = comma_format(scale = 1/1000, suffix = "K")) +
+  labs(
+    title = "Weekly Revenue Leakage",
+    y = "Leakage (in thousands USD)"
+  ) +
+  theme_minimal()
+
+# (p1 + p2) /
+#  (p3 + p4)
+
+# (p1 + p2 + p3 + p4) 
+(p1 + p2 + p3 + p4) +
+  plot_layout(ncol = 4)
+
+
+```
+
+```{r boxplots-uniform-scale, fig.width=16, fig.height=5}
+library(tidyverse)
+library(patchwork)
+library(scales)
+
+# 1. Compute a shared y-range based on the max across all columns of interest
+y_min <- 0
+y_max <- max(
+  ship_data$Weekly_Total_Revenue,
+  ship_data$Weekly_Total_Operational_Cost,
+  ship_data$Weekly_Total_Profit,
+  ship_data$Weekly_Revenue_Leakage,
+  na.rm = TRUE
+)
+
+# 2. Define helper for scale in thousands
+scale_thousands <- scale_y_continuous(
+  limits = c(y_min, y_max),
+  labels = comma_format(scale = 1/1000, suffix = "K")
+)
+
+# 3. Build each boxplot using the common y scale
+p1 <- ggplot(ship_data, aes(y = Weekly_Total_Revenue)) +
+  geom_boxplot(fill = "steelblue", alpha = 0.7, outlier.shape = 19) +
+  scale_thousands +
+  labs(
+    title = "Weekly Total Revenue",
+    y = "Revenue (in thousands USD)"
+  ) +
+  theme_minimal()
+
+p2 <- ggplot(ship_data, aes(y = Weekly_Total_Operational_Cost)) +
+  geom_boxplot(fill = "salmon", alpha = 0.7, outlier.shape = 19) +
+  scale_thousands +
+  labs(
+    title = "Weekly Total Operational Cost",
+    y = "Cost (in thousands USD)"
+  ) +
+  theme_minimal()
+
+p3 <- ggplot(ship_data, aes(y = Weekly_Total_Profit)) +
+  geom_boxplot(fill = "darkgreen", alpha = 0.7, outlier.shape = 19) +
+  scale_thousands +
+  labs(
+    title = "Weekly Total Profit",
+    y = "Profit (in thousands USD)"
+  ) +
+  theme_minimal()
+
+p4 <- ggplot(ship_data, aes(y = Weekly_Revenue_Leakage)) +
+  geom_boxplot(fill = "orchid", alpha = 0.7, outlier.shape = 19) +
+  scale_thousands +
+  labs(
+    title = "Weekly Revenue Leakage",
+    y = "Leakage (in thousands USD)"
+  ) +
+  theme_minimal()
+
+# 4. Arrange them in a single row (4 columns)
+(p1 + p2 + p3 + p4) +
+  plot_layout(ncol = 4)
+
+```
+
+## Revenue Distribution Across Ship Type, Route, Engine Type, and Weather Conditions
+
+These boxplots illustrate how revenue per voyage varies across Ship Type, Route Type, Engine Type, and Weather Conditions. The facets allow for a detailed comparison:
+
+-   Route Type (rows): Shows how different shipping routes impact revenue distribution.
+
+-   Engine Type (columns): Compares revenue performance across Diesel, HFO, and Steam Turbine engines.
+
+-   Weather Conditions (box colors): Highlights revenue variations under Calm, Moderate, and Rough conditions.
+
+This visualization helps identify which ship-route-engine-weather combinations yield higher or more stable revenue and where variability or inefficiencies may exist.
 
 ```{r}
 #| fig-height: 8
@@ -488,14 +1199,266 @@ ggplot(ship_data, aes(x = Ship_Type, y = Revenue_per_Voyage_USD / 1e6, fill = We
 
 ```
 
-### Use geom_smooth() with Aggregation (LOESS or GAM Smoothing)
+## Smoothed Revenue Trends by Operational Cost (Overall and Faceted by Ship Type)
+
+This visualization presents smoothed revenue trends relative to operational costs, first across all ship types and then faceted by individual ship categories.
+
+1.  Overall Trends (First Plot)
+
+    -   Shows how revenue per voyage changes with operational costs for different ship types (Bulk Carrier, Container Ship, Fish Carrier, Tanker).
+
+    -   Some ships, like Fish Carriers, exhibit nonlinear revenue patterns, while others, like Bulk Carriers, maintain relatively stable trends.
+
+2.  Faceted Trends by Ship Type (Second Plot)
+
+    -   Splits the analysis by ship type, making it easier to compare the impact of route types (Coastal, Long-haul, Short-haul, Transoceanic) within each ship category.
+
+    -   This helps identify whether certain routes consistently maximize revenue at specific cost levels.
+
+Key Insights
+
+-   Fish Carriers and Container Ships show volatile trends, with sharp peaks and dips, suggesting cost-sensitive revenue swings.
+
+-   Tankers and Bulk Carriers follow more gradual revenue shifts, indicating that their operational costs and revenue generation may be more stable.
+
+-   Route Type Differences: Coastal routes often have lower operational costs, while transoceanic routes may require higher spending but can also yield higher revenue.
+
+This analysis provides valuable insights for cost optimization and route planning, helping decision-makers refine pricing strategies, fleet deployment, and operational efficiency across different ship and route types.
 
 ```{r}
+#| fig-width: 12
+#| fig-height: 10
+
 ggplot(ship_data, aes(x = Operational_Cost_USD, y = Revenue_per_Voyage_USD, color = Ship_Type)) +
   geom_smooth(method = "loess", se = FALSE, linewidth = 1.2) +  # LOESS smooth to capture trends
   theme_minimal() +
-  labs(title = "Smoothed Revenue Trends by Operational Cost",
-       x = "Operational Cost (USD)",
-       y = "Revenue per Voyage (USD)")
+  labs(
+    title = "Smoothed Revenue Trends by Operational Cost",
+    x = "Operational Cost (K USD)",
+    y = "Revenue per Voyage (K USD)"
+  ) +
+  scale_x_continuous(labels = label_number(scale = 1/1000, suffix = "K")) + 
+  scale_y_continuous(labels = label_number(scale = 1/1000, suffix = "K"))
 
 ```
+
+```{r}
+#| fig-width: 12
+#| fig-height: 10
+
+# Create a new column combining Ship_Type and Route_Type
+ship_data <- ship_data %>%
+  mutate(ShipRoute = paste(Route_Type, sep = " - "))
+
+ggplot(ship_data, aes(x = Operational_Cost_USD, y = Revenue_per_Voyage_USD, color = ShipRoute)) +
+  geom_smooth(method = "loess", se = FALSE, linewidth = 1.2) +  # LOESS smoothing
+  facet_wrap(~ Ship_Type, scales = "free_x", ncol = 2) +  # Facet by Ship Type, 2 columns
+  theme_minimal() +
+  labs(
+    title = "Smoothed Revenue Trends by Operational Cost (Faceted by Ship Type)",
+    x = "Operational Cost (K USD)",
+    y = "Revenue per Voyage (K USD)",
+    color = "Route Type"
+  ) +
+  scale_x_continuous(labels = label_number(scale = 1/1000, suffix = "K")) + 
+  scale_y_continuous(labels = label_number(scale = 1/1000, suffix = "K")) +
+  theme(
+    legend.position = "bottom",
+    strip.text = element_text(size = 14, face = "bold"),  # Increase facet label size
+    panel.spacing = unit(2, "lines")  # Add spacing between facets
+  )
+
+```
+
+# Quarterly Sales vs. Profit by Ship-Route
+
+This bubble chart not only shows which ship–route pairs generate high or low revenue and profit, but also how deeply each segment impacts overall performance (via bubble size). Large, dark‐blue bubbles in the top‐right reflect routes delivering both strong sales and robust profit, signaling prime candidates for fleet expansion or replication of best practices. Conversely, large, dark‐red bubbles in the bottom‐left highlight routes draining resources—high‐priority for cost reduction, operational fixes, or reallocation of assets.
+
+Several key insights emerge:
+
+1.  Clustered High Performers: If you see multiple ship–route combos grouped together in the top‐right quadrant, it suggests common traits (e.g., route distance, cargo type, or maintenance strategy) that drive success. Replicating these traits in underperforming areas can boost overall margins.
+
+2.  Unexpected Low Profit Despite High Sales: Bubbles in the bottom‐right quadrant indicate possible inefficiencies (fuel cost, cargo handling, or port fees) that erode profits. Tackling these inefficiencies can turn high‐revenue voyages into solid profit contributors.
+
+3.  Niche Profit Scenarios: Small, dark‐blue bubbles in the top‐left quadrant show voyages that quietly generate healthy margins without massive sales. These might be specialized cargo or short‐haul routes where cost discipline yields strong returns.
+
+4.  Strategic Repositioning: Large red bubbles anywhere indicate hefty losses. Whether that’s due to low sales or negative profit, management should consider route optimization, pricing changes, or even withdrawing service from unsustainably unprofitable segments.
+
+Overall, the chart provides actionable intelligence for allocating resources, refining pricing, and guiding fleet deployment decisions. By pinpointing exactly which ship–route combos drive or undermine profitability, stakeholders can focus investment on the strongest segments and rapidly address cost drivers in underperforming ones—ensuring better operational efficiency and maximized returns in the quarters to come.
+
+```{r}
+#| fig-width: 24
+#| fig-height: 18
+
+library(ggplot2)
+library(scales)
+library(dplyr)
+library(lubridate)
+library(plotly)
+
+# Convert Date to a proper Date object if necessary (assumes "YYYY-MM-DD" format)
+ship_data <- ship_data %>%
+  mutate(Date = as.Date(Date, format = "%Y-%m-%d"))
+
+# Aggregate data quarterly by Ship_Type and Route_Type
+ship_data_quarterly <- ship_data %>%
+  mutate(
+    Quarter = paste0(year(Date), "-Q", quarter(Date)),
+    ShipRoute = paste(Ship_Type, Route_Type, sep = " - ")
+  ) %>%
+  group_by(Quarter, Ship_Type, Route_Type, ShipRoute) %>%
+  summarise(
+    Quarterly_Total_Revenue = sum(Weekly_Total_Revenue, na.rm = TRUE) / 1e6,  # in Million USD
+    Quarterly_Net_Profit    = sum(Net_Profit, na.rm = TRUE) / 1e6            # in Million USD
+  ) %>%
+  ungroup() %>%
+  mutate(
+    Sales_Percentile  = percent_rank(Quarterly_Total_Revenue) * 100,
+    Profit_Percentile = percent_rank(Quarterly_Net_Profit)    * 100
+  )
+
+# Create Bubble Chart:
+#  - X-axis: Sales_Percentile
+#  - Y-axis: Profit_Percentile
+#  - Bubble size: absolute profit magnitude
+#  - Bubble color: sign and magnitude of profit (red for negative, blue for positive)
+
+p <- ggplot(ship_data_quarterly, aes(
+  x    = Sales_Percentile,
+  y    = Profit_Percentile,
+  size = abs(Quarterly_Net_Profit),        # Bubble size: absolute profit
+  color = Quarterly_Net_Profit,           # Bubble color: negative to positive
+  text = paste(
+    "Ship-Route:", ShipRoute, "<br>",
+    "Quarter:", Quarter, "<br>",
+    "Sales (M):", round(Quarterly_Total_Revenue, 2), "<br>",
+    "Profit (M):", round(Quarterly_Net_Profit, 2)
+  )
+)) +
+  # Slight transparency to reduce overlap
+  geom_point(alpha = 0.6) +
+  
+  # Quadrant reference lines
+  geom_hline(yintercept = 50, linetype = "dashed", color = "gray40") +
+  geom_vline(xintercept = 50, linetype = "dashed", color = "gray40") +
+  
+  # Quadrant labels (slightly smaller text)
+  annotate("text", x =  5, y = 90, label = "Low Sales\nHigh Profits",  hjust = 0, size = 4) +
+  annotate("text", x = 75, y = 90, label = "High Sales\nHigh Profits", hjust = 0, size = 4) +
+  annotate("text", x =  5, y = 10, label = "Low Sales\nLow Profits",   hjust = 0, size = 4) +
+  annotate("text", x = 75, y = 10, label = "High Sales\nLow Profits",  hjust = 0, size = 4) +
+  
+  # Percent-based axes
+  scale_x_continuous(labels = label_percent(scale = 1), limits = c(0, 100)) +
+  scale_y_continuous(labels = label_percent(scale = 1), limits = c(0, 120)) +
+  
+  # Bubble size & color scales
+  scale_size_continuous(range = c(2, 12), name = "Profit Magnitude (Million)") +
+  scale_color_gradient2(
+    low = "red", mid = "white", high = "blue",
+    midpoint = 0,
+    name = "Profit (Million)"
+  ) +
+  
+  # Labels & theme
+  labs(
+    title = "Quarterly Sales vs Profit by Ship & Route",
+    x     = "Percentile of Quarterly Sales",
+    y     = "Percentile of Quarterly Profit"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    legend.position = "right",
+    panel.grid.minor = element_blank()  # Remove minor grid lines for less clutter
+  )
+
+# Convert to interactive plot with hover tooltips
+ggplotly(p, tooltip = "text")
+
+```
+
+# Summary & Conclusion
+
+A broad exploratory data analysis (EDA) was conducted to evaluate shipping performance from multiple perspectives—including operational cost structures, revenue patterns, load utilization, and overall profitability. Throughout the analysis, a key assumption was that maintenance, fuel, and other overhead expenses were already embedded in each voyage’s operational cost. This allowed a focused look at profitability and ship–route performance without dissecting individual expense types.
+
+Key Insights
+
+1.  Profitability Distribution
+
+    -   Certain voyages deliver consistently high net profit, while others demonstrate significant negative margins. This gap underscores how effectively cost efficiency and route selection drive financial outcomes.
+
+    -   High revenue does not necessarily guarantee strong profit, suggesting that cost factors—even if aggregated—can still erode otherwise promising voyages.
+
+2.  Route & Ship Type Variations
+
+    -   Examining metrics by route type and ship type illuminates distinct operational profiles: some routes thrive with higher revenue or profit, while others reveal cost inefficiencies or require cargo optimization.
+
+    -   Maintenance status, if reflected in cost, may still affect performance differently across the fleet, indicating a need for ongoing upkeep and operational improvements.
+
+3.  Load Utilization & Revenue Leakage
+
+    -   Insights into average load percentage and potential revenue leakage highlight the financial cost of underutilized capacity. Demand consolidation or dynamic pricing can alleviate partially filled voyages. This includes weekly increase of usage of ships that have low utilization.
+
+4.  Visual Analytics & Bivariate Trends
+
+    -   Bubble charts and other visual analyses, such as sales vs. profit distributions, reveal clear quadrant patterns. Ship–route combinations in the top‐right quadrant (high revenue, high profit) represent operational success, while those in the bottom‐left require immediate attention or potential route realignment.
+
+## Overall Conclusion
+
+Under the assumption that all relevant costs (maintenance, fuel, etc.) are wrapped into a single operational cost, the focus on voyage profitability clearly identifies which ship–route combinations achieve strong margins and which underperform. High‐performing segments are candidates for scaling or replicating best practices, whereas weaker routes—especially those with large negative profit—may demand cost‐reduction strategies, improved cargo strategies, or potential withdrawal from service. Leveraging these findings enables more precise allocation of resources and targeted optimizations in scheduling and pricing, ultimately strengthening both efficiency and profitability across shipping operations.
+
+# Future Research
+
+Future research could delve deeper by disaggregating operational costs (e.g., separating maintenance, fuel, and overheads) to pinpoint specific inefficiencies, while also investigating route demand patterns (seasonal fluctuations or market changes) for better cargo allocation and analyzing additional ship attributes (engine efficiency, capacity) to isolate optimal configurations. Integrating predictive modeling would provide forward‐looking cost and revenue forecasts under different operational scenarios, further supporting data‐driven decisions. Beyond profitability, evaluating Environmental, Social, and Governance (ESG) criteria—such as emissions intensity, alternative fuel adoption, and crew welfare—could reveal how green energy solutions and sustainable practices might reduce a vessel’s carbon footprint and comply with evolving regulatory standards. Combining these approaches would produce a holistic assessment of financial performance and environmental responsibility, guiding shipping operations toward both greater profitability and long‐term sustainability.
+
+# Appendix:
+
+The list of libraries used for the assignment.
+
+-   [**tidyverse**](https://www.tidyverse.org/): A collection of R packages (including dplyr, tidyr, readr, purrr, and more) for data manipulation, exploration, and visualization that share an underlying design philosophy.
+
+-   **ggplot2**: The foundation of the Tidyverse visualization framework, implementing the grammar of graphics to create flexible, layered plots.
+
+-   **skimr**: Provides a convenient summary of data frames, including descriptive statistics for each column.
+
+-   **janitor**: Helps clean and format data frames, particularly useful for making column names consistent and removing duplicates.
+
+-   **SmartEDA**: Automates Exploratory Data Analysis tasks, generating summary statistics, univariate distributions, and more with minimal effort.
+
+-   **easystats**: A suite of packages (e.g., performance, parameters, effectsize) that unify and streamline statistical analyses in R.
+
+-   **gtsummary**: Creates publication-ready summary tables of regression models, descriptive statistics, and more.
+
+-   **ggstatsplot**: Extends ggplot2 by adding statistical details (p-values, confidence intervals) into plots, streamlining the creation of exploratory data visualizations with statistical results.
+
+-   **knitr**: Powers dynamic report generation, allowing R code to be woven into documents (e.g., R Markdown) with embedded outputs and plots.
+
+-   **kableExtra**: Enhances knitr’s kable function, adding styling, formatting, and complex features (like scrollable boxes) to HTML/LaTeX tables.
+
+-   [**patchwork**](https://patchwork.data-imaginist.com/): Simplifies the arrangement of multiple ggplot2-based visualizations into composite figures for improved storytelling.
+
+-   **GGally**: Extends ggplot2 by offering several functions to plot correlation matrices, pairwise scatterplots, parallel coordinate plots, and more.
+
+-   [**ggridges**](https://wilkelab.org/ggridges/): Enables creation of ridgeline plots, useful for visualizing distribution changes over time or across categories.
+
+-   **lubridate**: Facilitates working with dates and times in R, providing intuitive functions to parse, extract, and manipulate time components.
+
+-   [**scales**](https://scales.r-lib.org/): Supports improved data labeling, annotation, and scale transformations for ggplot2, including formatters for percentages, currency, and more.
+
+-   [**ggthemes**](https://jrnold.github.io/ggthemes/): Provides additional themes, scales, and geoms to enhance the appearance of ggplot2 visualizations.
+
+-   [**ggpubr**](https://rpkgs.datanovia.com/ggpubr/): Supplies functions for creating publication-ready plots with minimal effort, facilitating tasks like adding p-values or significance bars.
+
+-   [**gganimate**](https://gganimate.com/): Extends ggplot2 to include animation capabilities, making it possible to visualize dynamic changes over time.
+
+-   [**ggdist**](https://mjskay.github.io/ggdist/): Offers tools for visualizing statistical distributions and uncertainties, such as interval and distribution geoms for ggplot2.
+
+-   [**ggtext**](https://wilkelab.org/ggtext/): Enhances text rendering and formatting in ggplot2, enabling rich markdown/HTML styling within plot labels.
+
+-   [**ggalt**](https://github.com/hrbrmstr/ggalt): A collection of geoms, coordinates, and statistics extending ggplot2 (e.g., dumbbell plots, polar coordinate enhancements).
+
+-   [**ggextra**](https://cran.r-project.org/package=ggExtra): Adds marginal plots and supplementary visual elements (histograms, density plots) to ggplot2 graphics.
+
+-   [**cowplot**](https://wilkelab.org/cowplot/): Offers tools for creating publication-quality ggplot2 figures, including alignment functions and consistent themes.
+
+-   [**ggnewscale**](https://github.com/eliocamp/ggnewscale): Allows definition of multiple independent scales within a single ggplot2 visualization, helpful for complex multivariate displays.
