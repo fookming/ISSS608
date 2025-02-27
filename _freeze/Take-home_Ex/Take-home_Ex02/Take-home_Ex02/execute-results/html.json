@@ -1,0 +1,15 @@
+{
+  "hash": "4ca91a7aa206f65cacb067010bb6b0b3",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Take Home Exercise 02 (Work in Progress....)\"\nauthor: \"Ee Fook Ming\"\ndate: \"February 8, 2025\"\ndate-modified: last-modified\nexecute:\n  echo: true\n  eval: false\n  warning: false\n  freeze: true\nformat:\n  html:\n    toc: true\n    number-sections: true\n---\n\n\n\n[Analyzing Singapore’s International Trade: Trends, Visualization Enhancements, and Time-Series Insights]{style=\"font-size: 44px; font-weight: bold;\"}\n\n# Introduction\n\nGlobal trade has undergone significant transformations in recent years, particularly since 2015, influenced by geopolitical events, economic policies, and shifting trade agreements. This analysis explores Singapore’s international trade trends by examining Merchandise Trade by Region/Market data from the Department of Statistics Singapore (DOS).\n\nThe objectives of this study are as follows:\n\n1.  Critique & Improve Trade Visualizations – Analyze three existing trade-related visualizations, assess their strengths and weaknesses, and propose enhanced designs.\n\n2.  Develop Data-Driven Visual Insights – Utilize R and ggplot2 to recreate the selected visualizations, ensuring a more effective presentation of trade patterns.\n\n3.  Perform Time-Series Analysis – Apply statistical methods to identify trade trends and forecast future movements using time-series models.\n\nThis study enhances the clarity and effectiveness of trade data visualization, leveraging data analytics techniques to uncover meaningful patterns in Singapore’s international trade.\n\n# Download and Prepare the Data\n\n## Load Library using Pacman\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\npacman::p_load(tidyverse, \n               ggplot2, \n               skimr,  # For data summary \n               janitor, # For cleaning column names\n               SmartEDA,\n               easystats,\n               gtsummary,\n               ggstatsplot,\n               knitr,\n               kableExtra,\n               patchwork,\n               GGally,\n               ggridges,\n               lubridate,\n               scales)\n```\n:::\n\n\n\n## Load and Inspect Data\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nship_data <- read.csv(\"data/Ship_Performance_Dataset.csv\")\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

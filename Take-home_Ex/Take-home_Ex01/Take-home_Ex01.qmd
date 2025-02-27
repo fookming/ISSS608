@@ -516,7 +516,7 @@ This metric compares each voyage’s weekly frequency to the average frequency (
 Below is a hypothetical range for the Weekly Frequency Utilization Score, aligning closely with industry best practices and reflecting the distribution observed in the processed ship_data. These thresholds may be refined further based on further benchmarks or changing market conditions.
 
 | Score Range | Category | Interpretation |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | ≥ 0.35 | High | Frequent sailings at solid load levels (75th percentile or above) |
 | 0.20 – 0.34 | Medium | Sufficient frequency and moderate capacity usage |
 | 0.05 – 0.19 | Low | Infrequent sailings or partially filled voyages |

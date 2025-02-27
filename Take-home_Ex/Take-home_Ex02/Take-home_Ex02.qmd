@@ -1,0 +1,60 @@
+---
+title: "Take Home Exercise 02 (Work in Progress....)"
+author: "Ee Fook Ming"
+date: "February 8, 2025"
+date-modified: last-modified
+execute:
+  echo: true
+  eval: false
+  warning: false
+  freeze: true
+format:
+  html:
+    toc: true
+    number-sections: true
+---
+
+[Analyzing Singapore’s International Trade: Trends, Visualization Enhancements, and Time-Series Insights]{style="font-size: 44px; font-weight: bold;"}
+
+# Introduction
+
+Global trade has undergone significant transformations in recent years, particularly since 2015, influenced by geopolitical events, economic policies, and shifting trade agreements. This analysis explores Singapore’s international trade trends by examining Merchandise Trade by Region/Market data from the Department of Statistics Singapore (DOS).
+
+The objectives of this study are as follows:
+
+1.  Critique & Improve Trade Visualizations – Analyze three existing trade-related visualizations, assess their strengths and weaknesses, and propose enhanced designs.
+
+2.  Develop Data-Driven Visual Insights – Utilize R and ggplot2 to recreate the selected visualizations, ensuring a more effective presentation of trade patterns.
+
+3.  Perform Time-Series Analysis – Apply statistical methods to identify trade trends and forecast future movements using time-series models.
+
+This study enhances the clarity and effectiveness of trade data visualization, leveraging data analytics techniques to uncover meaningful patterns in Singapore’s international trade.
+
+# Download and Prepare the Data
+
+## Load Library using Pacman
+
+```{r}
+pacman::p_load(tidyverse, 
+               ggplot2, 
+               skimr,  # For data summary 
+               janitor, # For cleaning column names
+               SmartEDA,
+               easystats,
+               gtsummary,
+               ggstatsplot,
+               knitr,
+               kableExtra,
+               patchwork,
+               GGally,
+               ggridges,
+               lubridate,
+               scales)
+```
+
+## Load and Inspect Data
+
+```{r}
+ship_data <- read.csv("data/Ship_Performance_Dataset.csv")
+
+```

@@ -3,3 +3,5 @@ title: "ISSS608"
 ---
 
 Welcome to **ISSS608 Visual Analytic and Applications**. In this website, you will find my coursework prepared for the course.
+
+![](images/clipboard-3544312950.png)

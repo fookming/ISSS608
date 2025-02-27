@@ -24,10 +24,12 @@ website:
           href: "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html"
         - text: "Hands-on Exercise 5"
           href: "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html"
-#        - text: "Hands-on Exercise 6"
-#          href: "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex06.html"
-#        - text: "Hands-on Exercise 7"
-#          href: "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex07.html"
+        - text: "Hands-on Exercise 6"
+          href: "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex06.html"
+        - text: "Hands-on Exercise 7"
+          href: "Hands-on_Ex/Hands-on_Ex07/Hands-on_Ex07.html"
+        - text: "Hands-on Exercise 8"
+          href: "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html"
           
     - text: "In-class Exercise"
       menu:
@@ -36,18 +38,24 @@ website:
         - text: "In-class Exercise 2"
           href: "https://public.tableau.com/app/profile/fook.ming.ee/viz/In-classEx02_17377901895230/Dashboard2"
         - text: "In-class Exercise 3"
-          href: https://public.tableau.com/app/profile/fook.ming.ee/viz/In-classEx03-MyFirstStory/Story1
+          href: "https://public.tableau.com/app/profile/fook.ming.ee/viz/In-classEx03-MyFirstStory/Story1"
         - text: "In-class Exercise 4"
           href: "In-class_Ex/In-class_Ex04/In-class_Ex04.html"
         - text: "In-class Exercise 5"
           href: "In-class_Ex/In-class_Ex05/In-class_Ex05.html"
-          
+        - text: "In-class Exercise 5 - Tableau Heatmap 1"
+          href: "https://public.tableau.com/app/profile/fook.ming.ee/viz/In-class_Ex05_Tableau_21/Sheet1"
+        - text: "In-class Exercise 5 - Tableau Heatmap 2"
+          href: "https://public.tableau.com/app/profile/fook.ming.ee/viz/In-class_Ex05_Tableau_22/Sheet2"
+        - text: "In-class Exercise 6"
+          href:  "https://isss608eefm.shinyapps.io/In-class_Ex06/"
 
     - text: "Take-home Exercise"
       menu:
         - text: "Take-home Exercise 1"
           href: "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html"
-
+        - text: "Take-home Exercise 2"
+          href: "Take-home_Ex/Take-home_Ex02/Take-home_Ex02.html"
 
 #          menu:
 #            - text: "Part 1: Programming Interactive Data Visualisation with R"

@@ -12,7 +12,6 @@ format:
 
 Lesson 5 is about exploration of effective techniques for visually analyzing multivariate data—datasets with multiple variables—using principles of data visualization. It examines various visualization techniques, highlighting their effectiveness in representing multivariate data and advocating for methods that enhance clarity, comparison, and insight. The practice illustrates the importance of designing visualizations that reveal relationships and patterns without overwhelming the viewer, promoting clarity, simplicity, and perceptual efficiency. The lesson provides practical guidance on choosing the right visual representations to enhance analytical insights from complex datasets.
 
-
 There are five parts to the Exercise 5:
 
 -   [Building Ternary Plot with R](Part_01/Hands-on_Ex05-1.qmd)
@@ -20,5 +19,3 @@ There are five parts to the Exercise 5:
 -   [Visual Multivariate Analysis with Heatmap](Part_03/Hands-on_Ex05-3.qmd).
 -   [Visual Multivariate Analysis with Parallel Coordinates Plot](Part_04/Hands-on_Ex05-4.qmd).
 -   [Treemap Visualisation with R](Part_05/Hands-on_Ex05-5.qmd)
-
-

@@ -5,7 +5,7 @@ date: "February 9, 2025"
 date-modified: last-modified
 execute:
   echo: true
-  eval: false
+  eval: true
   warning: false
   freeze: true
   fig-width: 12
@@ -41,7 +41,7 @@ By the end of this hands-on exercise you will be able create the followings data
 Write a code chunk to check, install and launch the following R packages: scales, viridis, lubridate, ggthemes, gridExtra, readxl, knitr, data.table and tidyverse.
 
 ```{r}
-#| code-fold: true
+#| code-fold: false
 
 pacman::p_load(scales, viridis, lubridate, ggthemes, gridExtra, readxl, knitr, data.table, CGPfunctions, ggHoriPlot, tidyverse)
 ```
@@ -71,7 +71,7 @@ For the purpose of this hands-on exercise, *eventlog.csv* file will be used. Thi
 First, you will use the code chunk below to import *eventlog.csv* file into R environment and called the data frame as *attacks*.
 
 ```{r}
-attacks <- read_csv("../data/eventlog.csv")
+attacks <- read_csv("data/eventlog.csv")
 ```
 
 ### Examining the data structure
@@ -178,7 +178,6 @@ theme(axis.ticks = element_blank(),
 ```
 
 ::: callout-tip
-
 #### Thing to learn from the code chunk
 
 -   a tibble data table called *grouped* is derived by aggregating the attack by *wkday* and *hour* fields.
@@ -192,9 +191,7 @@ theme(axis.ticks = element_blank(),
 
 ![](images/clipboard-1514388677.png)
 
-Then we can simply group the count by hour and wkday and plot it, since we
-know that we have values for every combination there’s no need to
-further preprocess the data.
+Then we can simply group the count by hour and wkday and plot it, since we know that we have values for every combination there’s no need to further preprocess the data.
 
 ### Building Multiple Calendar Heatmaps
 
@@ -262,13 +259,9 @@ ggplot(top4_attacks,
         legend.text = element_text(size = 6) )
 ```
 
-![](images/clipboard-1183549509.png)
-
 ## Plotting Cycle Plot
 
-In this section, you will learn how to plot a cycle plot showing the
-time-series patterns and trend of visitor arrivals from Vietnam
-programmatically by using ggplot2 functions.
+In this section, you will learn how to plot a cycle plot showing the time-series patterns and trend of visitor arrivals from Vietnam programmatically by using ggplot2 functions.
 
 ![](images/clipboard-3155384785.png)
 
@@ -369,9 +362,7 @@ rice %>%
 ```
 
 ::: callout-tip
-
 #### Things to learn from the code chunk above
 
 For effective data visualisation design, `factor()` is used convert the value type of *Year* field from numeric to factor.
-
 :::

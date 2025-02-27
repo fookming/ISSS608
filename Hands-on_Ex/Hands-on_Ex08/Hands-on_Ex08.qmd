@@ -1,0 +1,30 @@
+---
+title: "Hands-on Exercise 8"
+author: "Ee Fook Ming"
+date: "February 22, 2025"
+date-modified: last-modified
+format:
+  html:
+    number-sections: false
+---
+
+# Exercise 8 Overview - Visualing and Analyzing Geographic Data
+
+These exercise covers the following topics in-depth and help you to develop analytic and visualing capability in Geospatial data:
+
+-   Introducing map
+-   Properties of geographical data
+-   Typology of map
+-   Thematic mapping techniques
+    -   Proportional symbol map
+    -   Choropleth map
+    -   Data Classification
+-   Alternative mapping techniques
+
+![](images/clipboard-332100980.png)
+
+There are three parts to the Exercise 8:
+
+-   [Choropleth Mapping in R](Part_01/Hands-on_Ex08-1.qmd)
+-   [Visualising Geospatial Point Data](Part_01/Hands-on_Ex08-2.qmd)
+-   [Analytical Mapping](Part_01/Hands-on_Ex08-3.qmd)
