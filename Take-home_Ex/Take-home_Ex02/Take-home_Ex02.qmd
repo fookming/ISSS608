@@ -35,21 +35,11 @@ This study enhances the clarity and effectiveness of trade data visualization, l
 ## Load Library using Pacman
 
 ```{r}
-pacman::p_load(tidyverse, 
-               ggplot2, 
-               skimr,  # For data summary 
-               janitor, # For cleaning column names
-               SmartEDA,
-               easystats,
-               gtsummary,
-               ggstatsplot,
-               knitr,
-               kableExtra,
-               patchwork,
-               GGally,
-               ggridges,
-               lubridate,
-               scales)
+pacman::p_load(tidyverse, # kiasu loading
+               ggplot2, # Creating plots
+               readxl, # Reading excel files
+               plotly, # Interactive visualization
+               dplyr). # data manipulation
 ```
 
 ## Load and Inspect Data
@@ -58,3 +48,47 @@ pacman::p_load(tidyverse,
 ship_data <- read.csv("data/Ship_Performance_Dataset.csv")
 
 ```
+
+# Data Visualization Use Case #1
+
+![](images/clipboard-2655939894.png)
+
+## The Pros
+
+Clear structure & intuitive layout
+
+-   The use of stacked bars for each year, with exports and imports distinguished by color, makes it easy to compare trends across years.
+
+-   The total trade value is prominently displayed for each year, reinforcing key takeaways.
+
+Effective color differentiation
+
+-   Different colors are used for exports and imports, which helps distinguish between the two.
+
+-   The use of pastel shades prevents visual clutter while maintaining clarity.
+
+Good use of labels and alignment
+
+-   Each bar is labeled with the exact trade value, avoiding the need for readers to estimate values.
+
+-   The numbers are aligned well with the bars, reducing ambiguity.
+
+Key insights highlighted
+
+-   The 6.6% increase in total trade for 2024 is clearly emphasized, making it easy for viewers to grasp the key trend.
+
+-   The visual design incorporates icons (e.g., money bag for increase in trade), which adds an engaging element.
+
+### The Cons
+
+Lack of percentage growth for individual components
+
+-   The chart mentions an overall 6.6% increase, but it does not show how much exports vs. imports changed separately.
+
+-   A breakdown of year-over-year percentage growth for exports and imports would provide more useful insights.
+
+Stacked bar charts can be misleading
+
+-   While stacked bars show the total trade amount, they do not effectively convey the individual growth or decline trends in exports vs. imports over time.
+
+-   A side-by-side bar chart or a line graph might better illustrate how exports and imports change independently rather than being part of a total sum.

@@ -49,6 +49,8 @@ website:
           href: "https://public.tableau.com/app/profile/fook.ming.ee/viz/In-class_Ex05_Tableau_22/Sheet2"
         - text: "In-class Exercise 6"
           href:  "https://isss608eefm.shinyapps.io/In-class_Ex06/"
+        - text: "In-class Exercise 7"
+          href: "In-class_Ex/In-class_Ex07/In-class_Ex07.html"
 
     - text: "Take-home Exercise"
       menu:

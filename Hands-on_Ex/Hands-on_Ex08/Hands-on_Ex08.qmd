@@ -26,5 +26,5 @@ These exercise covers the following topics in-depth and help you to develop anal
 There are three parts to the Exercise 8:
 
 -   [Choropleth Mapping in R](Part_01/Hands-on_Ex08-1.qmd)
--   [Visualising Geospatial Point Data](Part_01/Hands-on_Ex08-2.qmd)
--   [Analytical Mapping](Part_01/Hands-on_Ex08-3.qmd)
+-   [Visualising Geospatial Point Data](Part_02/Hands-on_Ex08-2.qmd)
+-   [Analytical Mapping](Part_03/Hands-on_Ex08-3.qmd)
