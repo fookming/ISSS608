@@ -1,20 +1,22 @@
 ---
-title: "Take Home Exercise 02 (Work in Progress....)"
+title: "Take Home Exercise 02"
 author: "Ee Fook Ming"
 date: "February 8, 2025"
 date-modified: last-modified
 execute:
   echo: true
-  eval: false
+  eval: true
   warning: false
   freeze: true
 format:
   html:
     toc: true
     number-sections: true
+    code-fold: true
+    code-summary: "Show code here"
 ---
 
-[Analyzing Singapore’s International Trade: Trends, Visualization Enhancements, and Time-Series Insights]{style="font-size: 44px; font-weight: bold;"}
+[**Analyzing Singapore’s International Trade: Trends, Visualization Enhancements, and Time-Series Insights**]{style="font-size: 44px; font-weight: bold;"}
 
 # Introduction
 
@@ -35,60 +37,1245 @@ This study enhances the clarity and effectiveness of trade data visualization, l
 ## Load Library using Pacman
 
 ```{r}
-pacman::p_load(tidyverse, # kiasu loading
-               ggplot2, # Creating plots
-               readxl, # Reading excel files
-               plotly, # Interactive visualization
-               dplyr). # data manipulation
+pacman::p_load(tidyverse, 
+               ggplot2, 
+               readxl, 
+               writexl,
+               prophet,
+               urca,
+               plotly, 
+               dplyr,
+               tidymodels,
+               timetk,
+               modeltime,
+               lubridate,
+               tseries,
+               ggfortify) 
+
 ```
 
 ## Load and Inspect Data
 
+This section covers the initial data loading and inspection steps. The datasets (T1, T2, and T3) represent original trade data for Imports, Domestic Exports, and Re-exports, respectively, downloaded directly from the official source. These datasets were manually curated by reorganizing "Region/Country" details into structured columns, establishing a clear relational database format for subsequent analyses. Additional datasets (T4—Total Exports, and T5—Trade Balance) were programmatically derived from these original datasets. A detailed description of further data wrangling, exploratory data analysis (EDA), and preparation specifically for time-series forecasting is provided separately in the Time-Series Analysis section.
+
+The original dataset:\
+![](images/clipboard-371169723.png)
+
+The curated dataset:
+
+![](images/clipboard-3261355965.png)
+
 ```{r}
-ship_data <- read.csv("data/Ship_Performance_Dataset.csv")
+
+# Read data from 'T1' sheet
+df_T1 <- read_excel("data/outputFile.xlsx", sheet = "T1")
+
+# Display first 10 records
+head(df_T1, 10)
+
 
 ```
 
-# Data Visualization Use Case #1
+# Data Visualization Critique 1 & Critique 2
 
-![](images/clipboard-2655939894.png)
+![](images/clipboard-1094533279.png){width="773"}
 
-## The Pros
+## Critique 1: Yearly Merchandise Trade (Stacked Bar Chart)
 
-Clear structure & intuitive layout
+### Pros:
 
--   The use of stacked bars for each year, with exports and imports distinguished by color, makes it easy to compare trends across years.
+-   **Clear Differentiation between Exports and Imports**:\
 
--   The total trade value is prominently displayed for each year, reinforcing key takeaways.
+    The visualization clearly distinguishes between imports and total exports (domestic + re-exports combined), facilitating straightforward comparisons.
 
-Effective color differentiation
+-   **Explicit Numerical Labels**:\
 
--   Different colors are used for exports and imports, which helps distinguish between the two.
+    Exact numerical values enhance clarity, helping viewers quickly grasp total trade volumes.
 
--   The use of pastel shades prevents visual clutter while maintaining clarity.
+-   **Emphasis on Total Trade Volume**:\
 
-Good use of labels and alignment
+    Useful for broadly summarizing annual trade activity, clearly showing overall growth (6.6%).
 
--   Each bar is labeled with the exact trade value, avoiding the need for readers to estimate values.
+### Cons:
 
--   The numbers are aligned well with the bars, reducing ambiguity.
+-   **Missing Trade Balance Representation**:\
 
-Key insights highlighted
+    Although imports and exports are displayed, the chart lacks explicit trade balance representation. Viewers must manually infer deficits or surpluses.
 
--   The 6.6% increase in total trade for 2024 is clearly emphasized, making it easy for viewers to grasp the key trend.
+-   **Overly Aggregated Export Data**:\
 
--   The visual design incorporates icons (e.g., money bag for increase in trade), which adds an engaging element.
+    Combining domestic exports and re-exports into total exports reduces analytical clarity. Domestic exports reflect economic production, while re-exports signify trade hub status, two fundamentally different insights that should be separately visualized.
 
-### The Cons
+-   **Lack of Growth Context (Year-on-Year)**:\
 
-Lack of percentage growth for individual components
+    Individual growth percentages for domestic exports, re-exports, or imports are not shown explicitly, limiting deeper economic analysis.
 
--   The chart mentions an overall 6.6% increase, but it does not show how much exports vs. imports changed separately.
+### Recommendation:
 
--   A breakdown of year-over-year percentage growth for exports and imports would provide more useful insights.
+-   Clearly separate domestic exports from re-exports in visuals.
 
-Stacked bar charts can be misleading
+-   Explicitly show trade balance (surplus/deficit).
 
--   While stacked bars show the total trade amount, they do not effectively convey the individual growth or decline trends in exports vs. imports over time.
+-   Include separate YoY growth percentages for clarity.
 
--   A side-by-side bar chart or a line graph might better illustrate how exports and imports change independently rather than being part of a total sum.
+-   Provide interactivity and historical data analysis.
+
+## Critique 2: Merchandise Trade with Major Trading Partners (Bubble Chart)
+
+### Pros:
+
+-   **Clear Representation of Trade Relationships**:\
+
+    Effectively shows whether Singapore is a net importer or exporter for each trading partner through bubble positioning above or below the diagonal.
+
+-   **Visual Highlighting of Key Partners**:\
+
+    Bubble sizes effectively depict the relative importance of trading partners, providing intuitive context.
+
+-   **Contextual Annotations and Notes**:\
+
+    Explanatory notes effectively clarify visual encoding and trade balance insights, reducing potential misinterpretation
+
+### Cons:
+
+-   **Lack of Explicit Trade Balance Values**:\
+
+    Although bubble positions implicitly reflect trade balance, explicit numerical trade surplus or deficit values per partner are missing, requiring visual estimation.
+
+-   **Aggregated Export Figures**:\
+
+    As with Critique 1, domestic exports and re-exports are combined, limiting insights into actual domestic economic strength versus logistical trade activity.
+
+-   **Limited Historical Context or Comparative Trends**:\
+
+    Shows only a snapshot for 2024 without comparative historical trends, restricting understanding of evolving trade dynamics.
+
+### Recommendation:
+
+-   Display explicit numerical values of trade surplus/deficit for each partner. Provide regional trade balance view for analysis.
+
+-   Consider breaking down exports into domestic and re-exports to deepen analysis.
+
+-   Provide historical comparison to highlight changing trade dynamics clearly.
+
+-   Provide interactivity
+
+## Combined Solution to Critique 1 & Critique 2:
+
+The proposed interactive visualization synthesizes strengths from both critiques, effectively resolving their respective limitations by:
+
+-   Clearly distinguishing among imports, domestic exports, re-exports, and total exports, addressing previous issues of data aggregation.
+
+-   Explicitly visualizing the trade balance, clearly indicating surpluses and deficits, removing the need for viewers to derive this information independently.
+
+-   Providing clear year-over-year percentage trends for each trade component, enhancing analytical depth and historical context.
+
+-   Incorporating interactive features (tooltips, dynamic annotations, multiple visualization modes such as stacked bar, bubble, and line charts) to boost analytical flexibility and user engagement.
+
+-   Focusing on regional-level analysis rather than country-specific detail alone, delivering a holistic, big-picture view of trade dynamics, thus enabling strategic insights at a broader economic scale.
+
+This approach provides a comprehensive solution, enhancing analytical clarity, interpretability, and overall effectiveness in trade data visualization.
+
+# Initial Interactive Sketch: Exploring Regional Merchandise Trade Dynamics
+
+![](images/clipboard-686280908.png)
+
+These two bar charts below serve as initial digital sketches, reflecting the structure of the manual sketch above featuring a moderate degree of interactivity, enabling the user to select specific years for analysis dynamically. Unlike traditional stacked bar charts—which aggregate multiple categories into single bars and can obscure direct comparisons—these separate grouped bar charts distinctly display imports, exports, and re-exports side-by-side. This visual separation makes it significantly easier to immediately see comparative trends across trade categories and regions, quickly highlighting imbalances, patterns, or outliers without requiring viewers to perform visual estimations. The interactive year-selection enhances analytical flexibility, allowing viewers to easily explore and compare annual trade shifts in a more intuitive and insightful manner.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show code here"
+
+###############################################################################
+# Libraries
+###############################################################################
+library(readxl)
+library(dplyr)
+library(stringr)
+library(plotly)
+
+###############################################################################
+# 1) Read Excel (Sheets "T1", "T2", and "T3") and Identify Years
+###############################################################################
+df_imports <- read_excel("data/outputFile.xlsx", sheet = "T1")
+df_exports <- read_excel("data/outputFile.xlsx", sheet = "T2")
+df_reexports <- read_excel("data/outputFile.xlsx", sheet = "T3")
+
+names(df_imports)[1] <- "Region"  # Ensure first column is "Region"
+names(df_exports)[1] <- "Region"
+names(df_reexports)[1] <- "Region"
+
+# We assume month columns start from the 3rd column
+all_cols <- names(df_imports)[3:ncol(df_imports)]
+
+# Extract unique years (first 4 characters of each month column)
+all_years <- sort(unique(str_sub(all_cols, 1, 4)))
+
+###############################################################################
+# 2) Aggregate Data for Each Year (Imports, Exports, and Re-exports in Millions)
+###############################################################################
+year_summary_list <- list()
+total_values_list <- list()
+
+for (yr in all_years) {
+  # Identify columns for the chosen year
+  month_cols <- all_cols[grepl(yr, all_cols)]
+  
+  # Sum the imports row-wise (in millions), group by Region, and round
+  df_imports_temp <- df_imports %>%
+    mutate(TotalImports = rowSums(across(all_of(month_cols)), na.rm = TRUE)) %>%
+    group_by(Region) %>%
+    summarise(TotalImportsRegion = sum(TotalImports, na.rm = TRUE)) %>%
+    mutate(TotalImportsRegion = round(TotalImportsRegion, 1))
+  
+  # Sum the exports row-wise (in millions), group by Region, and round
+  df_exports_temp <- df_exports %>%
+    mutate(TotalExports = rowSums(across(all_of(month_cols)), na.rm = TRUE)) %>%
+    group_by(Region) %>%
+    summarise(TotalExportsRegion = sum(TotalExports, na.rm = TRUE)) %>%
+    mutate(TotalExportsRegion = round(TotalExportsRegion, 1))
+  
+  # Sum the re-exports row-wise (in millions), group by Region, and round
+  df_reexports_temp <- df_reexports %>%
+    mutate(TotalReexports = rowSums(across(all_of(month_cols)), na.rm = TRUE)) %>%
+    group_by(Region) %>%
+    summarise(TotalReexportsRegion = sum(TotalReexports, na.rm = TRUE)) %>%
+    mutate(TotalReexportsRegion = round(TotalReexportsRegion, 1))
+  
+  # Merge imports, exports, and re-exports data
+  df_combined <- full_join(df_imports_temp, df_exports_temp, by = "Region")
+  df_combined <- full_join(df_combined, df_reexports_temp, by = "Region")
+  
+  year_summary_list[[yr]] <- df_combined
+  total_values_list[[yr]] <- paste(
+    "Imports:", sum(df_imports_temp$TotalImportsRegion, na.rm = TRUE), "M<br>",
+    "Domestic Exports:", sum(df_exports_temp$TotalExportsRegion, na.rm = TRUE), "M<br>",
+    "Re-exports:", sum(df_reexports_temp$TotalReexportsRegion, na.rm = TRUE), "M"
+  )
+}
+
+###############################################################################
+# 3) Build Plotly Figure (One Trace per Year)
+###############################################################################
+fig <- plot_ly()
+
+# Optional: define a custom color palette keyed by data type
+color_mapping <- c("Imports" = "#1f77b4", "Exports" = "#ff7f0e", "Re-exports" = "#2ca02c")
+
+for (i in seq_along(all_years)) {
+  yr <- all_years[i]
+  df_year <- year_summary_list[[yr]]
+  
+  fig <- fig %>% add_trace(
+    data         = df_year,
+    x            = ~Region,
+    y            = ~TotalImportsRegion,
+    type         = "bar",
+    name         = "Imports",
+    color        = I(color_mapping["Imports"]),
+    text         = ~paste0(round(TotalImportsRegion / 1000, 1), "k"),
+    textposition = "outside",
+    visible      = (i == 1)
+  ) %>% add_trace(
+    data         = df_year,
+    x            = ~Region,
+    y            = ~TotalExportsRegion,
+    type         = "bar",
+    name         = "Exports",
+    color        = I(color_mapping["Exports"]),
+    text         = ~paste0(round(TotalExportsRegion / 1000, 1), "k"),
+    textposition = "outside",
+    visible      = (i == 1)
+  ) %>% add_trace(
+    data         = df_year,
+    x            = ~Region,
+    y            = ~TotalReexportsRegion,
+    type         = "bar",
+    name         = "Re-exports",
+    color        = I(color_mapping["Re-exports"]),
+    text         = ~paste0(round(TotalReexportsRegion / 1000, 1), "k"),
+    textposition = "outside",
+    visible      = (i == 1)
+  )
+}
+
+###############################################################################
+# 4) Dropdown Menu for Year Selection
+###############################################################################
+buttons <- list()
+n_years <- length(all_years)
+
+default_year <- all_years[1]
+
+title_text <- paste("Sum of Imports, Exports & Re-exports by Region in", default_year, "(in Millions)")
+annotation_text <- total_values_list[[default_year]]
+
+for (i in seq_along(all_years)) {
+  visibility <- rep(FALSE, 3 * n_years)
+  visibility[(3 * i - 2):(3 * i)] <- TRUE
+  
+  buttons[[i]] <- list(
+    method = "update",
+    args = list(
+      list(visible = visibility),
+      list(title = paste("Sum of Imports, Exports & Re-exports by Region in", all_years[i], "(in Millions)"),
+           annotations = list(
+             list(
+               x = 1.1,
+               y = 1,
+               xref = "paper",
+               yref = "paper",
+               text = total_values_list[[all_years[i]]],
+               showarrow = FALSE,
+               align = "left"
+             )
+           )
+      ),
+      list(yaxis = list(title = ""))
+    ),
+    label = all_years[i]
+  )
+}
+
+fig <- fig %>% layout(
+  title = title_text,
+  updatemenus = list(
+    list(
+      active = 0,
+      buttons = buttons,
+      x = 0,
+      y = 1.1
+    )
+  ),
+  legend = list(x = 1.05, y = 0.5),
+  annotations = list(
+    list(
+      x = 1.1,
+      y = 1,
+      xref = "paper",
+      yref = "paper",
+      text = annotation_text,
+      showarrow = FALSE,
+      align = "left"
+    )
+  ),
+  yaxis = list(title = "")
+)
+
+# Display the interactive Plotly figure
+fig
+
+```
+
+```{r}
+
+
+###############################################################################
+# Libraries
+###############################################################################
+library(readxl)
+library(dplyr)
+library(stringr)
+library(plotly)
+
+###############################################################################
+# 1) Read Excel (Sheets "T1", "T2", and "T3") and Identify Years
+###############################################################################
+df_imports <- read_excel("data/outputFile.xlsx", sheet = "T1")
+df_exports <- read_excel("data/outputFile.xlsx", sheet = "T2")
+df_reexports <- read_excel("data/outputFile.xlsx", sheet = "T3")
+
+names(df_imports)[1] <- "Region"  # Ensure first column is "Region"
+names(df_exports)[1] <- "Region"
+names(df_reexports)[1] <- "Region"
+
+# We assume month columns start from the 3rd column
+all_cols <- names(df_imports)[3:ncol(df_imports)]
+
+# Extract unique years (first 4 characters of each month column)
+all_years <- sort(unique(str_sub(all_cols, 1, 4)))
+
+###############################################################################
+# 2) Aggregate Data for Each Year (Imports and Exports in K Millions)
+###############################################################################
+year_summary_list <- list()
+total_values_list <- list()
+
+for (yr in all_years) {
+  # Identify columns for the chosen year
+  month_cols <- all_cols[grepl(yr, all_cols)]
+  
+  # Sum imports by region and convert to K Millions
+  df_imports_temp <- df_imports %>%
+    group_by(Region) %>%
+    summarise(TotalImportsRegion = sum(across(all_of(month_cols)), na.rm = TRUE) / 1e3) %>%
+    mutate(TotalImportsRegion = round(TotalImportsRegion, 1))
+
+  # Sum domestic exports and re-exports by region and combine into "Exports"
+  df_exports_temp <- df_exports %>%
+    group_by(Region) %>%
+    summarise(TotalExportsRegion = sum(across(all_of(month_cols)), na.rm = TRUE))
+
+  df_reexports_temp <- df_reexports %>%
+    group_by(Region) %>%
+    summarise(TotalReexportsRegion = sum(across(all_of(month_cols)), na.rm = TRUE))
+
+  # Compute total exports (T2 + T3) by region
+  df_combined_exports <- df_exports_temp %>%
+    inner_join(df_reexports_temp, by = "Region") %>%
+    mutate(TotalExportsRegion = (TotalExportsRegion + TotalReexportsRegion) / 1e3) %>%  # Convert to K Millions
+    select(Region, TotalExportsRegion) %>%
+    mutate(TotalExportsRegion = round(TotalExportsRegion, 1))
+
+  # Merge imports and exports data
+  df_combined <- full_join(df_imports_temp, df_combined_exports, by = "Region")
+
+  # Compute national totals for annotation
+  total_imports <- sum(df_combined$TotalImportsRegion, na.rm = TRUE)
+  total_exports <- sum(df_combined$TotalExportsRegion, na.rm = TRUE)
+
+  # Store total values per year
+  total_values_list[[yr]] <- paste(
+    "Imports:", round(total_imports, 1), "K M<br>",
+    "Exports:", round(total_exports, 1), "K M"
+  )
+
+  year_summary_list[[yr]] <- df_combined
+}
+
+###############################################################################
+# 3) Build Plotly Figure (Imports vs Exports per Year)
+###############################################################################
+fig <- plot_ly()
+
+# Define color mapping
+color_mapping <- c("Imports" = "#1f77b4", "Exports" = "#ff7f0e")
+
+for (i in seq_along(all_years)) {
+  yr <- all_years[i]
+  df_year <- year_summary_list[[yr]]
+  
+  fig <- fig %>% add_trace(
+    data         = df_year,
+    x            = ~Region,
+    y            = ~TotalImportsRegion,
+    type         = "bar",
+    name         = "Imports",
+    color        = I(color_mapping["Imports"]),
+    text         = ~paste0(round(TotalImportsRegion, 1), "K M"),
+    textposition = "outside",
+    visible      = (i == 1)
+  ) %>% add_trace(
+    data         = df_year,
+    x            = ~Region,
+    y            = ~TotalExportsRegion,
+    type         = "bar",
+    name         = "Exports",
+    color        = I(color_mapping["Exports"]),
+    text         = ~paste0(round(TotalExportsRegion, 1), "K M"),
+    textposition = "outside",
+    visible      = (i == 1)
+  )
+}
+
+###############################################################################
+# 4) Dropdown Menu for Year Selection
+###############################################################################
+buttons <- list()
+n_years <- length(all_years)
+
+default_year <- all_years[1]
+
+title_text <- paste("Imports & Exports by Region in", default_year, "(in K Millions)")
+annotation_text <- total_values_list[[default_year]]
+
+for (i in seq_along(all_years)) {
+  visibility <- rep(FALSE, 2 * n_years)
+  visibility[(2 * i - 1):(2 * i)] <- TRUE
+  
+  buttons[[i]] <- list(
+    method = "update",
+    args = list(
+      list(visible = visibility),
+      list(title = paste("Imports & Exports by Region in", all_years[i], "(in K Millions)"),
+           annotations = list(
+             list(
+               x = 1.1,
+               y = 1,
+               xref = "paper",
+               yref = "paper",
+               text = total_values_list[[all_years[i]]],
+               showarrow = FALSE,
+               align = "left"
+             )
+           )
+      ),
+      list(yaxis = list(title = "K Millions", tickformat = ",.0f")) # FIX Y-AXIS SCALING
+    ),
+    label = all_years[i]
+  )
+}
+
+fig <- fig %>% layout(
+  title = title_text,
+  updatemenus = list(
+    list(
+      active = 0,
+      buttons = buttons,
+      x = 0,
+      y = 1.1
+    )
+  ),
+  legend = list(x = 1.05, y = 0.5),
+  annotations = list(
+    list(
+      x = 1.1,
+      y = 1,
+      xref = "paper",
+      yref = "paper",
+      text = annotation_text,
+      showarrow = FALSE,
+      align = "left"
+    )
+  ),
+  yaxis = list(title = "K Millions", tickformat = ",.0f") # FIX Y-AXIS SCALING
+)
+
+# Display the interactive Plotly figure
+fig
+
+
+```
+
+# Interactive Year-over-Year Trade Analysis Dashboard (Shiny Application)
+
+This fully interactive Shiny application is designed as a comprehensive solution addressing the previously identified limitations in the initial static visualizations (Critique 1: yearly stacked bars; Critique 2: bubble charts by trading partner). Unlike earlier visuals, this dynamic dashboard distinctly separates Imports, Domestic Exports, Re-exports, Total Exports, and explicitly calculates the Trade Balance, delivering immediate analytical clarity.
+
+It features robust user-driven interactivity, allowing customization by:
+
+-   Region: Users can quickly pivot from global to targeted regional analysis, obtaining both big-picture insights and specific regional trade patterns.
+
+-   Quarter: Facilitates detailed seasonal analysis, helping to identify periodic economic fluctuations and trends.
+
+-   Start and End Dates: Offers flexibility in timeframe selection, enabling in-depth historical trend analysis or shorter-term comparisons.
+
+-   Year-over-Year (YoY): Explicitly displays YoY percentage changes across categories, allowing users to easily identify growth or decline dynamics that were previously obscured in static visualizations.
+
+Additionally, the integrated responsive data table adjusts seamlessly based on user selections, providing instant and precise numerical context alongside the visual charts. This enhances analytical rigor and interpretability, eliminating the ambiguity of visually estimating figures and manually calculating trade balances.
+
+Overall, this Shiny dashboard comprehensively resolves previous visualization shortcomings, providing an intuitive, interactive, and insightful analytical tool that greatly facilitates strategic decision-making, economic forecasting, and clear communication of trade insights.
+
+```{r}
+#| fig-width: 24
+#| fig-length: 12
+
+library(htmltools)
+tags$iframe(src="https://isss608eefm.shinyapps.io/Take-home_Ex02_Shiny_1/", 
+            width="100%", height="600px")
+
+```
+
+[**Link to the Shiny App Daskboard**](https://isss608eefm.shinyapps.io/Take-home_Ex02_Shiny_1)
+
+# Time-series Analysis
+
+## Clean-up Data for Time-series Analysis
+
+This R script processes trade data from Excel sheets ("T1", "T2", and "T3") by standardizing date formats, cleaning column headers to clearly reflect country or region names, and ensuring consistent naming conventions (e.g., renaming columns to "Date" and "All"). It utilizes libraries like `readxl`, `dplyr`, `stringr`, `lubridate`, and `writexl` to handle data extraction, cleaning, and exporting tasks efficiently. The final output, saved in a new Excel file (`ts_prep_final.xlsx`), provides cleaned and structured datasets ready for further analysis and visualization.
+
+```{r}
+
+# Load necessary libraries
+library(readxl)
+library(dplyr)
+library(stringr)
+library(lubridate)
+library(writexl)
+
+# Function to process each sheet
+process_sheet <- function(sheet_name) {
+  df <- read_excel("data/ts_prep.xlsx", sheet = sheet_name)
+  
+  # Rename first column to Date
+  colnames(df)[1] <- "Date"
+  
+  # Convert first column to Date format using lubridate
+  df$Date <- parse_date_time(df$Date, orders = "Y b")
+  
+  # Extract country/region names from column headers
+  extract_region_country <- function(column_name) {
+    parts <- unlist(str_split(column_name, "->"))
+    parts <- trimws(parts)  # Remove extra spaces
+    last_part <- tail(parts, 1)  # Get the last part
+    last_part <- str_remove(last_part, "\\(.*\\)")  # Correct escaping for parentheses
+    last_part <- str_trim(last_part)  # Remove trailing spaces
+    return(last_part)
+  }
+  
+  colnames(df)[-1] <- sapply(colnames(df)[-1], extract_region_country)
+  
+  # Update second column name to "All"
+  colnames(df)[2] <- "All"
+  
+  return(df)
+}
+
+# Process sheets T1, T2, and T3
+df_T1 <- process_sheet("T1")
+df_T2 <- process_sheet("T2")
+df_T3 <- process_sheet("T3")
+
+# Write to ts_prep_final.xlsx with respective sheet names
+write_xlsx(list(T1 = df_T1, T2 = df_T2, T3 = df_T3), "data/ts_prep_final.xlsx")
+
+
+
+
+```
+
+## Time-Series Analysis and Forecasting
+
+Time-series analysis plays a crucial role in understanding historical trends and making accurate forecasts for decision-making. This section focuses on analyzing and forecasting Singapore’s merchandise trade using structured time-series data extracted from Singstats. The dataset consists of three key trade components:
+
+-   T1: Imports
+
+-   T2: Domestic Exports
+
+-   T3: Re-Exports
+
+To enhance the analysis, two additional datasets have been derived:
+
+-   T4: Total Exports (T2 + T3)
+
+-   T5: Trade Balance (Total Exports - Imports)
+
+These datasets are stored in an Excel file, `ts_prep_final_2.xlsx`, with each component as a separate worksheet. The data has been transformed into a pivot-long format, making it suitable for time-series forecasting.
+
+```{r}
+# Load necessary libraries
+library(readxl)
+library(dplyr)
+library(tidymodels)
+library(timetk)
+library(modeltime)
+library(lubridate)
+library(writexl)
+library(ggplot2)
+library(tseries)
+library(ggfortify)
+
+# Read the data extracted from Singstats
+file_path <- "data/ts_prep_final.xlsx"
+df_T1 <- read_excel(file_path, sheet = "T1") # Imports
+df_T2 <- read_excel(file_path, sheet = "T2") # Domestic Exports
+df_T3 <- read_excel(file_path, sheet = "T3") # Re-Exports
+
+# Ensure the Date column is in Date format
+colnames(df_T1)[1] <- "Date"
+colnames(df_T2)[1] <- "Date"
+colnames(df_T3)[1] <- "Date"
+df_T1$Date <- as.Date(df_T1$Date)
+df_T2$Date <- as.Date(df_T2$Date)
+df_T3$Date <- as.Date(df_T3$Date)
+
+# Ensure numeric data and handle missing values
+df_T1 <- df_T1 %>% mutate(across(-Date, as.numeric, .names = "{.col}"))
+df_T2 <- df_T2 %>% mutate(across(-Date, as.numeric, .names = "{.col}"))
+df_T3 <- df_T3 %>% mutate(across(-Date, as.numeric, .names = "{.col}"))
+
+# Produce T4: Total Exports (Domestic Exports + Re-Exports)
+df_T4 <- df_T2 %>%
+  left_join(df_T3, by = "Date", suffix = c("_T2", "_T3")) %>%
+  mutate(across(-Date, ~ .x + get(sub("_T2", "_T3", cur_column())), .names = "{.col}")) %>%
+  select(Date, ends_with("_T2")) %>%
+  rename_with(~ sub("_T2", "", .), ends_with("_T2"))
+
+# Produce T5: Trade Balance (Total Exports - Imports)
+df_T5 <- df_T4 %>%
+  left_join(df_T1, by = "Date", suffix = c("_T4", "_T1")) %>%
+  mutate(across(-Date, ~ .x - get(sub("_T4", "_T1", cur_column())), .names = "{.col}")) %>%
+  select(Date, ends_with("_T4")) %>%
+  rename_with(~ sub("_T4", "", .), ends_with("_T4"))
+
+# Save the final structured data with new sheets
+ts_prep_final_2_path <- "data/ts_prep_final_2.xlsx"
+write_xlsx(list(
+  T1 = df_T1,
+  T2 = df_T2,
+  T3 = df_T3,
+  T4 = df_T4,
+  T5 = df_T5
+), ts_prep_final_2_path)
+
+
+```
+
+The R script processes merchandise trade data by importing Excel sheets on imports, domestic exports, and re-exports, then standardizing date formats and ensuring numeric consistency across datasets. It computes two key derived metrics—**total exports** (domestic exports plus re-exports) and **trade balance** (total exports minus imports)—to clarify trade surpluses or deficits. The final structured datasets are saved into a single Excel file (`ts_prep_final_2.xlsx`), clearly organized and ready for detailed regional analysis, visualization, and strategic insight.
+
+## Step #0: Setup the R Environment
+
+-   Install and load the required R packages required for time-series tasks (`tidyverse`, `timetk`, `modeltime`, etc.).
+
+-   These libraries help with data manipulation, visualization, stationarity testing, and forecasting.
+
+### **Import and Clean Data:**
+
+-   Load the dataset (e.g., from an Excel file).
+
+-   Rename the date column and convert it to Date format.
+
+-   Ensure numeric data types, handling missing or infinite values.
+
+-   The data wrangling process described above are done to produce ts_prep_final.xlsx and ts_prep_final_2.xlsx
+
+## Step #1: Define Objectives
+
+We will perform time-series analysis and forecasting for the following (selectively):
+
+-   T1 (Imports) → Forecast future import trends
+-   T2 (Domestic Exports) → Analyze export growth patterns
+-   T3 (Re-Exports) → Predict re-export fluctuations
+-   T4 (Total Exports) → Identify overall export performance
+-   T5 (Trade Balance) → Forecast trade surplus/deficit
+
+## Step #2: Time-Series EDA
+
+Before forecasting, historical trends are analysed:
+
+### **Visualize and Analyse the Time-Series**
+
+-   Identify seasonality & trends
+
+-   Detect anomalies & missing values
+
+-   Plot the raw time series to observe trends, seasonality, and anomalies.
+
+-   Look for patterns, such as periodic spikes or increasing trends.
+
+### **Check for Stationarity (ADF Test, ACF/PACF Plots)**
+
+-   ADF Test: Determines if the data is stationary or non-stationary.
+
+    -   If p-value \> 0.05, the data is non-stationary.
+
+    -   If p-value \< 0.05, the data is stationary.
+
+-   ACF/PACF plots: Show how past values influence future values.
+
+    -   Helps determine AR (AutoRegressive) and MA (Moving Average) components for ARIMA models.
+
+### T5 - Trade Balance by Regions
+
+The **T5 – Trade Balance by Regions** dataset is specifically used for time-series analysis and forecasting because it captures the net economic position (surplus or deficit) of trade activities, offering clear insights into a region’s trade health and overall economic sustainability. Unlike datasets showing only exports or imports separately, analyzing trade balance directly reveals underlying economic dynamics, trends, and vulnerabilities at a regional level. This makes it particularly valuable for forecasting, strategic planning, and policy-making, as changes in trade balance directly impact economic growth, currency valuation, and competitiveness.
+
+```{r}
+
+# Load necessary libraries
+library(readxl)
+library(dplyr)
+library(tidymodels)
+library(timetk)
+library(modeltime)
+library(lubridate)
+library(ggplot2)
+library(tseries)
+library(ggfortify)
+library(forecast)
+
+# Read the data from ts_prep_final_2.xlsx
+file_path <- "data/ts_prep_final_2.xlsx"
+df_T1 <- read_excel(file_path, sheet = "T1") # Imports
+df_T2 <- read_excel(file_path, sheet = "T2") # Domestic Exports
+df_T3 <- read_excel(file_path, sheet = "T3") # Re-Exports
+df_T4 <- read_excel(file_path, sheet = "T4") # Total Exports
+df_T5 <- read_excel(file_path, sheet = "T5") # Trade Balance
+
+# Ensure the Date column is in Date format
+colnames(df_T1)[1] <- "Date"
+df_T1$Date <- as.Date(df_T1$Date)
+df_T2$Date <- as.Date(df_T2$Date)
+df_T3$Date <- as.Date(df_T3$Date)
+df_T4$Date <- as.Date(df_T4$Date)
+df_T5$Date <- as.Date(df_T5$Date)
+
+# Focus on specific regions: America, Asia, Africa, Europe, Oceania
+desired_regions <- c("America", "Asia", "Africa", "Europe", "Oceania")
+
+df_T1 <- df_T1 %>% select(Date, all_of(desired_regions)) %>% arrange(Date)
+df_T2 <- df_T2 %>% select(Date, all_of(desired_regions)) %>% arrange(Date)
+df_T3 <- df_T3 %>% select(Date, all_of(desired_regions)) %>% arrange(Date)
+df_T4 <- df_T4 %>% select(Date, all_of(desired_regions)) %>% arrange(Date)
+df_T5 <- df_T5 %>% select(Date, all_of(desired_regions)) %>% arrange(Date)
+
+
+# Visualize time-series data for each region (Trade Balance - T5)
+for (region in desired_regions) {
+  print(ggplot(df_T5, aes(x = Date, y = .data[[region]])) +
+          geom_line(color = "blue") +
+          labs(title = paste("Time-Series Plot for", region, "(Trade Balance)"),
+               x = "Date", y = "Value") +
+          theme_minimal())
+}
+
+
+```
+
+### **Summary of Time-Series Trends for Trade Balance (T5)**
+
+#### General Observations
+
+-   Highly Volatile Trends: All regions show significant fluctuations in trade balance over time.
+
+-   Short-Term Spikes & Dips: There are frequent sharp increases and decreases, indicating unstable trade balances.
+
+-   Clear Structural Changes: Noticeable trend shifts around 2019-2021, likely influenced by global economic events (e.g., COVID-19).
+
+#### Region-Specific Trends
+
+-   America:
+
+    -   Shows a declining trend in trade balance, frequently crossing negative values (trade deficit).
+
+    -   Large spikes post-2020, suggesting external trade shocks.
+
+-   Asia:
+
+    -   Strong upward trend in trade balance.
+
+    -   Some large fluctuations but overall positive trade balance.
+
+-   Africa:
+
+    -   Sharp increases and decreases, indicating inconsistent trade.
+
+    -   Spikes around 2008 and 2015, suggesting trade policy or economic shifts.
+
+-   Europe:
+
+    -   Noticeable long-term trade deficit, with frequent drops below zero.
+
+    -   Sharp declines post-2020, possibly due to changing trade agreements.
+
+-   Oceania:
+
+    -   Fluctuates around a stable range, but post-2020 increase suggests a potential improvement in trade balance.
+
+#### Key Insights
+
+-   America and Europe show more frequent trade deficits, while Asia consistently maintains a surplus.
+
+-   Sharp fluctuations indicate external shocks, policy changes, or economic instability.
+
+-   Prophet or ETS models might be better suited to handle the non-stationary nature of these trends.
+
+```{r}
+
+# Perform ADF test for each region (Trade Balance - T5)
+adf_results <- list()
+for (region in desired_regions) {
+  adf_results[[region]] <- adf.test(df_T5[[region]], alternative = "stationary")
+  print(paste("ADF Test for", region, "p-value:", adf_results[[region]]$p.value))
+}
+
+
+
+```
+
+### **Summary of ADF Test Results for Trade Balance (T5)**
+
+The Augmented Dickey-Fuller (ADF) test was conducted for each region to check for stationarity in Trade Balance (T5).
+
+**ADF Test Results & Interpretation**
+
+| Region      | p-value | Conclusion                 |
+|-------------|---------|----------------------------|
+| **America** | 0.1636  | Non-stationary (p \> 0.05) |
+| **Asia**    | 0.0835  | Non-stationary (p \> 0.05) |
+| **Africa**  | 0.3410  | Non-stationary (p \> 0.05) |
+| **Europe**  | 0.1797  | Non-stationary (p \> 0.05) |
+| **Oceania** | 0.2489  | Non-stationary (p \> 0.05) |
+
+**Key Takeaways**
+
+-   All regions are non-stationary (p-values \> 0.05).
+
+-   Differencing (d=1) is needed to transform the data into a stationary series.
+
+-   ARIMA may require differencing, or we can opt for ETS or Prophet, which handle trends naturally.
+
+**Next Steps**
+
+-   Apply first-order differencing (d=1) and re-check ADF.
+
+-   Re-run ACF/PACF to confirm model suitability.
+
+-   Proceed with ETS, ARIMA, or Prophet based on results.
+
+#### **Apply Differencing if Needed**
+
+-   If data is non-stationary, apply differencing (`diff()`) to remove trends.
+
+-   Check stationarity again after differencing (re-run the ADF test).
+
+-   Differencing makes the data suitable for ARIMA models, otherwise other models will be deployed based on evaluation whereby the best most accurate and agile model will be chosen.
+
+```{r}
+# Plot ACF and PACF for each region (Trade Balance - T5)
+for (region in desired_regions) {
+  print(autoplot(Acf(df_T5[[region]], lag.max = 36)) + labs(title = paste("ACF for", region)))
+  print(autoplot(Pacf(df_T5[[region]], lag.max = 36)) + labs(title = paste("PACF for", region)))
+}
+```
+
+### **Key Summary of ACF/PACF Analysis for Trade Balance (T5) - America, Asia, Africa, Europe and Oceania**
+
+They are similar in that all of their ACF/PACF plots show the same general patterns.
+
+-   ACF shows slow decay, confirming a non-stationary series.
+
+-   PACF has a strong spike at lag 1, suggesting an AR(1) process.
+
+-   First-order differencing (d=1) is needed to achieve stationarity.
+
+-   Potential ARIMA model: ARIMA(1,1,0) or ARIMA(1,1,1).
+
+-   ETS or Prophet could be alternatives since they handle trends naturally.
+
+**Next Steps**
+
+-   Apply differencing (d=1) and re-check ACF/PACF.
+
+-   Re-run the ADF test to confirm stationarity.
+
+-   Proceed with ARIMA, ETS, or Prophet for forecasting.
+
+Oceania's trade balance (T5) is non-stationary with a trend, requiring first-order differencing (d=1). Unlike other regions, its ACF decays slightly faster, and PACF suggests possible higher-order AR effects. ARIMA(1,1,0) or ARIMA(2,1,0) could be suitable, while ETS or Prophet remain strong alternatives for capturing trends and fluctuations.
+
+## Step #3: **Split Data into Training & Testing**
+
+-   Training set: Used to train the forecasting models (80% of data).
+
+-   Testing set: Used to evaluate model performance (20% of data)
+
+-   Ensures the model is tested on unseen data before forecasting.
+
+## **Setp #4: Fit Multiple Models (ETS, ARIMA, and Prophet)**
+
+-   ETS (Exponential Smoothing): Best for seasonal & trending data.
+
+-   ARIMA (AutoRegressive Integrated Moving Average): Works well for stationary data (after differencing).
+
+-   Prophet: Ideal for handling trends, seasonality, and missing data.
+
+## **Step #5: Calibrate Models & Evaluate Accuracy**
+
+-   Calibrate models using `modeltime_calibrate()`.
+
+-   Assess accuracy using `modeltime_accuracy()`, checking:
+
+    -   MAE (Mean Absolute Error) → Lower is better.
+
+    -   RMSE (Root Mean Squared Error) → Lower is better.
+
+    -   MAPE (Mean Absolute Percentage Error) → Lower is better.
+
+    -   R² (R-Squared) → Higher is better.
+
+## **Step #6: Select the Best Model and Forecast 12 Months Ahead**
+
+-   Pick the model with best accuracy scores.
+
+-   Use `modeltime_forecast()` to generate future predictions for 12 months.
+
+## **Step #7: Visualize and Save Forecast Results**
+
+-   Plot forecasts using `ggplot2` to compare model predictions.
+
+-   Save the forecast data (`write_xlsx()`) for project submission.
+
+```{r}
+# Function to process each region
+process_region <- function(region) {
+  cat("\nProcessing region:", region, "\n")
+  
+  # Prepare data
+  df_region <- df_T5 %>% select(Date, all_of(region)) %>% rename(Value = all_of(region))
+  
+  # Split into training (80%) and testing (20%)
+  splits <- initial_time_split(df_region, prop = 0.8)
+  training_data <- training(splits)
+  testing_data <- testing(splits)
+  
+  # Fit ETS Model
+  model_ets <- exp_smoothing() %>%
+    set_engine("ets") %>%
+    fit(Value ~ Date, data = training_data)
+  
+  # Fit Auto ARIMA Model
+  model_arima <- arima_reg() %>%
+    set_engine("auto_arima") %>%
+    fit(Value ~ Date, data = training_data)
+  
+  # Fit Prophet Model
+  model_prophet <- prophet_reg() %>%
+    set_engine("prophet") %>%
+    fit(Value ~ Date, data = training_data)
+  
+  # Create Model Table
+  models_tbl <- modeltime_table(
+    model_ets,
+    model_arima,
+    model_prophet
+  )
+  
+  # Calibrate Models
+  calibration_tbl <- models_tbl %>%
+    modeltime_calibrate(new_data = testing_data)
+  
+  # Evaluate Model Accuracy
+  accuracy_results <- calibration_tbl %>%
+    modeltime_accuracy()
+  
+  print(accuracy_results)
+  
+  # Forecast for the next 12 months
+  forecast_future <- calibration_tbl %>%
+    modeltime_refit(data = df_region) %>%
+    modeltime_forecast(
+      h = "12 months",
+      actual_data = df_region,
+      keep_data = TRUE
+    )
+  
+  # Plot Forecast
+  forecast_plot <- forecast_future %>%
+    ggplot(aes(x = .index, y = .value, color = .model_desc)) +
+    geom_line() +
+    labs(title = paste("12-Month Forecast for", region),
+         x = "Date", y = "Trade Balance", color = "Model") +
+    theme_minimal()
+  
+  print(forecast_plot)
+}
+
+# Process each region
+for (region in desired_regions) {
+  process_region(region)
+}
+```
+
+This R code defines a function `process_region` that forecasts trade balance for individual regions using three distinct time-series models: Exponential Smoothing (ETS), Auto ARIMA, and Prophet. For each specified region, it splits data into training (80%) and testing (20%) subsets, fits the models, evaluates their accuracy, and generates a calibrated 12-month forecast. Results, including accuracy metrics and a comparative visualization of forecasts, are printed for each region, facilitating informed decision-making through robust, model-driven insights into future trade balance trends.
+
+### Model Evaluation Summary
+
+Based on the evaluation metrics, Prophet performed best for America, Asia, and Europe, providing the lowest MAE and RMSE. ARIMA(1,1,1) was the most accurate for Africa, while ETS(M,A,N) performed best for Oceania. This suggests that trend-heavy regions benefit from Prophet's ability to handle non-stationarity, whereas ARIMA and ETS are more suitable where local patterns dominate. Future work can explore tuning ARIMA further or hybrid modeling approaches.
+
+```{r}
+# Create a summary table of model evaluation metrics for all regions
+library(tibble)
+library(knitr)
+library(kableExtra)
+
+summary_df <- tibble(
+  Region = c("America", "Asia", "Africa", "Europe", "Oceania"),
+  Best_Model = c("Prophet", "Prophet", "ARIMA(1,1,1)", "Prophet", "ETS(M,A,N)"),
+  MAE = c(800, 1582, 355, 767, 476),
+  MAPE = c(257, 28.6, 134, 54.9, 30.6),
+  MASE = c(1.07, 1.15, 1.82, 1.01, 1.33),
+  SMAPE = c(129, 27.9, 124, 37.0, 29.0),
+  RMSE = c(1018, 1918, 426, 934, 602),
+  R2 = c(0.158, 0.000964, 0.00743, 0.00202, 0.237)
+)
+
+# Display the summary table
+summary_df %>%
+  kable(format = "pipe", caption = "Model Evaluation Summary for Trade Balance Forecasting") %>%
+  kable_styling()
+
+
+```
+
+## Trade Balance: Best Model for Each Region - 12-Month Forecast
+
+### T5 Forecasting I
+
+```{r}
+#| warning: false
+#| message: false
+
+# Best Model for Each Region - 12-Month Forecast
+
+# Load necessary libraries
+library(readxl)
+library(dplyr)
+library(tidymodels)
+library(timetk)
+library(modeltime)
+library(lubridate)
+library(ggplot2)
+library(writexl)
+
+# Define best models for each region
+best_models <- list(
+  "America" = prophet_reg() %>% set_engine("prophet"),
+  "Asia" = prophet_reg() %>% set_engine("prophet"),
+  "Africa" = arima_reg() %>% set_engine("auto_arima"),
+  "Europe" = prophet_reg() %>% set_engine("prophet"),
+  "Oceania" = exp_smoothing() %>% set_engine("ets")
+)
+
+# Prepare the final forecast results list
+forecast_results <- list()
+
+# Process each region
+for (region in names(best_models)) {
+  cat("\nProcessing region:", region, "\n")
+  
+  # Prepare data
+  df_region <- df_T5 %>% select(Date, all_of(region)) %>% rename(Value = all_of(region))
+  
+  # Split into training (80%) and testing (20%)
+  splits <- initial_time_split(df_region, prop = 0.8)
+  training_data <- training(splits)
+  testing_data <- testing(splits)
+  
+  # Fit the best model
+  model_fit <- best_models[[region]] %>% fit(Value ~ Date, data = training_data)
+  
+  # Forecast for the next 12 months
+  forecast_tbl <- modeltime_table(model_fit) %>%
+    modeltime_refit(data = df_region) %>%
+    modeltime_forecast(
+      h = "12 months",
+      actual_data = df_region,
+      keep_data = TRUE
+    )
+  
+  # Store forecast results
+  forecast_results[[region]] <- forecast_tbl
+  
+  # Improved Forecast Plot
+  forecast_plot <- ggplot() +
+    geom_line(data = df_region, aes(x = Date, y = Value), color = "blue", size = 1, linetype = "solid") +
+    geom_line(data = forecast_tbl, aes(x = .index, y = .value, color = .model_desc), size = 1.2) +
+    labs(title = paste("Best Model Forecast for", region, "(12 Months)"),
+         x = "Date", y = "Trade Balance", color = "Model") +
+    theme_minimal() +
+    theme(legend.position = "bottom", text = element_text(size = 14))
+  
+  print(forecast_plot)
+}
+
+# Save forecast results into an Excel file
+write_xlsx(forecast_results, "data/forecast_T5_best_models.xlsx")
+
+
+```
+
+### T5 Forecasting II (Showing month-on-month change)
+
+Month-on-Month Change (Absolute):
+
+-   Displays the absolute month-on-month change (`.value - lag(.value)`) directly on the plot as numeric annotations.
+
+-   This shows the magnitude of trade balance changes from one month to the next explicitly, but importantly, not as percentages, rather as absolute differences (e.g., +569.4 or -326.7 million).
+
+-   Users can quickly interpret absolute trade balance fluctuations month-by-month.
+
+-   The clear visual distinction between historical and forecasted periods simplifies understanding how future forecasts relate directly to past performance.
+
+```{r}
+#| fig-width: 24
+#| fig-height: 12
+#| warning: false
+#| message: false
+
+
+# Load necessary libraries
+library(readxl)
+library(dplyr)
+library(tidymodels)
+library(timetk)
+library(modeltime)
+library(lubridate)
+library(ggplot2)
+library(writexl)
+library(purrr)
+library(gridExtra)
+
+# Read the forecasted data from each worksheet as a named list
+file_path <- "data/forecast_T5_best_models.xlsx"
+sheet_names <- excel_sheets(file_path)
+forecast_results <- map(set_names(sheet_names), ~ read_excel(file_path, sheet = .x))
+
+# Ensure .index column is in Date format
+forecast_results <- map(forecast_results, ~ mutate(.x, .index = as.Date(.index)))
+
+# Generate zoomed-in line chart for each region (2024-2025) with highlighted forecast area
+for (region in names(forecast_results)) {
+  forecast_tbl <- forecast_results[[region]]
+  
+  # Extract last actual data point and first forecasted data point
+  last_actual <- forecast_tbl %>% filter(.model_desc == "ACTUAL", .index == as.Date("2025-01-01"))
+  first_forecast <- forecast_tbl %>% filter(.model_desc != "ACTUAL", .index == as.Date("2025-02-01"))
+  
+  # Create a connection dataframe
+  connection_df <- bind_rows(last_actual, first_forecast)
+  
+  forecast_plot <- ggplot() +
+    geom_line(data = forecast_tbl %>% filter(.index >= as.Date("2024-01-01"), .model_desc == "ACTUAL"),
+              aes(x = .index, y = .value), color = "green", size = 1.5, linetype = "solid") +
+    geom_line(data = forecast_tbl %>% filter(.index >= as.Date("2024-01-01"), .model_desc != "ACTUAL"),
+              aes(x = .index, y = .value, color = .model_desc), size = 1.8) +
+    geom_line(data = connection_df, aes(x = .index, y = .value), color = "green", size = 1.5, linetype = "dashed") +
+    geom_rect(aes(xmin = as.Date("2025-01-01"), xmax = as.Date("2025-12-31"), 
+                  ymin = -Inf, ymax = Inf), fill = "lightblue", alpha = 0.2) +
+    labs(title = paste("Best Model Forecast for", region, "(2024-2025)"),
+         x = "Date", y = "Trade Balance (Million)", color = "Model") +
+    theme_minimal() +
+    theme(legend.position = "bottom", text = element_text(size = 16), 
+          axis.text.x = element_text(angle = 45, hjust = 1, size = 14), 
+          axis.text.y = element_text(size = 14), 
+          plot.title = element_text(size = 18, face = "bold")) +
+    scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+    geom_text(data = forecast_tbl %>% filter(.index >= as.Date("2024-01-01")) %>% 
+                mutate(yoy_change = .value - lag(.value)),
+              aes(x = .index, y = .value, label = round(yoy_change, 2)),
+              vjust = -1, size = 5, color = "blue")
+  
+  print(forecast_plot)
+}
+
+```
+
+# Conclusion
+
+This assignment developed a comprehensive interactive dashboard using Shiny for analyzing merchandise trade data. It effectively addresses earlier identified visualization limitations by clearly distinguishing imports, domestic exports, re-exports, total exports, and trade balance. Users can flexibly explore data trends, seasonal variations, and specific regional insights through interactive selection options. The resulting visualizations and data tables enhance clarity, enabling quick and intuitive interpretation of trade dynamics.
+
+# Future Work
+
+To extend this assignment further, future enhancements could include:
+
+-   Adding more detailed economic indicators or contextual data for deeper insights.
+
+-   Implementing advanced forecasting methods or ensemble modeling to improve forecast accuracy.
+
+-   Integrating scenario analysis features for exploring hypothetical trade scenarios interactively.
+
+-   Elevating the dashboard's functionality and user experience to match advanced capabilities found in commercial software applications like Tableau, Qlik, or SAS Viya—delivering comparable analytical power, interactivity, and usability at a fraction of the cost.
+
+![](images/clipboard-363472380.png){width="596"}
+
+Critique 3 closely mirrors the first two critiques in terms of its pros, cons, and overall recommendations. The main distinguishing factor is the additional time required to develop more advanced dashboard functionalities. These enhancements aim to support more complex interactions and greater flexibility within the existing Shiny applications.
+
+Key features expected in this enhancement include:
+
+-   Selection of a range of countries
+
+-   Filtering by type of services and commodities
+
+-   Analysis by quarters
+
+-   Additional interactive elements for deeper analysis
+
+The increased complexity of these features means that the development process will require more extensive effort and time, particularly in refining the user interface (UI) and ensuring seamless data integration.
