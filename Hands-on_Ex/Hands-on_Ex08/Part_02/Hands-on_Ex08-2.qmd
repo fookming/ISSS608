@@ -5,8 +5,9 @@ date: "February 25, 2025"
 date-modified: last-modified
 execute:
   echo: true
-  eval: false
+  eval: true
   warning: false
+  message: false
   freeze: true
   fig-width: 12
   fig-height: 8
@@ -24,16 +25,7 @@ output:
 
 ## Overview
 
-Proportional symbol maps (also known as graduate symbol maps) are a
-class of maps that use the visual variable of size to represent
-differences in the magnitude of a discrete, abruptly changing
-phenomenon, e.g. counts of people. Like choropleth maps, you can create
-classed or unclassed versions of these maps. The classed ones are known
-as range-graded or graduated symbols, and the unclassed are called
-proportional symbols, where the area of the symbols are proportional to
-the values of the attribute being mapped. In this hands-on exercise, you
-will learn how to create a proportional symbol map showing the number
-of wins by Singapore Pools’ outlets using an R package called **tmap**.
+Proportional symbol maps (also known as graduate symbol maps) are a class of maps that use the visual variable of size to represent differences in the magnitude of a discrete, abruptly changing phenomenon, e.g. counts of people. Like choropleth maps, you can create classed or unclassed versions of these maps. The classed ones are known as range-graded or graduated symbols, and the unclassed are called proportional symbols, where the area of the symbols are proportional to the values of the attribute being mapped. In this hands-on exercise, you will learn how to create a proportional symbol map showing the number of wins by Singapore Pools’ outlets using an R package called **tmap**.
 
 ## Learning outcome
 
@@ -41,9 +33,7 @@ By the end of this hands-on exercise, you will acquire the following skills by u
 
 -   To import an aspatial data file into R.
 
--   To convert it into simple point feature data frame and at the same
-    time, to assign an appropriate projection reference to the newly create
-    simple point feature data frame.
+-   To convert it into simple point feature data frame and at the same time, to assign an appropriate projection reference to the newly create simple point feature data frame.
 
 -   To plot interactive proportional symbol maps.
 
@@ -61,10 +51,7 @@ pacman::p_load(sf, tmap, tidyverse)
 
 The data set use for this hands-on exercise is called *SGPools_svy21*. The data is in csv file format.
 
-Figure below shows the first 15 records of SGPools_svy21.csv. It
-consists of seven columns. The XCOORD and YCOORD columns are the
-x-coordinates and y-coordinates of SingPools outlets and branches. They
-are in [Singapore SVY21 Projected Coordinates System](https://www.sla.gov.sg/sirent/CoordinateSystems.aspx).
+Figure below shows the first 15 records of SGPools_svy21.csv. It consists of seven columns. The XCOORD and YCOORD columns are the x-coordinates and y-coordinates of SingPools outlets and branches. They are in [Singapore SVY21 Projected Coordinates System](https://www.sla.gov.sg/sirent/CoordinateSystems.aspx).
 
 ![](images/clipboard-4278393375.png)
 
@@ -73,7 +60,7 @@ are in [Singapore SVY21 Projected Coordinates System](https://www.sla.gov.sg/sir
 The code chunk below uses *read_csv()* function of **readr** package to import *SGPools_svy21.csv* into R as a tibble data frame called *sgpools*.
 
 ```{r}
-sgpools <- read_csv("data/aspatial/SGPools_svy21.csv")
+sgpools <- read_csv("../data/aspatial/SGPools_svy21.csv")
 ```
 
 After importing the data file into R, it is important for us to examine if the data file has been imported correctly.
@@ -98,9 +85,7 @@ sgpools_sf <- st_as_sf(sgpools,
 
 Things to learn from the arguments above:
 
--   The *coords* argument requires you to provide the column name
-    of the x-coordinates first then followed by the column name of the
-    y-coordinates.
+-   The *coords* argument requires you to provide the column name of the x-coordinates first then followed by the column name of the y-coordinates.
 
 -   The *crs* argument required you to provide the coordinates system in epsg format. [EPSG: 3414](https://epsg.io/3414) is Singapore SVY21 Projected Coordinate System. You can search for other country’s epsg code by refering to [epsg.io](https://epsg.io/).
 
@@ -114,9 +99,7 @@ You can display the basic information of the newly created sgpools_sf by using t
 list(sgpools_sf)
 ```
 
-The output shows that sgppols_sf is in point feature class. It’s epsg ID
-is 3414. The bbox provides information of the extend of the geospatial
-data.
+The output shows that sgppols_sf is in point feature class. It’s epsg ID is 3414. The bbox provides information of the extend of the geospatial data.
 
 ### Drawing Proportional Symbol Map
 
@@ -142,9 +125,7 @@ tm_bubbles(col = "red",
 
 ### Lets make it proportional
 
-To draw a proportional symbol map, we need to assign a numerical
-variable to the size visual attribute. The code chunks below show that
-the variable *Gp1Gp2Winnings* is assigned to size visual attribute.
+To draw a proportional symbol map, we need to assign a numerical variable to the size visual attribute. The code chunks below show that the variable *Gp1Gp2Winnings* is assigned to size visual attribute.
 
 ```{r}
 tm_shape(sgpools_sf)+
