@@ -87,27 +87,31 @@ Using the steps you learned in previous lesson, install and load sf, tmap and ti
 :::
 
 ```{r}
-p1 <- tm_shape(NGA_wp) +
+p1 <- tm_shape(NGA_wp) + 
   tm_fill("wp_functional",
           n = 10,
           style = "equal",
-          palette = "Blues") +
-  tm_borders(lwd = 0.1,
-             alpha = 1) +
-  tm_layout(main.title = "Distribution of functional water point by LGAs",
-            legend.outside = FALSE)
+          palette = "brewer.blues") + 
+  tm_borders(lwd = 0.1, 
+             fill_alpha = 1) +  # Changed from 'alpha' to 'fill_alpha'
+  tm_title("Distribution of functional water point by LGAs") +  # Replaced tm_layout(main.title = ) with tm_title()
+  tm_layout(legend.outside = FALSE)  # Keep other layout settings
+
 ```
 
 ```{r}
-p2 <- tm_shape(NGA_wp) +
+
+p2 <- tm_shape(NGA_wp) + 
   tm_fill("total_wp",
           n = 10,
           style = "equal",
-          palette = "Blues") +
-  tm_borders(lwd = 0.1,
-             alpha = 1) +
-  tm_layout(main.title = "Distribution of total  water point by LGAs",
-            legend.outside = FALSE)
+          palette = "brewer.blues") + 
+  tm_borders(lwd = 0.1, 
+             fill_alpha = 1) +  # Changed from 'alpha' to 'fill_alpha'
+  tm_title("Distribution of total water point by LGAs") +  # Replaced tm_layout(main.title = ) with tm_title()
+  tm_layout(legend.outside = FALSE)  # Keep other layout settings
+
+
 ```
 
 ```{r}
@@ -140,6 +144,8 @@ Plot a choropleth map showing the distribution of percentage functional water po
 :::
 
 ```{r}
+
+
 tm_shape(NGA_wp) +
   tm_fill("pct_functional",
           n = 10,
@@ -150,6 +156,9 @@ tm_shape(NGA_wp) +
              alpha = 1) +
   tm_layout(main.title = "Rate map of functional water point by LGAs",
             legend.outside = TRUE)
+
+
+
 ```
 
 ## Extreme Value Maps
@@ -199,13 +208,10 @@ Source: [Chapter 19: Functions](https://r4ds.had.co.nz/functions.html#functions)
 Firstly, we will write an R function as shown below to extract a variable (i.e. *wp_nonfunctional*) as a vector out of an sf data.frame.
 
 -   arguments:
-
     -   vname: variable name (as character, in quotes)
 
     -   df: name of sf data frame
-
 -   returns:
-
     -   v: vector with values (without a column name)
 
 ```{r}
@@ -232,7 +238,7 @@ percentmap <- function(vnam, df, legtitle=NA, mtitle="Percentile Map"){
      tm_fill(vnam,
              title=legtitle,
              breaks=bperc,
-             palette="Blues",
+             palette="brewer.blues",
           labels=c("< 1%", "1% - 10%", "10% - 50%", "50% - 90%", "90% - 99%", "> 99%"))  +
   tm_borders() +
   tm_layout(main.title = mtitle, 

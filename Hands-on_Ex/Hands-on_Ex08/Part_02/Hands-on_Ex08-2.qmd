@@ -116,11 +116,13 @@ tmap_mode("view")
 The code chunks below are used to create an interactive point symbol map.
 
 ```{r}
-tm_shape(sgpools_sf)+
-tm_bubbles(col = "red",
+
+tm_shape(sgpools_sf) + 
+  tm_bubbles(fill = "red",
            size = 1,
-           border.col = "black",
-           border.lwd = 1)
+           col = "black",
+           lwd = 1)
+
 ```
 
 ### Lets make it proportional
@@ -128,11 +130,12 @@ tm_bubbles(col = "red",
 To draw a proportional symbol map, we need to assign a numerical variable to the size visual attribute. The code chunks below show that the variable *Gp1Gp2Winnings* is assigned to size visual attribute.
 
 ```{r}
-tm_shape(sgpools_sf)+
-tm_bubbles(col = "red",
-           size = "Gp1Gp2 Winnings",
-           border.col = "black",
-           border.lwd = 1)
+tm_shape(sgpools_sf) + 
+  tm_bubbles(fill = "red",
+             size = "Gp1Gp2 Winnings",
+             col = "black",
+             lwd = 1)
+
 ```
 
 ### Lets give it a different colour
@@ -140,11 +143,14 @@ tm_bubbles(col = "red",
 The proportional symbol map can be further improved by using the colour visual attribute. In the code chunks below, *OUTLET_TYPE* variable is used as the colour attribute variable.
 
 ```{r}
-tm_shape(sgpools_sf)+
-tm_bubbles(col = "OUTLET TYPE", 
-          size = "Gp1Gp2 Winnings",
-          border.col = "black",
-          border.lwd = 1)
+
+tm_shape(sgpools_sf) + 
+  tm_bubbles(fill = "OUTLET TYPE", 
+             size = "Gp1Gp2 Winnings",
+             col = "black",
+             lwd = 1)
+
+
 ```
 
 ### I have a twin brothers :)
@@ -152,14 +158,17 @@ tm_bubbles(col = "OUTLET TYPE",
 An impressive and little-know feature of **tmap**’s view mode is that it also works with faceted plots. The argument *sync* in *tm_facets()* can be used in this case to produce multiple maps with synchronised zoom and pan settings.
 
 ```{r}
-tm_shape(sgpools_sf) +
-  tm_bubbles(col = "OUTLET TYPE", 
-          size = "Gp1Gp2 Winnings",
-          border.col = "black",
-          border.lwd = 1) +
+
+
+tm_shape(sgpools_sf) + 
+  tm_bubbles(fill = "OUTLET TYPE", 
+             size = "Gp1Gp2 Winnings",
+             col = "black",
+             lwd = 1) + 
   tm_facets(by= "OUTLET TYPE",
             nrow = 1,
             sync = TRUE)
+
 ```
 
 Before you end the session, it is wiser to switch **tmap**’s Viewer back to plot mode by using the code chunk below.
@@ -173,23 +182,16 @@ tmap_mode("plot")
 ### All about **tmap** package
 
 -   [tmap: Thematic Maps in R](https://www.jstatsoft.org/article/view/v084i06)
-
 -   [tmap](https://cran.r-project.org/web/packages/tmap/index.html)
-
 -   [tmap: get started!](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html)
-
 -   [tmap: changes in version 2.0](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-changes-v2.html)
-
 -   [tmap: creating thematic maps in a flexible way (useR!2015)](http://von-tijn.nl/tijn/research/presentations/tmap_user2015.pdf)
-
 -   [Exploring and presenting maps with tmap (useR!2017)](http://von-tijn.nl/tijn/research/presentations/tmap_user2017.pdf)
 
 ### Geospatial data wrangling
 
 -   [sf: Simple Features for R](https://cran.r-project.org/web/packages/sf/index.html)
-
 -   [Simple Features for R: StandardizedSupport for Spatial Vector Data](https://journal.r-project.org/archive/2018/RJ-2018-009/RJ-2018-009.pdf)
-
 -   [Reading, Writing and Converting Simple Features](https://cran.r-project.org/web/packages/sf/vignettes/sf2.html)
 
 ### Data wrangling

@@ -191,23 +191,25 @@ qtm(mpsz_pop2020,
 Despite its usefulness of drawing a choropleth map quickly and easily, the disadvantge of *qtm()* is that it makes aesthetics of individual layers harder to control. To draw a high quality cartographic choropleth map as shown in the figure below, **tmap**’s drawing elements should be used.
 
 ```{r}
+
 tm_shape(mpsz_pop2020)+
-  tm_fill("DEPENDENCY", 
-          style = "quantile", 
-          palette = "Blues",
-          title = "Dependency ratio") +
-  tm_layout(main.title = "Distribution of Dependency Ratio by planning subzone",
-            main.title.position = "center",
-            main.title.size = 1.2,
-            legend.height = 0.45, 
-            legend.width = 0.35,
-            frame = TRUE) +
-  tm_borders(alpha = 0.5) +
+  tm_polygons(fill = "DEPENDENCY", 
+              fill.scale = tm_scale_intervals(
+                style = "quantile",
+                n = 5,
+                values = "brewer.blues"),
+              fill.legend = tm_legend(
+                title = "Dependency ratio")) +
+  tm_title("Distribution of Dependency Ratio by planning subzone") +
+  tm_layout(frame = TRUE) +
+  tm_borders(fill_alpha = 0.5) +
   tm_compass(type="8star", size = 2) +
-  tm_scale_bar() +
   tm_grid(alpha =0.2) +
   tm_credits("Source: Planning Sub-zone boundary from Urban Redevelopment Authorithy (URA)\n and Population data from Department of Statistics DOS", 
              position = c("left", "bottom"))
+
+
+
 ```
 
 In the following sub-section, we will share with you tmap functions that used to plot these elements.
@@ -250,27 +252,18 @@ tm_shape(mpsz_pop2020)+
 
 ```
 
+Notice that the planning subzones are shared according to the respective dependecy values
+
 To add the boundary of the planning subzones, tm_borders will be used as shown in the code chunk below.
 
 ```{r}
-#| eval: false
-tm_shape(mpsz_pop2020) +
-  tm_fill("DEPENDENCY") +
-  tm_borders(lwd = 0.1, fill_alpha = 1)
 
-# EFM
+tm_shape(mpsz_pop2020)+
+  tm_fill("DEPENDENCY") +
+  tm_borders(lwd = 0.1,  fill_alpha = 1)
+
 
 ```
-
-
-```{r}
-tm_shape(mpsz_pop2020) +
-  tm_fill("DEPENDENCY") +
-  tm_borders(lwd = 0.1, alpha = 1)
-
-```
-
-
 
 The *alpha* argument is used to define transparency number between 0 (totally transparent) and 1 (not transparent). By default, the alpha value of the col is used (normally 1).
 
@@ -294,14 +287,15 @@ To define a data classification method, the *style* argument of *tm_fill()* or *
 
 The code chunk below shows a quantile data classification that used 5 classes.
 
-
 ```{r}
-tm_shape(mpsz_pop2020) +
-  tm_fill("DEPENDENCY", style = "jenks", n = 5) +
+
+tm_shape(mpsz_pop2020)+
+  tm_fill("DEPENDENCY",
+          n = 5,
+          style = "jenks") +
   tm_borders(alpha = 0.5)
 
 ```
-
 
 In the code chunk below, *equal* data classification method is used.
 
@@ -445,22 +439,19 @@ Beside map style, **tmap** also also provides arguments to draw other map furnit
 In the code chunk below, *tm_compass()*, *tm_scale_bar()* and *tm_grid()* are used to add compass, scale bar and grid lines onto the choropleth map.
 
 ```{r}
-
 tm_shape(mpsz_pop2020)+
-  tm_fill("DEPENDENCY", 
-          style = "quantile", 
-          palette = "Blues",
-          title = "No. of persons") +
-  tm_layout(main.title = "Distribution of Dependency Ratio \nby planning subzone",
-            main.title.position = "center",
-            main.title.size = 1.2,
-            legend.height = 0.45, 
-            legend.width = 0.35,
-            frame = TRUE) +
-  tm_borders(alpha = 0.5) +
+  tm_polygons(fill = "DEPENDENCY", 
+              fill.scale = tm_scale_intervals(
+                style = "quantile",
+                n = 5,
+                values = "brewer.blues"),
+              fill.legend = tm_legend(
+                title = "Dependency ratio")) +
+  tm_title("Distribution of Dependency Ratio by planning subzone") +
+  tm_layout(frame = TRUE) +
+  tm_borders(fill_alpha = 0.5) +
   tm_compass(type="8star", size = 2) +
-  tm_scale_bar(width = 0.15) +
-  tm_grid(lwd = 0.1, alpha = 0.2) +
+  tm_grid(alpha =0.2) +
   tm_credits("Source: Planning Sub-zone boundary from Urban Redevelopment Authorithy (URA)\n and Population data from Department of Statistics DOS", 
              position = c("left", "bottom"))
 
@@ -524,13 +515,11 @@ tm_shape(mpsz_pop2020) +
           palette = "Blues",
           thres.poly = 0) + 
   tm_facets(by="REGION_N", 
-            free.coords=TRUE, 
-            drop.shapes=FALSE) +
+            free.coords=TRUE) +
   tm_layout(legend.show = FALSE,
             title.position = c("center", "center"), 
             title.size = 20) +
   tm_borders(alpha = 0.5)
-
 
 
 ```
@@ -578,29 +567,20 @@ tm_shape(mpsz_pop2020[mpsz_pop2020$REGION_N=="CENTRAL REGION", ])+
 ### All about **tmap** package
 
 -   [tmap: Thematic Maps in R](https://www.jstatsoft.org/article/view/v084i06)
-
 -   [tmap](https://cran.r-project.org/web/packages/tmap/index.html)
-
 -   [tmap: get started!](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html)
-
 -   [tmap: changes in version 2.0](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-changes-v2.html)
-
 -   [tmap: creating thematic maps in a flexible way (useR!2015)](http://von-tijn.nl/tijn/research/presentations/tmap_user2015.pdf)
-
 -   [Exploring and presenting maps with tmap (useR!2017)](http://von-tijn.nl/tijn/research/presentations/tmap_user2017.pdf)
 
 ### Geospatial data wrangling
 
 -   [sf: Simple Features for R](https://cran.r-project.org/web/packages/sf/index.html)
-
 -   [Simple Features for R: StandardizedSupport for Spatial Vector Data](https://journal.r-project.org/archive/2018/RJ-2018-009/RJ-2018-009.pdf)
-
 -   [Reading, Writing and Converting Simple Features](https://cran.r-project.org/web/packages/sf/vignettes/sf2.html)
 
 ### Data wrangling
 
 -   [dplyr](https://dplyr.tidyverse.org/)
-
 -   [Tidy data](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)
-
 -   [tidyr: Easily Tidy Data with ‘spread()’ and ‘gather()’ Functions](https://cran.r-project.org/web/packages/tidyr/tidyr.pdf)
