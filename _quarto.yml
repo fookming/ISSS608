@@ -3,6 +3,7 @@ project:
 
 execute:
   warning: false
+  message: false
   exclude:
     - Hands-on_Ex/Hands-on_Ex03/Part_02/Hands-on_Ex03-2.qmd
 
