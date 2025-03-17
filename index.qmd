@@ -3,6 +3,6 @@ title: "ISSS608"
 author: "Ee Fook Ming"
 ---
 
-Welcome to **ISSS608 Visual Analytic and Applications**. In this website, you will find my coursework prepared for the course.
+Welcome to **ISSS608 Visual Analytic and Applications**.
 
 ![](images/clipboard-3544312950.png)

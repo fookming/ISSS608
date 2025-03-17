@@ -83,33 +83,33 @@ NGA_wp <- read_rds("../data/rds/NGA_wp.rds")
 ::: callout-note
 ## Your turn
 
-Using the steps you learned in previous lesson, install and load sf, tmap and tidyverse packages into R environment.
+Plot a choropleth map showing the distribution of non-function water point by LGA
 :::
 
 ```{r}
-p1 <- tm_shape(NGA_wp) + 
+p1 <- tm_shape(NGA_wp) +
   tm_fill("wp_functional",
           n = 10,
           style = "equal",
-          palette = "brewer.blues") + 
-  tm_borders(lwd = 0.1, 
-             fill_alpha = 1) +  # Changed from 'alpha' to 'fill_alpha'
-  tm_title("Distribution of functional water point by LGAs") +  # Replaced tm_layout(main.title = ) with tm_title()
-  tm_layout(legend.outside = FALSE)  # Keep other layout settings
+          palette = "Blues") +
+  tm_borders(lwd = 0.1,
+             alpha = 1) +
+  tm_layout(main.title = "Distribution of functional water point by LGAs",
+            legend.outside = FALSE)
 
 ```
 
 ```{r}
 
-p2 <- tm_shape(NGA_wp) + 
+p2 <- tm_shape(NGA_wp) +
   tm_fill("total_wp",
           n = 10,
           style = "equal",
-          palette = "brewer.blues") + 
-  tm_borders(lwd = 0.1, 
-             fill_alpha = 1) +  # Changed from 'alpha' to 'fill_alpha'
-  tm_title("Distribution of total water point by LGAs") +  # Replaced tm_layout(main.title = ) with tm_title()
-  tm_layout(legend.outside = FALSE)  # Keep other layout settings
+          palette = "Blues") +
+  tm_borders(lwd = 0.1,
+             alpha = 1) +
+  tm_layout(main.title = "Distribution of total  water point by LGAs",
+            legend.outside = FALSE)
 
 
 ```
@@ -131,7 +131,6 @@ We will tabulate the proportion of functional water points and the proportion of
 NGA_wp <- NGA_wp %>%
   mutate(pct_functional = wp_functional/total_wp) %>%
   mutate(pct_nonfunctional = wp_nonfunctional/total_wp)
-
 
 ```
 
