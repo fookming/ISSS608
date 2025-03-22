@@ -1,11 +1,13 @@
 ---
-title: "Hands-on Exercise 9 (Work in progress..)"
+title: "Hands-on Exercise 9 v2.0 (fixed 27.6.4 Working with facet_nodes()"
 author: "Ee Fook Ming"
 date: "March 16, 2025"
 date-modified: last-modified
+code-fold: true
+code-summary: "Show the code"
 execute:
   echo: true
-  eval: false
+  eval: true
   warning: false
   message: false
   freeze: true
@@ -406,6 +408,11 @@ g + facet_edges(~Weekday) +
 In the code chunkc below, [*facet_nodes()*](https://ggraph.data-imaginist.com/reference/facet_nodes.html) is used. Before getting started, it is advisable for you to read it’s reference guide at least once.
 
 ```{r}
+#| echo: false
+#| eval: false
+
+# OLD CODE
+
 set_graph_style()
 
 g <- ggraph(GAStech_graph, 
@@ -420,6 +427,24 @@ g + facet_nodes(~Department)+
   th_foreground(foreground = "grey80",  
                 border = TRUE) +
   theme(legend.position = 'bottom')
+```
+
+```{r}
+
+
+set_graph_style()
+
+g <- ggraph(GAStech_graph, layout = "nicely") + 
+  geom_edge_link(aes(width = Weight), alpha = 0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department), size = 2)
+
+g + facet_wrap(~Department) +  # Corrected function
+  theme(panel.border = element_rect(colour = "grey80", fill = NA), 
+        legend.position = "bottom")  # Fixed the theme function
+
+
+
 ```
 
 ## Network Metrics Analysis
@@ -483,11 +508,9 @@ g + theme_graph()
 -   [visNetwork()](http://datastorm-open.github.io/visNetwork/) is a R package for network visualization, using [vis.js](http://visjs.org/) javascript library.
 -   *visNetwork()* function uses a nodes list and edges list to create an interactive graph.
     -   The nodes list must include an “id” column, and the edge list must have “from” and “to” columns.
-
     -   The function also plots the labels for the nodes, using the names of the actors from the “label” column in the node list.
 -   The resulting graph is fun to play around with.
     -   You can move the nodes and the graph will use an algorithm to keep the nodes properly spaced.
-
     -   You can also zoom in and out on the plot and move it around to re-center it.
 
 ### Data preparation
@@ -581,5 +604,22 @@ visNetwork(GAStech_nodes,
 ```
 
 Visit [Option](http://datastorm-open.github.io/visNetwork/options.html) to find out more about visOption’s argument.
+
+### Interactivity
+
+In the code chunk below, *visOptions()* is used to incorporate interactivity features in the data visualisation.
+
+-   The argument *highlightNearest* highlights nearest when clicking a node.
+-   The argument *nodesIdSelection* adds an id node selection creating an HTML select element.
+
+```{r}
+visNetwork(GAStech_nodes,
+           GAStech_edges_aggregated) %>%
+  visIgraphLayout(layout = "layout_with_fr") %>%
+  visOptions(highlightNearest = TRUE,
+             nodesIdSelection = TRUE) %>%
+  visLegend() %>%
+  visLayout(randomSeed = 123)
+```
 
 ## Reference
