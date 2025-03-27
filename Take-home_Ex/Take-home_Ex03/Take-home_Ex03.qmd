@@ -1,0 +1,479 @@
+---
+title: "Take Home Exercise 3 (Work in progress... )"
+author: "Ee Fook Ming"
+date: "March 22, 2025"
+date-modified: last-modified
+code-fold: true
+code-summary: "Show the code"
+execute:
+  echo: true
+  eval: true
+  warning: false
+  message: false
+  freeze: true
+  fig-width: 12
+  fig-height: 8
+format: 
+  html:
+    number-sections: true
+#    number-offset: [26, 0]  # Offset heading levels by starting at 27
+output: 
+  html_document: 
+    toc: true
+    tabset: true
+---
+
+# Introduction
+
+Singapore’s high temperatures, intense rainfall, and humidity create substantial challenges across industries that depend on reliable, data-driven weather insights. Although current dashboards typically provide only elementary observations, there is a clear need for a more comprehensive, analytics-focused platform. By incorporating in-depth statistical methods, spatial visualizations, and predictive modeling capabilities, such a solution can empower businesses, researchers, and policymakers to anticipate weather-induced risks, manage resources, and make informed decisions.
+
+For **Take-home Exercise 3**, I will concentrate on **Time Series Analysis & Forecasting** as a key prototyping requirement, covering the following aspects:
+
+-   **Trend & Seasonality Detection**: Analyzing long-term variations and seasonal cycles through rolling averages and plot-based approaches.
+-   **Time Series Decomposition**: Employing methods (e.g., STL) to separate out trend, seasonality, and residual components.
+-   **Statistical Analysis of Weather Patterns**: Computing essential metrics (mean shifts, variance changes) to assess fluctuations in temperature, rainfall, and wind.
+-   **Forecasting Future Trends**: Utilizing models such as ARIMA, Prophet, or Exponential Smoothing to project weather conditions and evaluate potential climate risks.
+
+By integrating these methods, the platform aims to offer robust, standalone analytics that serve a diverse set of needs—ranging from urban planning and infrastructure maintenance to insurance and agricultural operations—ultimately promoting greater climate resilience in Singapore.
+
+# Data Preparation & Processing
+
+## Loading Libraries
+
+```{r}
+pacman::p_load(httr, readxl, dplyr, readr, openxlsx, zoo)
+```
+
+-   [**httr**](https://httr.r-lib.org/) simplifies the process of making HTTP requests in R, useful for accessing web APIs and retrieving online data sources programmatically.
+-   [**readxl**](https://readxl.tidyverse.org/) enables easy importing and reading of Excel files (.xls, .xlsx) directly into R, facilitating straightforward integration of spreadsheet data into data analysis workflows.
+-   [**dplyr**](https://readr.tidyverse.org/) offers a robust and intuitive grammar for data manipulation, making tasks like filtering, grouping, summarizing, and mutating data straightforward and efficient.
+-   [**readr**](https://readr.tidyverse.org/) simplifies the process of importing flat files, including CSV and TSV formats, with optimized performance and ease of use.
+-   [**openxlsx**](https://ycphs.github.io/openxlsx/) provides efficient functions for reading, writing, and editing Excel files (.xlsx) from within R without the need for external software dependencies like Java.
+-   [**zoo**](https://cran.r-project.org/web/packages/zoo/index.html) offers infrastructure for regular and irregular time series data, providing versatile methods for manipulating and analyzing ordered observations.
+
+## Scrape Climate Historical Records (www.weather.gov.sg)
+
+### Retrieve Station Codes
+
+```{r}
+station_records <- read_excel("data/Station_Records.xlsx")
+
+# Obtain a list of station codes
+station_name <- station_records$`station`
+station_codes <- station_records$`code`
+station_type <- station_records$`type`
+
+print(station_codes)
+print(station_type)
+```
+
+The code chunk retrieves station codes and their corresponding types. These codes form part of a text string used to construct hyperlinks, which retrieve data directly from the weather website. There are three station types:
+
+-   **Full AWS station:** collects weather data on rainfall, temperature, and wind.
+-   **Rainfall station:** collects rainfall data only.
+-   **Closed station:** a station that is no longer operational.
+
+These station identifiers are useful for data filtering, analysis, and visualization based on specific station characteristics.
+
+### Scrape the Actual Data from Website - (2018 to 2024)
+
+```{r}
+#| eval: false
+#| echo: true
+
+library(httr)
+library(readr)
+library(dplyr)
+
+# Set base URL template and save file path
+base_url_template <- "http://www.weather.gov.sg/files/dailydata/DAILYDATA_%s_%d%s.csv"
+save_file <- "data/Climate_Data_2018_2024.csv"
+dir.create(dirname(save_file), recursive = TRUE, showWarnings = FALSE)
+
+# Define expected column names (preserve exact spacing)
+column_names <- c(
+  "Station", "Year", "Month", "Day", 
+  "Daily Rainfall Total (mm)", "Highest 30 min Rainfall (mm)", 
+  "Highest 60 min Rainfall (mm)", "Highest 120 min Rainfall (mm)", 
+  "Mean Temperature (Celsius)", "Maximum Temperature (Celsius)", 
+  "Minimum Temperature (Celsius)", "Mean Wind Speed (km/h)", 
+  "Max Wind Speed (km/h)"
+)
+
+# Ensure CSV file has proper headers only if it does not exist
+if (!file.exists(save_file)) {
+  write_csv(as.data.frame(matrix(ncol = length(column_names), nrow = 0, dimnames = list(NULL, column_names))), 
+            save_file)
+}
+
+# Function to download and append data
+download_and_append <- function(station_code, year, month) {
+  month_str <- sprintf("%02d", month)  # Format month as "01", "02", etc.
+  file_url <- sprintf(base_url_template, station_code, year, month_str)
+
+  # Attempt to download file
+  response <- tryCatch({
+    GET(file_url)
+  }, error = function(e) {
+    message(sprintf("Error fetching: %s", file_url))
+    return(NULL)
+  })
+
+  # Skip if download failed
+  if (is.null(response) || status_code(response) != 200) {
+    message(sprintf("Skipping failed download: %s", file_url))
+    return()
+  }
+
+  # Attempt to read the CSV content
+  csv_data <- tryCatch({
+    read_csv(content(response, "raw"), show_col_types = FALSE, col_names = FALSE, skip = 1)
+  }, error = function(e) {
+    message(sprintf("Failed to read CSV: %s", file_url))
+    return(NULL)
+  })
+
+  # Skip if data is invalid
+  if (is.null(csv_data) || ncol(csv_data) != length(column_names)) {
+    message(sprintf("Skipping invalid dataset: %s", file_url))
+    return()
+  }
+
+  # Assign column names
+  colnames(csv_data) <- column_names  
+
+  # Remove rows where all values (except "Station", "Year", "Month", "Day") are NA, empty, or "-"
+  csv_data <- csv_data %>%
+    filter(!if_all(-c(1:4), ~ is.na(.) | . == "" | . == "-"))
+
+  # Skip if dataset is still empty after filtering
+  if (nrow(csv_data) == 0) {
+    message(sprintf("Skipping empty dataset: %s", file_url))
+    return()
+  }
+
+  # Append valid data
+  write_csv(csv_data, save_file, append = TRUE)  
+  message(sprintf("Appended data for %s - %d-%s", station_code, year, month_str))
+}
+
+# Loop through each station code and fetch data
+for (station_code in station_codes) {
+  for (year in 2018:2024) {
+    for (month in 1:12) {
+      download_and_append(station_code, year, month)
+    }
+  }
+}
+
+print("Download process completed for all stations.")
+
+```
+
+The code chunk systematically downloads daily climate data from Singapore's weather service for multiple weather stations, covering years 2018 through 2024. It constructs URLs dynamically based on station codes, year, and month, retrieves CSV files, filters out incomplete or invalid entries, and then consolidates valid data into a single CSV file (`Climate_Data_2018_2024.csv`). The primary intention is to compile a structured, comprehensive dataset of climate measurements for subsequent analysis or visualization tasks.
+
+### Filtered Data for All Weather Stations (AWS)
+
+```{r}
+
+library(readxl)
+library(dplyr)
+library(readr)
+
+# Read station records and climate data
+station_records <- read_excel("data/Station_Records.xlsx")
+climate_data <- read_csv("data/Climate_Data_2018_2024.csv")
+
+# Filter stations with type \"Full AWS Station\"
+full_aws_stations <- station_records %>%
+  filter(type == "Full AWS Station") %>%
+  pull(station)
+
+# Filter climate data to include only Full AWS Stations
+filtered_climate_data <- climate_data %>%
+  filter(Station %in% full_aws_stations)
+
+# Check the results
+# head(filtered_climate_data)
+
+# Save the filtered data
+write_csv(filtered_climate_data, "data/Climate_Data_2018_2024_AWS.csv")
+
+```
+
+The project is interested only in AWS (All Weather Stations).
+
+### Removed Special Character and Replaced with NA
+
+```{r}
+
+library(readr)
+library(dplyr)
+library(stringr)
+
+# Read CSV file (all columns initially as character)
+climate_data <- read_csv("data/Climate_Data_2018_2024_AWS.csv", 
+                         col_types = cols(.default = "c"),
+                         locale = locale(encoding = "UTF-8"))
+
+# Columns to convert safely to numeric
+numeric_columns <- c("Daily Rainfall Total (mm)",
+                     "Highest 30 min Rainfall (mm)",
+                     "Highest 60 min Rainfall (mm)",
+                     "Highest 120 min Rainfall (mm)",
+                     "Mean Temperature (Celsius)",
+                     "Maximum Temperature (Celsius)",
+                     "Minimum Temperature (Celsius)",
+                     "Mean Wind Speed (km/h)",
+                     "Max Wind Speed (km/h)")
+
+# Clean problematic multibyte strings and convert to numeric
+climate_data_clean <- climate_data %>%
+  mutate(across(all_of(numeric_columns), ~str_replace_all(., "[^0-9\\.\\-]", ""))) %>%
+  mutate(across(all_of(numeric_columns), ~as.numeric(.)))
+
+# Save cleaned data
+write_csv(climate_data_clean, "data/Climate_Data_2018_2024_AWS_Cleaned.csv")
+
+
+```
+
+The code chunk removes special characters from the source file because they cause run-time errors during subsequent processing.
+
+### Impute Missing Data (field with NA) using Simple Moving Average 5-Day Rolling
+
+```{r}
+library(readr)
+library(dplyr)
+library(openxlsx)
+
+# === Load dataset ===
+climate <- read_csv("data/Climate_Data_2018_2024_AWS_Cleaned.csv")
+original <- climate
+
+# Columns to impute
+
+impute_cols <- c("Daily Rainfall Total (mm)",
+                     "Highest 30 min Rainfall (mm)",
+                     "Highest 60 min Rainfall (mm)",
+                     "Highest 120 min Rainfall (mm)",
+                     "Mean Temperature (Celsius)",
+                     "Maximum Temperature (Celsius)",
+                     "Minimum Temperature (Celsius)",
+                     "Mean Wind Speed (km/h)",
+                     "Max Wind Speed (km/h)")
+
+
+# === Backward SMA-5 for first 4 rows ===
+for (i in 4:1) {
+  window <- climate[(i + 1):(i + 5), impute_cols]
+  sma_values <- colMeans(window, na.rm = TRUE) %>% round(1)
+  climate[i, impute_cols] <- as.list(sma_values)
+}
+
+# === Forward SMA-5 for all other NAs ===
+for (col in impute_cols) {
+  na_indices <- which(is.na(climate[[col]]))
+  for (idx in na_indices) {
+    if (idx >= 6) {  # start from the 6th row to ensure a 5-day window
+      window_vals <- climate[[col]][(idx - 5):(idx - 1)]
+      if (all(is.na(window_vals))) {
+        next  # skip if all previous 5 rows are NA, to prevent infinite loop
+      }
+      sma_val <- mean(window_vals, na.rm = TRUE) %>% round(1)
+      climate[[col]][idx] <- sma_val
+    }
+  }
+}
+
+# === Save updated CSV ===
+write_csv(climate,"data/Climate_Final_2018_2024.csv")
+
+# === Prepare Excel with bold + red styling for updated NA values ===
+wb <- createWorkbook()
+addWorksheet(wb, "Updated_NAs")
+
+# Red bold style
+style_red_bold <- createStyle(textDecoration = "bold", fontColour = "#FF0000")
+
+# Write dataset with header row
+writeData(wb, "Updated_NAs", climate, startRow = 1, colNames = TRUE)
+
+# Efficiently apply styles to updated cells only
+for (col_name in impute_cols) {
+  col_idx <- which(names(climate) == col_name)
+  updated_rows <- which(is.na(original[[col_name]]) & !is.na(climate[[col_name]]))
+  
+  if (length(updated_rows) > 0) {
+    # Batch style application for performance
+    addStyle(wb,
+             sheet = "Updated_NAs",
+             style = style_red_bold,
+             rows = updated_rows + 1,  # Offset +1 due to header row
+             cols = rep(col_idx, length(updated_rows)),
+             gridExpand = FALSE,
+             stack = TRUE)
+  }
+}
+
+# Save Excel
+saveWorkbook(wb, "data/NAs_fields_updated_5-Day.xlsx", overwrite = TRUE)
+
+```
+
+The code chunk above performs data cleaning and imputation on a climate dataset by applying a 5-day Simple Moving Average (SMA-5) to fill missing values in selected weather metrics. Initially, it uses a backward SMA-5 approach to estimate missing data for the first four rows. Subsequently, a forward SMA-5 method is applied to impute missing values throughout the remaining dataset. Additionally, the code highlights imputed values by highlighting them in bold red within an Excel workbook, making the updates clearly identifiable.
+
+# Time Series Analysis and Forecast
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(ggplot2)
+
+```
+
+```{r}
+
+# Import Data & Preparation
+
+# Read the data
+weather_data <- read_csv("data/Climate_Final_2018_2024.csv")
+
+# Combine Year, Month, and Day into a single date column
+weather_ts <- weather_data %>%
+  mutate(date = make_date(Year, Month, Day)) %>%
+  select(Station, date, everything(), -Year, -Month, -Day)
+
+# Inspect data
+head(weather_ts)
+```
+
+```{r}
+
+# Filter specific station
+
+admiralty_ts <- weather_ts %>%
+  filter(Station == "Admiralty") %>%
+  arrange(date)
+
+head(admiralty_ts)
+```
+
+```{r}
+
+# Plot Daily Rainfall and Temperature
+
+
+# Plot Daily Rainfall
+ggplot(admiralty_ts, aes(x = date, y = `Daily Rainfall Total (mm)`)) +
+  geom_line(color = "steelblue") +
+  labs(title = "Daily Rainfall Total at Admiralty Station",
+       x = "Date",
+       y = "Rainfall (mm)") +
+  theme_minimal()
+
+# Plot Mean Temperature
+ggplot(admiralty_ts, aes(x = date, y = `Mean Temperature (Celsius)`)) +
+  geom_line(color = "tomato") +
+  labs(title = "Mean Temperature at Admiralty Station",
+       x = "Date",
+       y = "Temperature (°C)") +
+  theme_minimal()
+
+```
+
+\
+
+```{r}
+
+# Preparing data for forecasting
+
+
+# Select relevant columns for forecasting (Rainfall and Temperature)
+forecast_data <- admiralty_ts %>%
+  select(date, `Daily Rainfall Total (mm)`, `Mean Temperature (Celsius)`)
+
+# Check for missing dates or data gaps
+forecast_data <- forecast_data %>%
+  complete(date = seq(min(date), max(date), by = "day")) %>%
+  arrange(date)
+
+# Impute missing values if necessary (e.g., using interpolation)
+forecast_data <- forecast_data %>%
+  fill(`Daily Rainfall Total (mm)`, .direction = "downup") %>%
+  fill(`Mean Temperature (Celsius)`, .direction = "downup")
+
+head(forecast_data)
+
+
+```
+
+# EDA
+
+```{r}
+library(tidyverse)
+library(lubridate)
+
+# Simple line plot for visualization
+forecast_data %>% 
+  ggplot(aes(x = date, y = `Daily Rainfall Total (mm)`)) +
+  geom_line() +
+  labs(title = "Daily Rainfall Time Series",
+       x = "Date", y = "Rainfall (mm)") +
+  theme_minimal()
+
+# Monthly average plot
+forecast_data %>%
+  mutate(month = floor_date(date, "month")) %>%
+  group_by(month) %>%
+  summarise(avg_rainfall = mean(`Daily Rainfall Total (mm)`, na.rm = TRUE)) %>%
+  ggplot(aes(x = month, y = avg_rainfall)) +
+  geom_line() +
+  labs(title = "Monthly Average Rainfall",
+       x = "Month", y = "Avg Rainfall (mm)") +
+  theme_minimal()
+
+```
+
+# CDA
+
+```{r}
+library(forecast)
+
+# Create a ts object for rainfall (assuming daily frequency)
+rainfall_ts <- ts(forecast_data$`Daily Rainfall Total (mm)`,
+                  frequency = 365,  # daily data
+                  start = c(year(min(forecast_data$date)), yday(min(forecast_data$date))))
+
+# Classical Decomposition
+rainfall_decomp <- stl(rainfall_ts, s.window = "periodic")
+plot(rainfall_decomp)
+
+```
+
+# Modelling and Forecasting  
+
+```{r}
+# Fit ARIMA model
+rainfall_arima <- auto.arima(rainfall_ts)
+
+# Check summary
+summary(rainfall_arima)
+
+# Forecast next 30 days
+rainfall_forecast <- forecast(rainfall_arima, h = 30)
+
+# Plot forecast
+autoplot(rainfall_forecast) + 
+  labs(title = "30-Day Rainfall Forecast",
+       x = "Date", y = "Rainfall (mm)") +
+  theme_minimal()
+
+```
+
+# Evaluation
+
+```{r}
+accuracy(rainfall_forecast)
+
+```

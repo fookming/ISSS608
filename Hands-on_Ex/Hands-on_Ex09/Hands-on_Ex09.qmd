@@ -1,5 +1,5 @@
 ---
-title: "Hands-on Exercise 9 v2.0 (fixed 27.6.4 Working with facet_nodes()"
+title: "Hands-on Exercise 9 v3.0 (fixed 27.6.4 Working with facet_nodes() & Updated section 27.7.3 - Visualising Community"
 author: "Ee Fook Ming"
 date: "March 16, 2025"
 date-modified: last-modified
@@ -47,7 +47,7 @@ The code chunk:
 ```{r}
 pacman::p_load(igraph, tidygraph, ggraph, 
                visNetwork, lubridate, clock,
-               tidyverse, graphlayouts)
+               tidyverse, graphlayouts, ggforce, concaveman)
 ```
 
 ## The Data
@@ -110,6 +110,10 @@ GAStech_edges <- GAStech_edges %>%
 
 Table below shows the data structure of the reformatted *GAStech_edges* data frame
 
+```{r}
+glimpse(GAStech_edges)
+```
+
 ### Wrangling attributes
 
 A close examination of *GAStech_edges* data.frame reveals that it consists of individual e-mail flow records. This is not very useful for visualisation.
@@ -139,6 +143,10 @@ GAStech_edges_aggregated <- GAStech_edges %>%
 ### Reviewing the revised edges file
 
 Table below shows the data structure of the reformatted *GAStech_edges* data frame
+
+```{r}
+glimpse(GAStech_edges_aggregated)
+```
 
 ## Creating network objects using **tidygraph**
 
@@ -487,19 +495,59 @@ g + theme_graph()
 
 ### Visualising Community
 
-tidygraph package inherits many of the community detection algorithms imbedded into igraph and makes them available to us, including *Edge-betweenness (group_edge_betweenness)*, *Leading eigenvector (group_leading_eigen)*, *Fast-greedy (group_fast_greedy)*, *Louvain (group_louvain)*, *Walktrap (group_walktrap)*, *Label propagation (group_label_prop)*, *InfoMAP (group_infomap)*, *Spinglass (group_spinglass)*, and *Optimal (group_optimal)*. Some community algorithms are designed to take into account direction or weight, while others ignore it. Use this [link](https://tidygraph.data-imaginist.com/reference/group_graph.html) to find out more about community detection functions provided by tidygraph,
+tidygraph package inherits many of the community detection algorithms
+imbedded into igraph and makes them available to us, including *Edge-betweenness (group_edge_betweenness)*, *Leading eigenvector (group_leading_eigen)*, *Fast-greedy (group_fast_greedy)*, *Louvain (group_louvain)*, *Walktrap (group_walktrap)*, *Label propagation (group_label_prop)*, *InfoMAP (group_infomap)*, *Spinglass (group_spinglass)*, and *Optimal (group_optimal)*. Some community algorithms are designed to take into account direction or weight, while others ignore it. Use this [link](https://tidygraph.data-imaginist.com/reference/group_graph.html) to find out more about community detection functions provided by tidygraph,
 
 In the code chunk below *group_edge_betweenness()* is used.
 
 ```{r}
 g <- GAStech_graph %>%
-  mutate(community = as.factor(group_edge_betweenness(weights = Weight, directed = TRUE))) %>%
+  mutate(community = as.factor(
+    group_edge_betweenness(
+      weights = Weight, 
+      directed = TRUE))) %>%
   ggraph(layout = "fr") + 
+  geom_edge_link(
+    aes(
+      width=Weight), 
+    alpha=0.2) +
+  scale_edge_width(
+    range = c(0.1, 5)) +
+  geom_node_point(
+    aes(colour = community))  
+
+g + theme_graph()
+```
+
+In order to support effective visual investigation, the community network above has been revised by using [`geom_mark_hull()`](https://ggforce.data-imaginist.com/reference/geom_mark_hull.html) of [ggforce](https://ggforce.data-imaginist.com/) package.
+
+::: callout-important
+Please be reminded that you must to install and include [**ggforce**](https://ggforce.data-imaginist.com/) and [**concaveman**](https://www.rdocumentation.org/packages/concaveman/versions/1.1.0/topics/concaveman) packages before running the code chunk below.
+:::
+
+```{r}
+g <- GAStech_graph %>%
+  activate(nodes) %>%
+  mutate(community = as.factor(
+    group_optimal(weights = Weight)),
+         betweenness_measure = centrality_betweenness()) %>%
+  ggraph(layout = "fr") +
+  geom_mark_hull(
+    aes(x, y, 
+        group = community, 
+        fill = community),  
+    alpha = 0.2,  
+    expand = unit(0.3, "cm"),  # Expand
+    radius = unit(0.3, "cm")  # Smoothness
+  ) + 
   geom_edge_link(aes(width=Weight), 
                  alpha=0.2) +
   scale_edge_width(range = c(0.1, 5)) +
-  geom_node_point(aes(colour = community))  
-
+  geom_node_point(aes(fill = Department,
+                      size = betweenness_measure),
+                      color = "black",
+                      shape = 21)
+  
 g + theme_graph()
 ```
 
